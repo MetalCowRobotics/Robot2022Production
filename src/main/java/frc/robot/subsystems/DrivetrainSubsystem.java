@@ -213,7 +213,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public void periodic() {
 	drivetrainScalar = SmartDashboard.getNumber("Drivetrain Scalar", 0.5);
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
-//     SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE * drivetrainScalar, states[0].angle.getRadians());
