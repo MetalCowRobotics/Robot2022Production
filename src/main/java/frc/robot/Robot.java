@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
+
+    SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
   }
 
   /**
@@ -47,9 +49,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //do i need this? from Dean
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("left x", m_robotContainer.driverControls.getLeftX());
-    SmartDashboard.putNumber("left y", m_robotContainer.driverControls.getLeftY());
-    SmartDashboard.putNumber("right x", m_robotContainer.driverControls.getRightX());
     SmartDashboard.putData(CommandScheduler.getInstance());
     // UsbCamera camera = CameraServer.startAutomaticCapture(1);
     // camera.setResolution(640, 480);
