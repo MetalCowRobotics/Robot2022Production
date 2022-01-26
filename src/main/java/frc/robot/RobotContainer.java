@@ -37,9 +37,6 @@ public class RobotContainer {
 final XboxController driverControls = new XboxController(0);
 
 //SlewRateFilter controlls our ramps to the drivetrain
-final SlewRateLimiter lxFilter = new SlewRateLimiter(60);
-final SlewRateLimiter lyFilter = new SlewRateLimiter(60);
-final SlewRateLimiter rxFilter = new SlewRateLimiter(60);
   // private final Cim m_cim = new Cim();
   // private final Cim2 m_cim2 = new Cim2();
 
@@ -58,9 +55,9 @@ final SlewRateLimiter rxFilter = new SlewRateLimiter(60);
     // .getY(GenericHID.Hand.kLeft)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> lxFilter.calculate(-modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND)),
-            () -> lyFilter.calculate(modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND)),
-            () -> rxFilter.calculate(-modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND))));
+            () -> -modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
     // Configure the button bindings
     configureButtonBindings();
   }
