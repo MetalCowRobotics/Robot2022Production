@@ -50,12 +50,7 @@ public class Robot extends TimedRobot {
     //do i need this? from Dean
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Left Stick X", m_robotContainer.driverControls.getLeftX());
-    SmartDashboard.putNumber("Left Stick Y", m_robotContainer.driverControls.getLeftY());
-
     SmartDashboard.putData(CommandScheduler.getInstance());
-    // UsbCamera camera = CameraServer.startAutomaticCapture(1);
-    // camera.setResolution(640, 480);
   }
 
   /**
