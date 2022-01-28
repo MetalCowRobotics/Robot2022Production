@@ -25,6 +25,7 @@ public final class Constants {
      * Should be measured from center to center.
      */
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5; // FIXME Measure and set wheelbase
+    public static final double DRIVETRAIN_RAMP_SPEED = 0.6; //Ramp up speed for drivetrain motors
 
     public static final int DRIVETRAIN_PIGEON_ID = 14; // FIXME Set Pigeon ID
 

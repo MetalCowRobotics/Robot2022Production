@@ -23,6 +23,7 @@ import static frc.robot.Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
+import static frc.robot.Constants.DRIVETRAIN_RAMP_SPEED;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;

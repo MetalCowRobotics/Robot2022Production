@@ -6,10 +6,17 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.RunMotor;
+import frc.robot.commands.RunOtherMotor;
+import frc.robot.commands.StopMotor;
+import frc.robot.commands.StopOtherMotor;
+import frc.robot.subsystems.Cim;
+import frc.robot.subsystems.Cim2;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,6 +30,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
+  private final Cim m_cim = new Cim();
+  private final Cim2 m_cim2 = new Cim2();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -33,6 +42,11 @@ public class Robot extends TimedRobot {
     // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putData("RunVictor1", new RunMotor(m_cim));
+    SmartDashboard.putData("StopVictor1", new StopMotor(m_cim));
+    SmartDashboard.putData("RunVictor0", new RunOtherMotor(m_cim2));
+    SmartDashboard.putData("StopVictor0", new StopOtherMotor(m_cim2));
     m_robotContainer = new RobotContainer();
   }
 
@@ -101,8 +115,10 @@ public class Robot extends TimedRobot {
   /** This function is called once when test mode is enabled. */
   @Override
   public void testInit() {}
-
+    
   /** This function is called periodically during test mode. */
+
   @Override
   public void testPeriodic() {}
+  
 }

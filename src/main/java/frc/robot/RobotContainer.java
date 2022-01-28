@@ -72,14 +72,13 @@ public class RobotContainer {
     // ::getBackButton)
             // No requirements because we don't need to interrupt anything
             // .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
-    // new Button(driverControls
-    // ::getAButton)
-    // .whileHeld(new RunMotor(m_cim));
-    // new Button(driverControls
-    // ::getAButton)
-    // .whenReleased(new StopMotor(m_cim));
-
-    // new Button(m_sensor::objectInFront).whileHeld(new ParallelCommandGroup(new RunOtherMotor(m_cim2), new StopMotor(m_cim)));
+     new Button(driverControls
+     ::getAButton)
+     .whileHeld(new RunMotor(m_cim));
+     new Button(driverControls
+     ::getAButton).whenReleased(new StopMotor(m_cim));
+    
+    //new Button(m_sensor::objectInFront).whileHeld(new ParallelCommandGroup(new RunOtherMotor(m_cim2), new StopMotor(m_cim)));
     new Button(m_sensor::objectInFront).whenReleased(blinkMotors);
   }
 
