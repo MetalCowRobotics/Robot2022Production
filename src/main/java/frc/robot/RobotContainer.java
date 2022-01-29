@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.PrepareIntakeToGather;
 import frc.robot.commands.RunMotor;
 import frc.robot.commands.RunOtherMotor;
 import frc.robot.commands.StopMotor;
@@ -22,6 +23,7 @@ import frc.robot.commands.StopOtherMotor;
 import frc.robot.subsystems.Cim;
 import frc.robot.subsystems.Cim2;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Sensor;
 
 /**
@@ -33,6 +35,7 @@ import frc.robot.subsystems.Sensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   
 final XboxController driverControls = new XboxController(0);
 
@@ -86,6 +89,7 @@ final XboxController driverControls = new XboxController(0);
 
     // new Button(m_sensor::objectInFront).whileHeld(new ParallelCommandGroup(new RunOtherMotor(m_cim2), new StopMotor(m_cim)));
     // new Button(m_sensor::objectInFront).whenReleased(blinkMotors);
+    SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
   }
 
   /**

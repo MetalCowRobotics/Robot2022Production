@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.PrepareIntakeToGather;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,7 +36,8 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
 
-    SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
+    SmartDashboard.putData(CommandScheduler.getInstance());
+    // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
   }
 
   /**
