@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import java.util.function.BooleanSupplier;
-
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,15 +13,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PrepareIntakeToGather;
-import frc.robot.commands.RunMotor;
-import frc.robot.commands.RunOtherMotor;
-import frc.robot.commands.StopMotor;
-import frc.robot.commands.StopOtherMotor;
-import frc.robot.subsystems.Cim;
-import frc.robot.subsystems.Cim2;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.Sensor;
+import frc.robot.subsystems.SparkSystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -41,14 +32,15 @@ final XboxController driverControls = new XboxController(0);
 
 //SlewRateFilter controlls our ramps to the drivetrain
   // private final Cim m_cim = new Cim();
-  // private final Cim2 m_cim2 = new Cim2();
-
+  // private SparkSystem m_sparkSystem = new SparkSystem();
+  private SparkSystem m_sparkSystem ;
   // Sensor m_sensor = new Sensor();
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    m_sparkSystem = new SparkSystem();
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
@@ -92,6 +84,8 @@ final XboxController driverControls = new XboxController(0);
     SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
+    // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
+    // SmartDashboard.putData("Stop SPARK", new InstantCommand(m_sparkSystem::stop, m_sparkSystem));
   }
 
   /**

@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Cim2;
+import frc.robot.subsystems.SparkSystem;
 
 public class StopOtherMotor extends CommandBase{
-    private Cim2 m_cim;
+    private SparkSystem m_cim;
     int count;
-    public StopOtherMotor(Cim2 cim){
+    public StopOtherMotor(SparkSystem cim){
         m_cim = cim;
         addRequirements(m_cim);
     }
