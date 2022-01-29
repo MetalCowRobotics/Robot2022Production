@@ -10,8 +10,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private boolean debug = false;
 
     public static final int INTAKE_ROLLER_CAN_NUM = 1;
-    public static final int INTAKE_DEPLOYMENT_EXTEND = 1;
-    public static final int INTAKE_DEPLOYMENT_RETRACT = 2;
+    public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
+    public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
 
     private static final Spark m_intakeRoller = new Spark(INTAKE_ROLLER_CAN_NUM);
     private static final DoubleSolenoid m_intakeDeployment 
