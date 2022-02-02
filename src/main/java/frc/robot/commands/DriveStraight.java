@@ -14,9 +14,9 @@ public class DriveStraight extends CommandBase {
     public double[] driveVector = new double[2];
     private DrivetrainSubsystem m_drivetrain;
     private TalonFX backRightDrive;
-    private double endTics;
+    private double endTicsDifference;
     private boolean firstTime = true;
-    private double angle, speed, inches;
+    private double angle, speed, inches, startTics;
 
     public DriveStraight(double angle, double speed, DrivetrainSubsystem drive, double inches) {
         this.m_drivetrain = drive;
@@ -35,17 +35,16 @@ public class DriveStraight extends CommandBase {
     public void execute() {
         if (firstTime) {
             SmartDashboard.putNumber("first time tics", m_drivetrain.getPosition());
-        
-                    
-            double wheelRotations = inches / (Math.PI * 4);
-            double axleRotations = wheelRotations * 6.86;
-            endTics = m_drivetrain.getPosition() + (1294 / 6.86) * 6.86 * 4.28;
+            startTics = m_drivetrain.getPosition();
+            endTicsDifference = (inches / (4 * Math.PI)) * 12591;
+            // endTics = m_drivetrain.getPosition() + (1024 / 6.86) * 6.86 * 4.28;
+            
 
             driveVector[0] = speed * Math.cos(Math.toRadians(angle));
             driveVector[1] = speed * Math.sin(Math.toRadians(angle));
             firstTime = false;
 
-            SmartDashboard.putNumber("end tics", endTics);
+            SmartDashboard.putNumber("end tics", endTicsDifference);
         }
 
         SmartDashboard.putNumber("current tics", m_drivetrain.getPosition());
@@ -62,7 +61,7 @@ public class DriveStraight extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return m_drivetrain.getPosition() > endTics;
+        return (Math.abs(m_drivetrain.getPosition() - startTics) > endTicsDifference);
     }
 
     @Override
