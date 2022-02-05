@@ -24,22 +24,28 @@ import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
 import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
 
+import java.util.Arrays;
+
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.*;
 import frc.robot.Constants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -100,10 +106,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private TalonFX backRightDrive;
   private TalonFX backRightSteer;
+  private SwerveDriveOdometry odometer;
+  private Pose2d position = new Pose2d();
 
   public DrivetrainSubsystem() {
-    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+        Translation2d backRightPosition = new Translation2d(0.292, -0.292);
+        Translation2d backLeftPosition = new Translation2d(-0.292, -0.292);
+        Translation2d frontRightPosition = new Translation2d(0.292, 0.292);
+        Translation2d frontLeftPosition = new Translation2d(-0.292, 0.292);
+
+        SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+                frontLeftPosition, frontRightPosition, backLeftPosition, backRightPosition
+        );
+
+        odometer = new SwerveDriveOdometry(m_kinematics,
+        Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading()), new Pose2d(0.0, 0.0, new Rotation2d()));
+
+        ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
         backRightSteer = new TalonFX(BACK_RIGHT_MODULE_STEER_MOTOR);
+        
     // There are 4 methods you can call to create your swerve modules.
     // The method you use depends on what motors you are using.
     //
@@ -217,12 +238,21 @@ backRightDrive = new TalonFX(Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR);
           return backRightDrive.getSelectedSensorPosition();
   }
 
+  public double[] getCoordinate() {
+        double[] coordinate = {position.getX(), position.getY()};
+        return coordinate;
+  }
+
   @Override
   public void periodic() {
-        SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
+        // SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    SmartDashboard.putNumber("x coordinate", getCoordinate()[0]);
+    SmartDashboard.putNumber("y coordinate", getCoordinate()[1]);
 //     SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
+
+    position = odometer.update(Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading()), states[0], states[1], states[2], states[3]);
 
     m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
     m_frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());

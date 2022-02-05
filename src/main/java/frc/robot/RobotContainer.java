@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveStraight;
+import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.RunMotor;
 import frc.robot.commands.RunOtherMotor;
 import frc.robot.commands.StopMotor;
@@ -93,7 +94,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
+    // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
+    Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 1, 1);
     // An ExampleCommand will run in autonomous
     return autoCommand;
   }
