@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.IntakeOff;
+import frc.robot.commands.IntakeOn;
 import frc.robot.commands.PrepareIntakeToGather;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -27,7 +29,7 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final XboxController driverControls = new XboxController(0);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  private final SparkMax m_Spark = new SparkMax(16);
+ 
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -68,12 +70,12 @@ public class RobotContainer {
     new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 	//Neo550 Test
-    new Button(driverControls::getAButton).whenPressed(m_Spark::run);
-    new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
     SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Run Intake Motor", new IntakeOn(m_intakeSubsystem));
+    SmartDashboard.putData("Stop Intake Motor", new IntakeOff(m_intakeSubsystem));
     // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
     // SmartDashboard.putData("Stop SPARK", new InstantCommand(m_sparkSystem::stop, m_sparkSystem));
   }
