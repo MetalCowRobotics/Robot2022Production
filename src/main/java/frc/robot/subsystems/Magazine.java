@@ -1,16 +1,24 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 
 public class Magazine extends SubsystemBase {
-    private static Spark magMotor = new Spark(0);
-
+    private CANSparkMax magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
     private double speed = 0;
 
+    // public Magazine() {
+    //     magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
+    // }
+
     public void run(){
-        speed = 0.5;
+        speed = 0.05;
     }
 
     public void stop(){
