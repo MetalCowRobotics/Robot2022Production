@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -25,6 +28,9 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
 
+  static CANSparkMax m_motor;
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -35,6 +41,8 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
+    m_motor = new CANSparkMax(16, MotorType.kBrushless);
+
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
@@ -52,8 +60,8 @@ public class Robot extends TimedRobot {
     //do i need this? from Dean
     CommandScheduler.getInstance().run();
 
-    SmartDashboard.putNumber("Left Stick X", m_robotContainer.driverControls.getLeftX());
-    SmartDashboard.putNumber("Left Stick Y", m_robotContainer.driverControls.getLeftY());
+    // SmartDashboard.putNumber("Left Stick X", m_robotContainer.driverControls.getLeftX());
+    // SmartDashboard.putNumber("Left Stick Y", m_robotContainer.driverControls.getLeftY());
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     // UsbCamera camera = CameraServer.startAutomaticCapture(1);
