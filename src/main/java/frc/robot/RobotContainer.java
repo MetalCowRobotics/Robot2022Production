@@ -34,7 +34,6 @@ import frc.robot.subsystems.Sensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final SparkMax m_Spark = new SparkMax(16);
   
 final XboxController driverControls = new XboxController(0);
 
@@ -79,13 +78,11 @@ final XboxController driverControls = new XboxController(0);
         .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
 
-    new Button(driverControls::getAButton)
-      	.whenPressed(m_Spark::run);
-    new Button(driverControls::getAButton)
-      	.whenReleased(m_Spark::stop);
+    new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
+    new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-    // new Button(m_sensor::objectInFront).whileHeld(new ParallelCommandGroup(new RunOtherMotor(m_cim2), new StopMotor(m_cim)));
-    // new Button(m_sensor::objectInFront).whenReleased(blinkMotors);
+	new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
+    new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
   }
 
   /**
@@ -100,11 +97,7 @@ final XboxController driverControls = new XboxController(0);
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
-      if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
-      } else {
-        return (value + deadband) / (1.0 - deadband);
-      }
+      return value;
     } else {
       return 0.0;
     }
