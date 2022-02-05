@@ -56,11 +56,18 @@ public class RobotContainer {
 //   SequentialCommandGroup blinkMotors = new SequentialCommandGroup();
   
   private void configureButtonBindings() {
-    // blinkMotors.addCommands(new RunOtherMotor(m_cim2), new StopOtherMotor(m_cim2), new RunMotor(m_cim), new StopMotor(m_cim));
-    // Back button zeros the gyroscope
-
+	//Reset Gyro
     new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
+	//Crawl
+    new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
+    new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+
+	//Sprint
+	new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
+    new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+
+	//Neo550 Test
     new Button(driverControls::getAButton).whenPressed(m_Spark::run);
     new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
@@ -83,11 +90,7 @@ public class RobotContainer {
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
-      if (value > 0.0) {
-        return (value - deadband) / (1.0 - deadband);
-      } else {
-        return (value + deadband) / (1.0 - deadband);
-      }
+      return value;
     } else {
       return 0.0;
     }

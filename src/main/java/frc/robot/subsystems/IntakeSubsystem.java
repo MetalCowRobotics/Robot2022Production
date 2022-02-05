@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Library;
 
 public class IntakeSubsystem extends SubsystemBase {
-    private boolean debug = true;
+    private boolean debug = false;
 
     public static final int INTAKE_ROLLER_CAN_NUM = 1;
     public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
