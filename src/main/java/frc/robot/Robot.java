@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
-    m_motor = new CANSparkMax(16, MotorType.kBrushless);
+    // m_motor = new CANSparkMax(10, MotorType.kBrushless);
 
 
     SmartDashboard.putData(CommandScheduler.getInstance());

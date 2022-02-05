@@ -13,7 +13,7 @@ public class IntakeSubsystem extends SubsystemBase {
     public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
     public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
 
-    private static final Spark m_intakeRoller = new Spark(INTAKE_ROLLER_CAN_NUM);
+    // private static final Spark m_intakeRoller = new Spark(INTAKE_ROLLER_CAN_NUM);
     private static final DoubleSolenoid m_intakeDeployment 
                             = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 
                                                  INTAKE_DEPLOYMENT_EXTEND, 
