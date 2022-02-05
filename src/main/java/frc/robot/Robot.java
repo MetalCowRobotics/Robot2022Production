@@ -5,15 +5,11 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.PrepareIntakeToGather;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -41,11 +37,9 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
-    // m_motor = new CANSparkMax(10, MotorType.kBrushless);
 
 
     SmartDashboard.putData(CommandScheduler.getInstance());
-    // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
   }
 
   /**

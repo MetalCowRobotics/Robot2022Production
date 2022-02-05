@@ -6,13 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.PrepareIntakeToGather;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.SparkMax;
-import frc.robot.subsystems.SparkSystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,32 +25,24 @@ import frc.robot.subsystems.SparkSystem;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final XboxController driverControls = new XboxController(0);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final SparkMax m_Spark = new SparkMax(16);
-  private final XboxController driverControls = new XboxController(0);
-
-  // private final Cim m_cim = new Cim();
-  // private SparkSystem m_sparkSystem = new SparkSystem();
-  // private SparkSystem m_sparkSystem ;
-  // Sensor m_sensor = new Sensor();
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // m_sparkSystem = new SparkSystem();
     // Set up the default command for the drivetrain.
     // The controls are for field-oriented driving:
     // Left stick Y axis -> forward and backwards movement
     // Left stick X axis -> left and right movement
     // Right stick X axis -> rotation
-    // BooleanSupplier leftHandX = () -> modifyAxis(-driverControls
-    // .getY(GenericHID.Hand.kLeft)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-    // m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-    //         m_drivetrainSubsystem,
-    //         () -> -modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //         () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //         () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+            m_drivetrainSubsystem,
+            () -> -modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -65,21 +59,14 @@ public class RobotContainer {
     // blinkMotors.addCommands(new RunOtherMotor(m_cim2), new StopOtherMotor(m_cim2), new RunMotor(m_cim), new StopMotor(m_cim));
     // Back button zeros the gyroscope
 
-    new Button(driverControls
-    ::getBackButton)
-        .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
+    new Button(driverControls::getAButton).whenPressed(m_Spark::run);
+    new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
-    new Button(driverControls::getAButton)
-      	.whenPressed(m_Spark::run);
-    new Button(driverControls::getAButton)
-      	.whenReleased(m_Spark::stop);
-
-    // new Button(m_sensor::objectInFront).whileHeld(new ParallelCommandGroup(new RunOtherMotor(m_cim2), new StopMotor(m_cim)));
-    // new Button(m_sensor::objectInFront).whenReleased(blinkMotors);
-    // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
-    // SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
-    // SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
+    SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
     // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
     // SmartDashboard.putData("Stop SPARK", new InstantCommand(m_sparkSystem::stop, m_sparkSystem));
   }
