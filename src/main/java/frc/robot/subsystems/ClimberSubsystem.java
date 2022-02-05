@@ -14,12 +14,12 @@ public class ClimberSubsystem extends SubsystemBase {
     public static final int CLIMBER_DRIVE_MOTOR = 16;
     public static final int CLIMBER_DEPLOY = 0;
     public static final int CLIMBER_RETRACT = 1;
+    private static final double CLIMB_SPEED = 0.3;
 
     private static final CANSparkMax m_climber = new CANSparkMax(CLIMBER_DRIVE_MOTOR, MotorType.kBrushless);
-    private static final DoubleSolenoid m_climberDeploy 
-                            = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 
-                                                 CLIMBER_DEPLOY, 
-                                                 CLIMBER_RETRACT);
+    private static final DoubleSolenoid m_climberDeploy = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, CLIMBER_DEPLOY, CLIMBER_RETRACT);
+
+    private double climbSpeed = 0;
 
     public ClimberSubsystem() {
     }
@@ -30,31 +30,30 @@ public class ClimberSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        Library.pushDashboard("Climber Periodic", "I am here", debug);
-
+        m_climber.set(climbSpeed);
     }
 
-    public void deployIntake() {
+    public void retractClimber() {
         m_climberDeploy.set(DoubleSolenoid.Value.kForward);
         Library.pushDashboard("Climber Deployment state", "deployed", debug);
     }
 
-    public void retractIntake() {
+    public void deployClimber() {
         m_climberDeploy.set(DoubleSolenoid.Value.kReverse);
         Library.pushDashboard("Climber Deployment state", "retracted", debug);
     }
 
-    public void neutralIntake() {
-        m_climberDeploy.set(DoubleSolenoid.Value.kOff);
-        Library.pushDashboard("Climber Deployment state", "neutral", debug);
+    public void extendClimberMotor() {
+        climbSpeed = CLIMB_SPEED;
     }
 
-    public void runClimber() {
-
+    public void retractClimberMotor() {
+        climbSpeed = -CLIMB_SPEED;
     }
 
-    public void stopClimber() {
-
+    public void stopClimberMotor() {
+        climbSpeed = 0;
+        //TODO implement friction brake?
     }
 
 }

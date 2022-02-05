@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 
 
     SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putBoolean("Field Mode", m_robotContainer.fieldMode);
   }
 
   /**
