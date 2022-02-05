@@ -4,8 +4,8 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,9 +24,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
 
-  static CANSparkMax m_motor;
-
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -37,9 +34,7 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
-
-
-    SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
   }
 
   /**
