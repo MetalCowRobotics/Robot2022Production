@@ -32,7 +32,7 @@ import frc.robot.subsystems.Sensor;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  // private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   
 final XboxController driverControls = new XboxController(0);
 
@@ -53,11 +53,11 @@ final XboxController driverControls = new XboxController(0);
     // Right stick X axis -> rotation
     // BooleanSupplier leftHandX = () -> modifyAxis(-driverControls
     // .getY(GenericHID.Hand.kLeft)) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND;
-    // m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-    //         m_drivetrainSubsystem,
-    //         () -> -modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //         () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //         () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+            m_drivetrainSubsystem,
+            () -> -modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -73,10 +73,10 @@ final XboxController driverControls = new XboxController(0);
   private void configureButtonBindings() {
     // blinkMotors.addCommands(new RunOtherMotor(m_cim2), new StopOtherMotor(m_cim2), new RunMotor(m_cim), new StopMotor(m_cim));
     // Back button zeros the gyroscope
-    // new Button(driverControls
-    // ::getBackButton)
-    //         // No requirements because we don't need to interrupt anything
-    //         .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    new Button(driverControls
+    ::getBackButton)
+            // No requirements because we don't need to interrupt anything
+            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
     // new Button(driverControls
     // ::getAButton)
     // .whileHeld(new RunMotor(m_cim));

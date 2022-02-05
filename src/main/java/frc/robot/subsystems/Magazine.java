@@ -13,10 +13,6 @@ public class Magazine extends SubsystemBase {
     private CANSparkMax magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
     private double speed = 0;
 
-    // public Magazine() {
-    //     magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
-    // }
-
     public void run(){
         speed = 0.05;
     }
