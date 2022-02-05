@@ -21,6 +21,7 @@ import frc.robot.commands.StopMotor;
 import frc.robot.commands.StopOtherMotor;
 import frc.robot.subsystems.Cim;
 import frc.robot.subsystems.Cim2;
+import frc.robot.subsystems.SparkMax;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Sensor;
 
@@ -33,10 +34,10 @@ import frc.robot.subsystems.Sensor;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final SparkMax m_Spark = new SparkMax(16);
   
 final XboxController driverControls = new XboxController(0);
 
-//SlewRateFilter controlls our ramps to the drivetrain
   // private final Cim m_cim = new Cim();
   // private final Cim2 m_cim2 = new Cim2();
 
@@ -68,21 +69,20 @@ final XboxController driverControls = new XboxController(0);
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  SequentialCommandGroup blinkMotors = new SequentialCommandGroup();
+//   SequentialCommandGroup blinkMotors = new SequentialCommandGroup();
   
   private void configureButtonBindings() {
     // blinkMotors.addCommands(new RunOtherMotor(m_cim2), new StopOtherMotor(m_cim2), new RunMotor(m_cim), new StopMotor(m_cim));
     // Back button zeros the gyroscope
     new Button(driverControls
     ::getBackButton)
-            // No requirements because we don't need to interrupt anything
-            .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
-    // new Button(driverControls
-    // ::getAButton)
-    // .whileHeld(new RunMotor(m_cim));
-    // new Button(driverControls
-    // ::getAButton)
-    // .whenReleased(new StopMotor(m_cim));
+        .whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+
+
+    new Button(driverControls::getAButton)
+      	.whenPressed(m_Spark::run);
+    new Button(driverControls::getAButton)
+      	.whenReleased(m_Spark::stop);
 
     // new Button(m_sensor::objectInFront).whileHeld(new ParallelCommandGroup(new RunOtherMotor(m_cim2), new StopMotor(m_cim)));
     // new Button(m_sensor::objectInFront).whenReleased(blinkMotors);
