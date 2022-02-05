@@ -38,6 +38,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -98,10 +99,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
   private TalonFX backRightDrive;
+  private TalonFX backRightSteer;
 
   public DrivetrainSubsystem() {
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-
+        backRightSteer = new TalonFX(BACK_RIGHT_MODULE_STEER_MOTOR);
     // There are 4 methods you can call to create your swerve modules.
     // The method you use depends on what motors you are using.
     //
@@ -217,6 +219,7 @@ backRightDrive = new TalonFX(Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR);
 
   @Override
   public void periodic() {
+        SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
 //     SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
