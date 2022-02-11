@@ -26,8 +26,6 @@ public class RobotContainer {
 
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
-
-  public boolean fieldMode = true;
   
   public RobotContainer() {
 
@@ -41,8 +39,6 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-	//Switch Field Mode
-	new Button(operatorControls::getBackButton).whenPressed(this::switchFieldMode);
 
 	//Reset Gyro
     new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
@@ -59,8 +55,9 @@ public class RobotContainer {
     // new Button(driverControls::getAButton).whenPressed(m_Spark::run);
     // new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
-	// !fieldMode is for Climbing
-	// if (!fieldMode) {
+    	//Switch Field Mode
+	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
+
 		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
 		new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
 
@@ -69,7 +66,6 @@ public class RobotContainer {
 
 		new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
 		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
-	// }
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     // SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
@@ -87,11 +83,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
     return new InstantCommand();
-  }
-
-  public void switchFieldMode() {
-	fieldMode = !fieldMode;
-	SmartDashboard.putBoolean("Field Mode", fieldMode);
   }
 
   private static double deadband(double value, double deadband) {
