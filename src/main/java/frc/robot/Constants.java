@@ -34,6 +34,8 @@ public final class Constants {
     public static final int CLIMBER_DEPLOY = 2;
     public static final int CLIMBER_RETRACT = 3;
 
+    public static final int SHOOTER_MOTOR = 17;
+
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5; // FIXME Measure and set wheelbase
     public static final double DRIVETRAIN_RAMP_SPEED = 0.6; // sets the ramp up speed for the motors
 
