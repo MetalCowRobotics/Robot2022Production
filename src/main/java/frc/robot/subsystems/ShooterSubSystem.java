@@ -13,6 +13,10 @@ public class ShooterSubSystem extends SubsystemBase{
 
     private double speed = 0;
 
+    public ShooterSubSystem() {
+        
+    }
+
     public void run() {
         speed = 0.2;
     }

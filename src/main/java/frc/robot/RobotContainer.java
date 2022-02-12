@@ -14,6 +14,7 @@ import frc.robot.commands.DriveToCoordinate;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubSystem;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
@@ -21,6 +22,7 @@ public class RobotContainer {
   private final XboxController operatorControls = new XboxController(1);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
 
   private final double CONTROLLER_DEADBAND = 0.1;
   
@@ -59,6 +61,10 @@ public class RobotContainer {
 
 		new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
 		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
+
+    //Shoot
+    new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
+    new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
