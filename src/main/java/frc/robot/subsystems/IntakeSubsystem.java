@@ -14,17 +14,14 @@ public class IntakeSubsystem extends SubsystemBase {
     private boolean debug = false;
 
     public static final int INTAKE_ROLLER_CAN_NUM = 1;
-    public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
-    public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
-
     private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR, MotorType.kBrushless);
     private double motorSpeed = 0;
 
     // private static final Spark m_intakeRoller = new Spark(INTAKE_ROLLER_CAN_NUM);
     private static final DoubleSolenoid m_intakeDeployment 
                             = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 
-                                                 INTAKE_DEPLOYMENT_EXTEND, 
-                                                 INTAKE_DEPLOYMENT_RETRACT);
+                                                 Constants.INTAKE_DEPLOYMENT_EXTEND, 
+                                                 Constants.INTAKE_DEPLOYMENT_RETRACT);
 
     public IntakeSubsystem() {
     }

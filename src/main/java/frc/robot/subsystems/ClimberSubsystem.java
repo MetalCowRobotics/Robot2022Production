@@ -14,8 +14,6 @@ import frc.robot.Library;
 public class ClimberSubsystem extends SubsystemBase {
     private boolean debug = false;
 
-    public static final int CLIMBER_DEPLOY = 0;
-    public static final int CLIMBER_RETRACT = 1;
     private static final double CLIMB_SPEED = 0.05;
 
     private static final CANSparkMax m_climber_1 = new CANSparkMax(Constants.CLIMBER_DRIVE_MOTOR_1,
@@ -23,7 +21,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private static final CANSparkMax m_climber_2 = new CANSparkMax(Constants.CLIMBER_DRIVE_MOTOR_2,
             MotorType.kBrushless);
     private static final DoubleSolenoid m_climberDeploy = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-            CLIMBER_DEPLOY, CLIMBER_RETRACT);
+            Constants.CLIMBER_DEPLOY, Constants.CLIMBER_RETRACT);
 
     private double climbSpeed = 0;
     private boolean fieldMode = true;
