@@ -17,7 +17,7 @@ public class DriveToCoordinate extends CommandBase {
 
     private final double POSITION_TOLERANCE = 0.05;
 
-    private double MAX_SPEED = 0.2; 
+    private double MAX_SPEED = 0.4; 
 
     private double targetX;
     private double targetY; 
@@ -68,14 +68,15 @@ public class DriveToCoordinate extends CommandBase {
         double xComponent = copySign(MAX_SPEED * Math.cos(angle), xComponentActual);
         double yComponent = copySign(MAX_SPEED * Math.sin(angle), yComponentActual);
 
-        // SmartDashboard.putNumber("xComp", xComponent);
-        // SmartDashboard.putNumber("yComp", yComponent);
+        SmartDashboard.putNumber("xComp", modifyAxis(xComponent) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
+        SmartDashboard.putNumber("yComp", modifyAxis(yComponent) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
+        
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xComponent,
-                    yComponent,
-                    thetaComponent,
-                    m_drivetrain.getGyroscopeRotation()
+                xComponent * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                yComponent * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                thetaComponent,
+                m_drivetrain.getGyroscopeRotation()
             )
         );
     }
@@ -88,7 +89,6 @@ public class DriveToCoordinate extends CommandBase {
             multiplier = 1;
         }
         return value * multiplier;
-
     }
 
     public double getDistance() {
@@ -97,6 +97,21 @@ public class DriveToCoordinate extends CommandBase {
         // SmartDashboard.putNumber("distance from target", Math.hypot(x, y));
         return Math.hypot(x, y);
     }
+
+    private static double modifyAxis(double value) {
+        // Deadband
+       // Square the axis
+        value = Math.copySign(value * value, value);
+        return value;
+    }
+
+    private static double deadband(double value, double deadband) {
+        if (Math.abs(value) > deadband) {
+          return value;
+        } else {
+          return 0.0;
+        }
+      }
 
     @Override
     public boolean isFinished() {

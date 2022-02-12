@@ -29,6 +29,10 @@ public class DefaultDriveCommand extends CommandBase {
     @Override
     public void execute() {
         // You can use `new ChassisSpeeds(...)` for robot-oriented movement instead of field-oriented movement
+        SmartDashboard.putNumber("x joystick", m_translationXSupplier.getAsDouble());
+        SmartDashboard.putNumber("y joystick", m_translationYSupplier.getAsDouble());
+        SmartDashboard.putNumber("rotation joystick", m_rotationSupplier.getAsDouble());
+
         m_drivetrainSubsystem.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                         m_translationXSupplier.getAsDouble(),

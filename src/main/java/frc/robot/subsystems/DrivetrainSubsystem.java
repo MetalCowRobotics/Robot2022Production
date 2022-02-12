@@ -290,7 +290,6 @@ public void resetSpeed() {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
 //     position = odometer.update(Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading()), states[0], states[1], states[2], states[3]);
-
         double drivetrainScalar = SmartDashboard.getNumber("Drivetrain Scalar", 0.5);
 
         m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE * driveSpeed * drivetrainScalar,

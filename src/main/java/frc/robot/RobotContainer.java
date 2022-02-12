@@ -20,7 +20,13 @@ public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+<<<<<<< Updated upstream
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+=======
+  // private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  
+  private final double CONTROLLER_DEADBAND = 0.1; 
+>>>>>>> Stashed changes
 
   private final double CONTROLLER_DEADBAND = 0.1;
   
@@ -48,17 +54,33 @@ public class RobotContainer {
 	  new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
     new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
+<<<<<<< Updated upstream
     //Switch Field Mode
 	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
+=======
+	//Neo550 Test
 
-		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
-		new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+    SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
+    SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Run Intake Motor", new IntakeOn(m_intakeSubsystem));
+    SmartDashboard.putData("Stop Intake Motor", new IntakeOff(m_intakeSubsystem));
+    // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
+    // new Button(driverControls::getAButton).whenPressed(m_Spark::run);
+    // new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
-		new Button(operatorControls::getLeftBumper).whenPressed(m_climberSubsystem::retractClimberMotor);
-		new Button(operatorControls::getLeftBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+    	//Switch Field Mode
+	  // new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
+>>>>>>> Stashed changes
 
-		new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
-		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
+		// new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
+		// new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+// 
+		// new Button(operatorControls::getLeftBumper).whenPressed(m_climberSubsystem::retractClimberMotor);
+		// new Button(operatorControls::getLeftBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+
+		// new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
+		// new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
