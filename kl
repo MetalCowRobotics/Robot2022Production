@@ -1,0 +1,165 @@
+[33mcommit f097bcf6e13021ed42c09c3d7b2a09ec88cab290[m[33m ([m[1;36mHEAD -> [m[1;32mClimber[m[33m, [m[1;31morigin/Climber[m[33m)[m
+Author: Alex <justaddmealex@gmail.com>
+Date:   Tue Feb 8 20:12:37 2022 -0600
+
+    Added Motor
+    
+    Added a motor - still in testing (BROKEN)
+
+[33mcommit fbb50cfe42864183285157f6b5debe516b5b0de3[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 14:46:39 2022 -0600
+
+    Running Prototype of Climber
+
+[33mcommit fd2f239963f15ef91d72c7b5cd9d6017e027801e[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 13:23:34 2022 -0600
+
+    Started Subsystem for Climber
+
+[33mcommit 5b24cbe71d79f95cf24dade234ea6cbede41da0d[m
+Merge: efb0fad dc8c1d4
+Author: deaner8765 <36179367+deaner8765@users.noreply.github.com>
+Date:   Sat Feb 5 11:52:23 2022 -0600
+
+    Merge pull request #4 from MetalCowRobotics/SpeedControls
+    
+    Speed controls
+
+[33mcommit dc8c1d409186e47649e1be7e61133e989611179d[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 11:40:00 2022 -0600
+
+    removed debug statement
+
+[33mcommit 167d5b56d80593f5e2866a54b85bb90f8c45959c[m
+Merge: cf96995 efb0fad
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 11:39:10 2022 -0600
+
+    Merge branch 'main' into SpeedControls
+
+[33mcommit cf969956ed111a38872933372b77dbe15320a8d9[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 11:23:36 2022 -0600
+
+    Crawl/Sprint Added
+
+[33mcommit efb0fad445a9971510377f5dfae73fc37fe08cff[m
+Merge: abaa4fa 018ffc0
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 10:57:51 2022 -0600
+
+    Merge pull request #3 from MetalCowRobotics/implementIntakeSubsystem
+    
+    Implement intake subsystem
+
+[33mcommit 018ffc051e2692b08b6e2d6f7f085d3d9d2c603b[m
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Feb 5 10:55:37 2022 -0600
+
+    clean up test systems
+    
+    Remove the test systems and commands
+
+[33mcommit fb7214c6d78da0d37fac55d597352b250f3298c2[m
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Feb 5 10:29:19 2022 -0600
+
+    update from master
+
+[33mcommit 9e45e68fedbf0c1eb1b1c105d5b0dc989fcc9297[m
+Merge: 82407fd abaa4fa
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Feb 5 10:29:07 2022 -0600
+
+    Merge branch 'main' into implementIntakeSubsystem
+
+[33mcommit abaa4fa3477fba501c9b58841bf40b0878c545da[m[33m ([m[1;31morigin/Vision[m[33m)[m
+Merge: 2274d5f 7738299
+Author: deaner8765 <36179367+deaner8765@users.noreply.github.com>
+Date:   Sat Feb 5 10:07:45 2022 -0600
+
+    Merge pull request #2 from MetalCowRobotics/2022_SDS_Import
+    
+    Updating Project with 2022 Libs
+
+[33mcommit 7738299c3c1a761a28377ec445c1649bdc692f09[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Feb 5 10:03:19 2022 -0600
+
+    Updating Project with 2022 Libs
+
+[33mcommit 82407fdec7da4e446264c3cc856eedb0dbf610f4[m
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Feb 5 09:58:35 2022 -0600
+
+    try sparkmax
+
+[33mcommit 980c7344f98ef611121948a26dcfe13144125880[m
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Jan 29 15:24:16 2022 -0600
+
+    trying sparkmax
+
+[33mcommit fea78d5bf51ed1e58eb02fb9ebc1da13685caa84[m
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Jan 29 13:00:31 2022 -0600
+
+    added test commands to dashboard
+
+[33mcommit d0074ec11e5907418c2a44adafa91cae8b6a93a6[m
+Author: Dean <deaner8765@aol.com>
+Date:   Sat Jan 29 12:22:29 2022 -0600
+
+    implement intake
+
+[33mcommit 2274d5faf688a4fa259ab9711e7407b465f8d5a6[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Tue Jan 25 18:52:49 2022 -0600
+
+    Removed Ramps
+    
+    ramps are now built into the motors
+
+[33mcommit ff8e92f94c2c1f6ed9032f5b2221946013266b09[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Jan 22 16:17:51 2022 -0600
+
+    Adding Ramps
+    
+    The ramps are done through the SlewRateLimiter
+
+[33mcommit 7243d7b9004f2fe9e0b3eeca1d37ab70edb2bfe0[m
+Author: Quantum357 <59151112+Quantum357@users.noreply.github.com>
+Date:   Sat Jan 22 13:25:50 2022 -0600
+
+    Drivetrain Scalar
+
+[33mcommit 2abe47c3a8f2a8c3e8e06d249152db9602128b67[m
+Merge: 751e48b d1fc8a1
+Author: deaner8765 <36179367+deaner8765@users.noreply.github.com>
+Date:   Sat Jan 22 11:27:05 2022 -0600
+
+    Merge pull request #1 from MetalCowRobotics/Upload2022SwerveCode
+    
+    working swerve state
+
+[33mcommit d1fc8a1c08a1dd53cd00ec15243b475e4e98e49d[m
+Author: dean <deaner8765@aol.com>
+Date:   Sat Jan 22 11:26:11 2022 -0600
+
+    working swerve state
+
+[33mcommit 751e48b7a482a4d433a485e7282b5b67af7533ee[m
+Author: dean <deaner8765@aol.com>
+Date:   Fri Jan 21 18:41:08 2022 -0600
+
+    base code
+
+[33mcommit 65cec917a42a442ef41887dd722cc0e4cb40dd12[m
+Author: deaner8765 <36179367+deaner8765@users.noreply.github.com>
+Date:   Thu Jan 20 20:31:15 2022 -0600
+
+    Create test
