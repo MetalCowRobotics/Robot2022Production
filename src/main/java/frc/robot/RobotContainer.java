@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DriveStraight;
+import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.PrepareIntakeToGather;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -20,22 +22,25 @@ import frc.robot.subsystems.SparkMax;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  
+  final XboxController driverControls = new XboxController(0);
+  private final XboxController operatorControls = new XboxController(1);
+  private final double CONTROLLER_DEADBAND = 0.1; 
+  // private final Cim m_cim = new Cim();
+  // private final Cim2 m_cim2 = new Cim2();
 //   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
 //   private final SparkMax m_Spark = new SparkMax(16);
-
-  private final XboxController driverControls = new XboxController(0);
-  private final XboxController operatorControls = new XboxController(1);
   
   public RobotContainer() {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(driverControls.getLeftX() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
-
-	configureButtonBindings();
+            () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+    // Configure the button bindings
+    configureButtonBindings();
   }
 
   private void configureButtonBindings() {
@@ -81,8 +86,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
+    Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 1, 1);
     // An ExampleCommand will run in autonomous
-    return new InstantCommand();
+    return autoCommand;
   }
 
   private static double deadband(double value, double deadband) {
