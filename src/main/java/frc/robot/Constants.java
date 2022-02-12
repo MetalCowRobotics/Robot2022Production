@@ -25,10 +25,14 @@ public final class Constants {
      * Should be measured from center to center.
      */
     public static final int MAGAZINE_MOTOR = 15;
-
     public static final int INTAKE_MOTOR = 16;
-    public static final int CLIMBER_DRIVE_MOTOR_1 = 10;
-    public static final int CLIMBER_DRIVE_MOTOR_2 = 16;
+    public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
+    public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
+    // public static final int SHOOTER_MOTOR = 17;
+    public static final int CLIMBER_DRIVE_MOTOR_1 = 18;
+    public static final int CLIMBER_DRIVE_MOTOR_2 = 19;
+    public static final int CLIMBER_DEPLOY = 2;
+    public static final int CLIMBER_RETRACT = 3;
 
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5; // FIXME Measure and set wheelbase
     public static final double DRIVETRAIN_RAMP_SPEED = 0.6; // sets the ramp up speed for the motors
