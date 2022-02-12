@@ -1,19 +1,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubSystem;
 
 public class StartShootBall extends CommandBase {
-    private Shooter s_neo;
+    private ShooterSubSystem shootMotor;
 
-    public StartShootBall(Shooter neo) {
-        s_neo = neo;
-        addRequirements(s_neo);
+    public StartShootBall(ShooterSubSystem motor) {
+        shootMotor = motor;
+        addRequirements(shootMotor);
     }
 
     @Override
     public void execute() {
-        s_neo.run();
+        shootMotor.run();
     }
 
 }
