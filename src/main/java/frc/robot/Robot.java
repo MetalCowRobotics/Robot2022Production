@@ -34,6 +34,10 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("My Auto", kCustomAuto);
     // SmartDashboard.putData("Auto choices", m_chooser);
     m_robotContainer = new RobotContainer();
+
+
+    SmartDashboard.putData(CommandScheduler.getInstance());
+    SmartDashboard.putBoolean("Field Mode", true);
     SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
   }
 

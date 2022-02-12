@@ -24,6 +24,8 @@ public final class Constants {
      *
      * Should be measured from center to center.
      */
+    public static final int CLIMBER_DRIVE_MOTOR_1 = 10;
+    public static final int CLIMBER_DRIVE_MOTOR_2 = 16;
     public static final int MAGAZINE_MOTOR = 0;
 
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5; // FIXME Measure and set wheelbase
