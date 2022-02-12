@@ -1,14 +1,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.ShooterSubSystem;
 
-public class StartMagazine extends CommandBase{
-    private Magazine m_motor1;
+public class ShooterStopAndStart extends CommandBase {
+    private ShooterSubSystem m_motor1;
     private boolean checkState = true;
-    public StartMagazine(Magazine magazineMotor1){
-        m_motor1 = magazineMotor1;
-        addRequirements(m_motor1);
+    public ShooterStopAndStart(ShooterSubSystem motor1) {
+       m_motor1 = motor1;
+       addRequirements(m_motor1);
     }
 
     @Override 
@@ -23,5 +23,6 @@ public class StartMagazine extends CommandBase{
     }
 
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {   
+    }
 }
