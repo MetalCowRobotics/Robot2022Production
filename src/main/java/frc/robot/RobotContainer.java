@@ -97,9 +97,8 @@ public class RobotContainer {
     // Deadband
     value = deadband(value, 0.1);
 
-    // Square the axis
+   // Square the axis
     value = Math.copySign(value * value, value);
-
     return value;
   }
 }
