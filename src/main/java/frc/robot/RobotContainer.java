@@ -4,19 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.PrepareIntakeToGather;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.SparkMax;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
@@ -35,27 +29,27 @@ public class RobotContainer {
             () -> modifyAxis(driverControls.getLeftY() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> -modifyAxis(driverControls.getRightX() * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
 
-	configureButtonBindings();
+	  configureButtonBindings();
   }
 
   private void configureButtonBindings() {
 
-	//Reset Gyro
+	  //Reset Gyro
     new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
-	//Crawl
+	  //Crawl
     new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
     new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-	//Sprint
-	new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
+	  //Sprint
+	  new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
     new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-	//Neo550 Test
+	  //Neo550 Test
     // new Button(driverControls::getAButton).whenPressed(m_Spark::run);
     // new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
-    	//Switch Field Mode
+    //Switch Field Mode
 	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
 
 		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
@@ -71,7 +65,7 @@ public class RobotContainer {
     // SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     // SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
     
-	// SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
+	  // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
     // SmartDashboard.putData("Stop SPARK", new InstantCommand(m_sparkSystem::stop, m_sparkSystem));
   }
 

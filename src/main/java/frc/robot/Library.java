@@ -21,4 +21,12 @@ public final class Library {
             SmartDashboard.putBoolean(varName, varValue);
         }
     }
+
+    public static double deadband(double value, double deadband) {
+        if (Math.abs(value) > deadband) {
+          return value;
+        } else {
+          return 0.0;
+        }
+      }
 }
