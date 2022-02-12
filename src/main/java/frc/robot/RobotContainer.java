@@ -71,6 +71,9 @@ public class RobotContainer {
     new Button(driverControls::getAButton).whenPressed(m_Spark::run);
     new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
+  //Shoot 
+     new Button(::)
+
     SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));

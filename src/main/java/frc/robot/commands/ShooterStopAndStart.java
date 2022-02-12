@@ -23,5 +23,6 @@ public class ShooterStopAndStart extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {   
+    }
 }
