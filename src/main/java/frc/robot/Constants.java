@@ -24,7 +24,7 @@ public final class Constants {
      *
      * Should be measured from center to center.
      */
-    public static final int MAGAZINE_MOTOR = 0;
+    public static final int MAGAZINE_MOTOR = 10;
 
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5; // FIXME Measure and set wheelbase
     public static final double DRIVETRAIN_RAMP_SPEED = 0.6; // sets the ramp up speed for the motors

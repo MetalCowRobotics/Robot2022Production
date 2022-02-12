@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.StartMagazine;
+import frc.robot.commands.StopMagazine;
+import frc.robot.subsystems.Magazine;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,6 +26,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
+  // private final Magazine m_motor1 = new Magazine();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -48,7 +52,8 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //do i need this? from Dean
     CommandScheduler.getInstance().run();
-
+    // SmartDashboard.putData("Activate Neo", new StartMagazine(m_motor1));
+    // SmartDashboard.putdata("Deactivate Neo", new StopMagazine(m_motor1));
     // SmartDashboard.putNumber("Left Stick X", m_robotContainer.driverControls.getLeftX());
     // SmartDashboard.putNumber("Left Stick Y", m_robotContainer.driverControls.getLeftY());
 

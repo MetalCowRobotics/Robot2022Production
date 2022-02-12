@@ -10,7 +10,7 @@ import frc.robot.Constants;
 
 
 public class Magazine extends SubsystemBase {
-    private CANSparkMax magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
+private CANSparkMax magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
     private double speed = 0;
 
     public void run(){

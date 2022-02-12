@@ -12,8 +12,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.PrepareIntakeToGather;
+import frc.robot.commands.StartMagazine;
+import frc.robot.commands.StopMagazine;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.Magazine;
 import frc.robot.subsystems.SparkMax;
 
 /**
@@ -28,6 +31,7 @@ public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final SparkMax m_Spark = new SparkMax(16);
+  private final Magazine m_motor1 = new Magazine();
   
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -74,6 +78,9 @@ public class RobotContainer {
     SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Activate Neo", new StartMagazine(m_motor1));
+    SmartDashboard.putData("Deactivate Neo", new StopMagazine(m_motor1));
+    // SmartDashboard.putData("Activate Magazine", new StartMagazine(Magazine.magMotor));
     // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
     // SmartDashboard.putData("Stop SPARK", new InstantCommand(m_sparkSystem::stop, m_sparkSystem));
   }
