@@ -106,6 +106,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
+  final double SPRINT_SCALAR = 1.5;
+  final double BASE_SPEED = 0.5;
+  final double CRAWL_SCALAR = 0.2;
+
+  public double driveSpeed = BASE_SPEED;
+
   private TalonFX backRightDrive;
   private TalonFX backRightSteer;
   
@@ -232,8 +238,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getGyroscopeRotation() {
-    // FIXME Remove if you are using a Pigeon
-    return Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading());
+        // m_pigeon.getFusedHeading();
+
+        SmartDashboard.putNumber("gyro angle", m_pigeon.getFusedHeading());
+        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getFusedHeading() % 360));
+        // return Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading());
+
 
     // FIXME Uncomment if you are using a NavX
 //    if (m_navx.isMagnetometerCalibrated()) {
@@ -244,6 +254,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
 //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
 //    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
   }
+
+  public void crawl() {
+        driveSpeed = BASE_SPEED * CRAWL_SCALAR;
+}
+
+public void sprint() {
+        driveSpeed = BASE_SPEED * SPRINT_SCALAR;
+}
+
+public void resetSpeed() {
+        driveSpeed = BASE_SPEED;
+}
 
   public void drive(ChassisSpeeds chassisSpeeds) {
     m_chassisSpeeds = chassisSpeeds;
