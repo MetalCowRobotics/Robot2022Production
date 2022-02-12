@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-import java.util.Arrays;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,13 +55,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //do i need this? from Dean
     CommandScheduler.getInstance().run();
-
-    // SmartDashboard.putNumber("Left Stick X", m_robotContainer.driverControls.getLeftX());
-    // SmartDashboard.putNumber("Left Stick Y", m_robotContainer.driverControls.getLeftY());
-
     SmartDashboard.putData(CommandScheduler.getInstance());
-    // UsbCamera camera = CameraServer.startAutomaticCapture(1);
-    // camera.setResolution(640, 480);
   }
 
   /**
