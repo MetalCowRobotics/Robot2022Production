@@ -5,24 +5,24 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  
-  final XboxController driverControls = new XboxController(0);
+  private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
-  private final double CONTROLLER_DEADBAND = 0.1; 
-  // private final Cim m_cim = new Cim();
-  // private final Cim2 m_cim2 = new Cim2();
-//   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-//   private final SparkMax m_Spark = new SparkMax(16);
+
+  private final double CONTROLLER_DEADBAND = 0.1;
   
   public RobotContainer() {
 
@@ -48,10 +48,6 @@ public class RobotContainer {
 	  new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
     new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-	  //Neo550 Test
-    // new Button(driverControls::getAButton).whenPressed(m_Spark::run);
-    // new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
-
     //Switch Field Mode
 	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
 
@@ -65,11 +61,8 @@ public class RobotContainer {
 		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
-    // SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
-    // SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
-    
-	  // SmartDashboard.putData("Run SPARK", new InstantCommand(m_sparkSystem::run, m_sparkSystem));
-    // SmartDashboard.putData("Stop SPARK", new InstantCommand(m_sparkSystem::stop, m_sparkSystem));
+    SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
+    SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
   }
 
   /**
