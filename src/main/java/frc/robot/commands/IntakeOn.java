@@ -1,19 +1,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class StartMagazine extends CommandBase{
-    private Magazine m_motor1;
+public class IntakeOn extends CommandBase {
+
+    private IntakeSubsystem i_motor1;
     private boolean checkState = true;
-    public StartMagazine(Magazine magazineMotor1){
-        m_motor1 = magazineMotor1;
-        addRequirements(m_motor1);
+    public IntakeOn(IntakeSubsystem intakeMotor1){
+        i_motor1 = intakeMotor1;
+        addRequirements(i_motor1);
     }
 
     @Override 
     public void execute() {
-        m_motor1.run();
+        i_motor1.run();
         checkState = false;
     }
 
@@ -25,3 +26,5 @@ public class StartMagazine extends CommandBase{
     @Override
     public void end(boolean interrupted) {}
 }
+    
+
