@@ -10,6 +10,7 @@ This can be an InstantCommand()
    new JoystickButton(m_driverController, Button.kCircle.value)
         .whenPressed(new InstantCommand(m_intakeSubsystem::deployIntake, m_intakeSubsystem));
 */
+
 public class PrepareIntakeToGather extends CommandBase {
     private final IntakeSubsystem m_intakeSubsytem;
 

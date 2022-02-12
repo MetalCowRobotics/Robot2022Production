@@ -20,9 +20,9 @@ import frc.robot.subsystems.SparkMax;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-//   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  //private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-//   private final SparkMax m_Spark = new SparkMax(16);
+  //private final SparkMax m_Spark = new SparkMax(16);
 
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
@@ -56,6 +56,7 @@ public class RobotContainer {
     // new Button(driverControls::getAButton).whenReleased(m_Spark::stop);
 
     	//Switch Field Mode
+
 	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
 
 		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);

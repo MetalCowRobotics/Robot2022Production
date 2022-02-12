@@ -4,12 +4,17 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.StartShootBall;
+import frc.robot.subsystems.Shooter;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,6 +28,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
+
+  Shooter shooter = Shooter.getInstance();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -76,21 +83,15 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+
+    shooter.run();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
+    
     }
-  }
 
   /** This function is called once when teleop is enabled. */
   @Override
