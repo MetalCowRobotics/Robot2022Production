@@ -57,7 +57,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     //do i need this? from Dean
     CommandScheduler.getInstance().run();
-    SmartDashboard.putData(CommandScheduler.getInstance());
   }
 
   /**
