@@ -48,6 +48,7 @@ public class RobotContainer {
       m_chooser.addOption("Drive to 1,0", new DriveToCoordinate(m_drivetrainSubsystem, 1, 0));
       m_chooser.addOption("Drive to 0,-1", new DriveToCoordinate(m_drivetrainSubsystem, 0, -1));
       m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
+      m_chooser.addOption("Delay Drive Forward", m_shooterCommGroup);
 
       SmartDashboard.putData("Autonomous Command", m_chooser);
   }
