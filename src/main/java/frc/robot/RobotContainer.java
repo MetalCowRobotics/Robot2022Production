@@ -14,10 +14,12 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.ShooterCommGroup;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubSystem;
+import frc.robot.subsystems.Magazine;
 
 public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
@@ -26,6 +28,8 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
+  private final Magazine m_Magazine = new Magazine();
+  private final ShooterCommGroup m_shooterCommGroup = new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem);
   SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
@@ -44,6 +48,7 @@ public class RobotContainer {
       m_chooser.addOption("Drive to 1,0", new DriveToCoordinate(m_drivetrainSubsystem, 1, 0));
       m_chooser.addOption("Drive to 0,-1", new DriveToCoordinate(m_drivetrainSubsystem, 0, -1));
       m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
+      m_chooser.addOption("Delay Drive Forward", m_shooterCommGroup);
 
       SmartDashboard.putData("Autonomous Command", m_chooser);
   }
@@ -80,6 +85,9 @@ public class RobotContainer {
     //Shoot
     new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
     new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
+
+    //Shooter Command Group
+    new Button(operatorControls::getXButton).whenPressed(new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem));
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));

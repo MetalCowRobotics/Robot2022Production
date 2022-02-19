@@ -6,23 +6,17 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DoDelay extends CommandBase {
 
     private double timeout;
-    private Timer timer = new Timer();
+    private Timer m_timer = new Timer();
 
     public DoDelay(double seconds) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
         timeout = seconds;
-    }
-
-    protected void startTimer() {
-        startTimer();
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        timer.reset();
-        timer.start();
+        m_timer.reset();
+        m_timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,13 +27,13 @@ public class DoDelay extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return timer.get() > timeout;
+        return (m_timer.hasElapsed(timeout));
     }
 
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        timer.stop();
+        m_timer.stop();
     }
 
 }
