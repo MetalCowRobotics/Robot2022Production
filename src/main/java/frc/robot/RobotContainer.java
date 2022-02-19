@@ -41,7 +41,7 @@ public class RobotContainer {
       configureButtonBindings();
       m_chooser.setDefaultOption("Drive to -1,0", new DriveToCoordinate(m_drivetrainSubsystem, -1, 0));
       m_chooser.addOption("Drive to 1,0", new DriveToCoordinate(m_drivetrainSubsystem, 1, 0));
-      SmartDashboard.putData(m_chooser);
+      SmartDashboard.putData("Autonomous Command", m_chooser);
   }
 
   public Command getAutoCommand(){
@@ -75,8 +75,8 @@ public class RobotContainer {
 		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
 
     //Shoot
-    new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
-    new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
+    // new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
+    // new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
