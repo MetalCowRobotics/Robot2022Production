@@ -15,9 +15,9 @@ public class DriveToCoordinate extends CommandBase {
 
     private final double CORRECTION_MAX = 0.3;
 
-    private final double POSITION_TOLERANCE = 0.05;
+    private final double POSITION_TOLERANCE = 5;
 
-    private double MAX_SPEED = 0.2; 
+    private double MAX_SPEED = 0.3; 
 
     private double targetX;
     private double targetY; 
@@ -38,8 +38,8 @@ public class DriveToCoordinate extends CommandBase {
 
         m_drivetrain = drive;
 
-        targetX = x * 0.5;
-        targetY = y * 0.5;
+        targetX = x * 100;
+        targetY = y * 100;
 
         addRequirements(drive);
     }
@@ -63,19 +63,30 @@ public class DriveToCoordinate extends CommandBase {
         double xComponentActual = targetX - position[0];
         double yComponentActual = targetY - position[1];
 
-        double angle = Math.atan(yComponentActual / xComponentActual);
+        double angle;
 
-        double xComponent = copySign(MAX_SPEED * Math.cos(angle), xComponentActual);
-        double yComponent = copySign(MAX_SPEED * Math.sin(angle), yComponentActual);
+        if (xComponentActual != 0) {
+            angle = Math.atan(yComponentActual / xComponentActual);
+        } else {
+            if (yComponentActual > 0) {
+                angle = 90;
+            } else {
+                angle = 270;
+            }
+        }
 
-        // SmartDashboard.putNumber("xComp", xComponent);
-        // SmartDashboard.putNumber("yComp", yComponent);
+        double xComponent = Math.copySign(MAX_SPEED * Math.cos(angle), xComponentActual);
+        double yComponent = Math.copySign(MAX_SPEED * Math.sin(angle), yComponentActual);
+
+        SmartDashboard.putNumber("xComp", xComponent);
+        SmartDashboard.putNumber("yComp", yComponent);
+        
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xComponent,
-                    yComponent,
-                    thetaComponent,
-                    m_drivetrain.getGyroscopeRotation()
+                xComponent * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                yComponent * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+                thetaComponent,
+                m_drivetrain.getGyroscopeRotation()
             )
         );
     }
@@ -88,7 +99,6 @@ public class DriveToCoordinate extends CommandBase {
             multiplier = 1;
         }
         return value * multiplier;
-
     }
 
     public double getDistance() {
@@ -97,6 +107,21 @@ public class DriveToCoordinate extends CommandBase {
         // SmartDashboard.putNumber("distance from target", Math.hypot(x, y));
         return Math.hypot(x, y);
     }
+
+    private static double modifyAxis(double value) {
+        // Deadband
+       // Square the axis
+        value = Math.copySign(value * value, value);
+        return value;
+    }
+
+    private static double deadband(double value, double deadband) {
+        if (Math.abs(value) > deadband) {
+          return value;
+        } else {
+          return 0.0;
+        }
+      }
 
     @Override
     public boolean isFinished() {
