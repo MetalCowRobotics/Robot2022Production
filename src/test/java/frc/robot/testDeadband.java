@@ -1,3 +1,4 @@
+package frc.robot;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,7 +22,7 @@ public class testDeadband {
   @org.junit.Test // marks this method as a test
   public void deadband() {
     double adjustedValue = RobotContainer.deadband(.5, .2);
-    assertEquals(.37, adjustedValue, DELTA); 
+    assertEquals(.5, adjustedValue, DELTA); 
   }
 
   @Test
