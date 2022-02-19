@@ -15,7 +15,6 @@ public final class Library {
         }
     }
 
-
     public static void pushDashboard(String varName, Boolean varValue, boolean debug) {
         if (debug) {
             SmartDashboard.putBoolean(varName, varValue);
@@ -24,9 +23,16 @@ public final class Library {
 
     public static double deadband(double value, double deadband) {
         if (Math.abs(value) > deadband) {
-          return value;
+            return value;
         } else {
-          return 0.0;
+            return 0.0;
         }
-      }
+    }
+
+    public static double copySign(final double source, final double target) {
+        if (0 <= source)
+            return Math.abs(target);
+        else
+            return -1 * Math.abs(target);
+    }
 }
