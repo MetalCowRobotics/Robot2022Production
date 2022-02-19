@@ -21,7 +21,7 @@ public class ShooterSubSystem extends SubsystemBase {
     public ShooterSubSystem() {
         pid = leftMotor.getPIDController();
 
-        SmartDashboard.putNumber("Shooter Target", 300);
+        SmartDashboard.putNumber("Shooter Target", 500);
 
         // PID coefficients
         kP = 0.00006;
