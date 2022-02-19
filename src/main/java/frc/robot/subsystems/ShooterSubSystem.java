@@ -10,14 +10,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubSystem extends SubsystemBase {
-    private CANSparkMax shootMotor = new CANSparkMax(Constants.SHOOTER_MOTOR, MotorType.kBrushless);
-    private RelativeEncoder encoder = shootMotor.getEncoder();
+    private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
+    private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
+
+    private RelativeEncoder encoder = leftMotor.getEncoder();
     private double targetSpeed = 0;
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
     public ShooterSubSystem() {
-        pid = shootMotor.getPIDController();
+        pid = leftMotor.getPIDController();
 
         SmartDashboard.putNumber("Shooter Target", 300);
 
@@ -46,6 +48,8 @@ public class ShooterSubSystem extends SubsystemBase {
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
+
+        rightMotor.follow(leftMotor, true);
     }
 
     public void run() {
