@@ -5,17 +5,22 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.PrepareIntakeToGather;
+import frc.robot.commands.ShooterCommGroup;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubSystem;
+import frc.robot.subsystems.Magazine;
 
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
@@ -24,6 +29,9 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
+  private final Magazine m_Magazine = new Magazine();
+  private final ShooterCommGroup m_shooterCommGroup = new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem);
+  SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
   
@@ -36,6 +44,18 @@ public class RobotContainer {
             () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
+
+      m_chooser.setDefaultOption("Drive to -1,0", new DriveToCoordinate(m_drivetrainSubsystem, -1, 0));
+      m_chooser.addOption("Drive to 1,0", new DriveToCoordinate(m_drivetrainSubsystem, 1, 0));
+      m_chooser.addOption("Drive to 0,-1", new DriveToCoordinate(m_drivetrainSubsystem, 0, -1));
+      m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
+      m_chooser.addOption("Delay Drive Forward", m_shooterCommGroup);
+
+      SmartDashboard.putData("Autonomous Command", m_chooser);
+  }
+
+  public Command getAutoCommand(){
+    return (Command) m_chooser.getSelected();
   }
 
   private void configureButtonBindings() {
@@ -68,9 +88,16 @@ public class RobotContainer {
     new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
     new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
 
-    SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
+    //Shooter Command Group
+    new Button(operatorControls::getXButton).whenPressed(new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem));
+
+    // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
     SmartDashboard.putData("Neutral Intake", new InstantCommand(m_intakeSubsystem::neutralIntake, m_intakeSubsystem));
+    SmartDashboard.setDefaultNumber("x Amount", 0);
+    SmartDashboard.setDefaultNumber("y Amount", 0);
+    // SmartDashboard.putData("DriveStraight", new DriveStraight(0, 0.3, m_drivetrainSubsystem, 4/*SmartDashboard.getNumber("Drive Amount", 0)*/));
+    SmartDashboard.putData("Drive to Coord", new DriveToCoordinate(m_drivetrainSubsystem, SmartDashboard.getNumber("x Amount", 0), SmartDashboard.getNumber("y Amount", 0)));
   }
 
   /**
@@ -100,5 +127,8 @@ public class RobotContainer {
    // Square the axis
     value = Math.copySign(value * value, value);
     return value;
+  }
+  public DrivetrainSubsystem getDrivetrain() {
+    return m_drivetrainSubsystem;
   }
 }
