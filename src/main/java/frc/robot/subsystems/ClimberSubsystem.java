@@ -14,6 +14,8 @@ import frc.robot.Library;
 public class ClimberSubsystem extends SubsystemBase {
     private boolean debug = false;
 
+    public static final int CLIMBER_DEPLOY = 2;
+    public static final int CLIMBER_RETRACT = 3;
     private static final double CLIMB_SPEED = 0.05;
 
     private static final CANSparkMax m_climber_1 = new CANSparkMax(Constants.CLIMBER_DRIVE_MOTOR_1,
