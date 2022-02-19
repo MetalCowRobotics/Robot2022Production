@@ -27,6 +27,7 @@ import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
 import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
@@ -113,16 +114,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public double driveSpeed = BASE_SPEED;
 
   private TalonFX backRightDrive;
-  private TalonFX backRightSteer;
   
   private TalonFX backLeftDrive;
-  private TalonFX backLeftSteer;
   
   private TalonFX frontRightDrive;
-  private TalonFX frontRightSteer;
   
   private TalonFX frontLeftDrive;
-  private TalonFX frontLeftSteer;
+
+  private CANCoder frontRightEncoder;
+  private CANCoder frontLeftEncoder;
+  private CANCoder backRightEncoder;
+  private CANCoder backLeftEncoder;
   
   private SwerveDriveOdometry odometer;
   private Pose2d position = new Pose2d();
@@ -138,11 +140,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         odometer = new SwerveDriveOdometry(m_kinematics,
+
         Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading()), new Pose2d(0.0, 0.0, new Rotation2d()));
 
         ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
-        backRightSteer = new TalonFX(Constants.BACK_RIGHT_MODULE_STEER_MOTOR);
         backRightDrive = new TalonFX(Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR);
 
         backLeftDrive = new TalonFX(Constants.BACK_LEFT_MODULE_DRIVE_MOTOR);
@@ -150,6 +152,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         frontRightDrive = new TalonFX(Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR);
 
         frontLeftDrive = new TalonFX(Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR);
+
+        frontRightEncoder = new CANCoder(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER);
+        frontLeftEncoder = new CANCoder(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER);
+        backRightEncoder = new CANCoder(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER);
+        backLeftEncoder = new CANCoder(Constants.FRONT_RIGHT_MODULE_STEER_ENCODER);
     // There are 4 methods you can call to create your swerve modules.
     // The method you use depends on what motors you are using.
     //
@@ -310,18 +317,17 @@ public void resetSpeed() {
   }
 
   public void updatePosition() {
-        SwerveModuleState frontLeft = new SwerveModuleState(m_frontLeftModule.getDriveVelocity(), Rotation2d.fromDegrees(m_frontLeftModule.getSteerAngle()));
-        SwerveModuleState frontRight = new SwerveModuleState(m_frontRightModule.getDriveVelocity(), Rotation2d.fromDegrees(m_frontRightModule.getSteerAngle()));
-        SwerveModuleState backLeft = new SwerveModuleState(m_backLeftModule.getDriveVelocity(), Rotation2d.fromDegrees(m_backLeftModule.getSteerAngle()));
-        SwerveModuleState backRight = new SwerveModuleState(m_backRightModule.getDriveVelocity(), Rotation2d.fromDegrees(m_backRightModule.getSteerAngle()));
+        //   SmartDashboard.putNumber("motor speed", convertMotorVelocity(frontLeftDrive.getMotorOutputPercent() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
+          SmartDashboard.putNumber("motor speed", frontLeftDrive.getMotorOutputPercent() * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND);
+        SwerveModuleState frontLeft = new SwerveModuleState(convertMotorVelocity(frontLeftDrive.getSelectedSensorVelocity()), Rotation2d.fromDegrees((frontLeftEncoder.getPosition() + Constants.FRONT_LEFT_MODULE_STEER_OFFSET) % 360));
+        SwerveModuleState frontRight = new SwerveModuleState(convertMotorVelocity(frontRightDrive.getSelectedSensorVelocity()), Rotation2d.fromDegrees((frontRightEncoder.getPosition() + Constants.FRONT_RIGHT_MODULE_STEER_OFFSET) % 360));
+        SwerveModuleState backLeft = new SwerveModuleState(convertMotorVelocity(backLeftDrive.getSelectedSensorVelocity()), Rotation2d.fromDegrees((backLeftEncoder.getPosition() + Constants.BACK_LEFT_MODULE_STEER_OFFSET) % 360));
+        SwerveModuleState backRight = new SwerveModuleState(convertMotorVelocity(backRightDrive.getSelectedSensorVelocity()), Rotation2d.fromDegrees((backRightEncoder.getPosition() + Constants.BACK_RIGHT_MODULE_STEER_OFFSET) % 360));
         position = odometer.update(Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading()), frontLeft, frontRight, backLeft, backRight);
   }
 
-  private double getMotorVelocity(double ticSpeed) {
-        double motorRotationsPerSecond = ((ticSpeed * 10) / 2048);
-        double wheelRPS = motorRotationsPerSecond / 6.12;
-        return wheelRPS * (Math.PI * 0.1016); 
-
+  private double convertMotorVelocity(double ticSpeed) {
+        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
   }
 
 }

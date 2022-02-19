@@ -85,7 +85,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
-    Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 1, 1);
+    Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 0, 1);
     // An ExampleCommand will run in autonomous
     return autoCommand;
   }
