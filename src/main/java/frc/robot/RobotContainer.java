@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
-import frc.robot.commands.PrepareIntakeToGather;
+import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShooterCommGroup;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
