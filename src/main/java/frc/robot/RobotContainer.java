@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DriveToCoordinate;
@@ -78,7 +79,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
-    Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 1, 1);
+    Command autoCommand = new SequentialCommandGroup(
+      new DriveToCoordinate(m_drivetrainSubsystem, 0, 1), 
+      new DriveToCoordinate(m_drivetrainSubsystem, 1, 1), 
+      new DriveToCoordinate(m_drivetrainSubsystem, 1, 0), 
+      new DriveToCoordinate(m_drivetrainSubsystem, 0, 0));
     // An ExampleCommand will run in autonomous
     return autoCommand;
   }
