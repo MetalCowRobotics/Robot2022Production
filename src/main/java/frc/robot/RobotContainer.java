@@ -27,9 +27,9 @@ import frc.robot.subsystems.ShooterSubSystem;
 import frc.robot.subsystems.Magazine;
 
 public class RobotContainer {
-  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
+  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
@@ -69,7 +69,7 @@ public class RobotContainer {
 	  //Reset Gyro
     new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
-	  //Crawl
+	  // //Crawl
     new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
     new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
@@ -80,6 +80,7 @@ public class RobotContainer {
     //Switch Field Mode
 	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
 
+    //Climb
 		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
 		new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
 
