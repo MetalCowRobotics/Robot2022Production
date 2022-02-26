@@ -8,11 +8,11 @@ import frc.robot.subsystems.ShooterSubSystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class ShooterCommGroup extends SequentialCommandGroup{
+public class ShootBall extends SequentialCommandGroup{
 
-    public ShooterCommGroup(Magazine mag, ShooterSubSystem shooter, DrivetrainSubsystem drive){
+    public ShootBall(ShooterSubSystem shooter, DrivetrainSubsystem drive, double Delay){
         addCommands(
-            new DoDelay(5),
+            new DoDelay(Delay),
 
             new DriveToCoordinate(drive, SmartDashboard.getNumber("x Amount", 0.5), SmartDashboard.getNumber("y Amount", 0.5))
         );

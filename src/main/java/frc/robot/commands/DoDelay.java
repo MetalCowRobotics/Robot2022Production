@@ -8,8 +8,8 @@ public class DoDelay extends CommandBase {
     private double timeout;
     private Timer m_timer = new Timer();
 
-    public DoDelay(double seconds) {
-        timeout = seconds;
+    public DoDelay(double delay) {
+        timeout = delay;
     }
 
     // Called just before this Command runs the first time
