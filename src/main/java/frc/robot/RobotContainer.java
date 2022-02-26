@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,10 +14,12 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DoDelay;
+import frc.robot.commands.IntakeOn;
+import frc.robot.commands.IntakeOff;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
-import frc.robot.commands.PrepareIntakeToGather;
-import frc.robot.commands.ShooterCommGroup;
+import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -30,11 +34,12 @@ public class RobotContainer {
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
   private final Magazine m_Magazine = new Magazine();
-  private final ShooterCommGroup m_shooterCommGroup = new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem);
+  private double delay = 0;
+  private final ShootBall m_shootball = new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
-  
+
   public RobotContainer() {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
@@ -49,7 +54,8 @@ public class RobotContainer {
       m_chooser.addOption("Drive to 1,0", new DriveToCoordinate(m_drivetrainSubsystem, 1, 0));
       m_chooser.addOption("Drive to 0,-1", new DriveToCoordinate(m_drivetrainSubsystem, 0, -1));
       m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
-      m_chooser.addOption("Delay Drive Forward", m_shooterCommGroup);
+      m_chooser.addOption("Delay Drive Forward", m_shootball);
+      SmartDashboard.putNumber("Delay", delay);
 
       SmartDashboard.putData("Autonomous Command", m_chooser);
   }
@@ -89,7 +95,10 @@ public class RobotContainer {
     new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
 
     //Shooter Command Group
-    new Button(operatorControls::getXButton).whenPressed(new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem));
+    delay = SmartDashboard.getNumber("Delay", delay);
+    new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay));
+
+    
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
@@ -99,6 +108,7 @@ public class RobotContainer {
     // SmartDashboard.putData("DriveStraight", new DriveStraight(0, 0.3, m_drivetrainSubsystem, 4/*SmartDashboard.getNumber("Drive Amount", 0)*/));
     SmartDashboard.putData("Drive to Coord", new DriveToCoordinate(m_drivetrainSubsystem, SmartDashboard.getNumber("x Amount", 0), SmartDashboard.getNumber("y Amount", 0)));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
