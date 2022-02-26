@@ -25,6 +25,7 @@ public final class Constants {
      * Should be measured from center to center.
      */
     public static final int MAGAZINE_MOTOR = 15;
+    public static final int MAGAZINE_SENSOR = 0;
     public static final int INTAKE_MOTOR = 16;
     public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
     public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
