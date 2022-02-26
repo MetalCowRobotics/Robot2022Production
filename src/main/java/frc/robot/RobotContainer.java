@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,9 +14,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
-import frc.robot.commands.ShooterCommGroup;
+import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -27,12 +30,17 @@ public class RobotContainer {
   private final XboxController operatorControls = new XboxController(1);
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-  private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
+  private final DoDelay m_ShooterSubSystem = new ();
   private final Magazine m_Magazine = new Magazine();
-  private final ShooterCommGroup m_shooterCommGroup = new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem);
+  private final DrivetrainSubsystem m_doDelay = new DrivetrainSubsystem();
+  private final ShootBall m_shootball = new ShootBall(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem);
   SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
+
+  private boolean controllerOptions56 = false;
+
+  private boolean RT = (driverControls.getLeftTriggerAxis() > 0.7);
   
   public RobotContainer() {
 
@@ -58,6 +66,34 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+
+    if (controllerOptions56)  {
+      // superSprint
+      // new Button(RT).whenPressed(m_drivetrainSubsystem::)
+      // sprint
+      new Button (driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
+      new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+
+      // crawl
+      new Button(driverControls::getYButton).whenPressed(m_drivetrainSubsystem::crawl);
+      new Button(driverControls::getYButton).whenReleased(m_drivetrainSubsystem::resetSpeed);
+
+      // gyro
+      new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+
+      // intake
+      new Button(driverControls::get)
+
+
+      
+      
+
+
+
+    
+
+    } else {
+    
 
 	  //Reset Gyro
     new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
@@ -87,7 +123,9 @@ public class RobotContainer {
     new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
 
     //Shooter Command Group
-    new Button(operatorControls::getXButton).whenPressed(new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem));
+    new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem));
+
+    }
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
@@ -96,6 +134,25 @@ public class RobotContainer {
     SmartDashboard.setDefaultNumber("y Amount", 0);
     // SmartDashboard.putData("DriveStraight", new DriveStraight(0, 0.3, m_drivetrainSubsystem, 4/*SmartDashboard.getNumber("Drive Amount", 0)*/));
     SmartDashboard.putData("Drive to Coord", new DriveToCoordinate(m_drivetrainSubsystem, SmartDashboard.getNumber("x Amount", 0), SmartDashboard.getNumber("y Amount", 0)));
+  }
+
+  private boolean LT() {
+
+    double TriggerL = driverControls.getLeftTriggerAxis();
+
+    double T = 0.7;
+
+    return TriggerL > T;
+
+  }
+  private boolean RT() {
+
+    double TriggerR = driverControls.getRightTriggerAxis();
+
+    double C = 0.7;
+
+    return TriggerR > C;
+
   }
 
   /**
