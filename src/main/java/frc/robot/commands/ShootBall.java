@@ -10,11 +10,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShootBall extends SequentialCommandGroup{
 
-    public ShootBall(ShooterSubSystem shooter, DrivetrainSubsystem drive, double Delay){
+    public ShootBall(ShooterSubSystem shooter, DrivetrainSubsystem drive, double Delay1, double Delay2){
         addCommands(
-            new DoDelay(Delay),
+            new DoDelay(Delay1),
 
             new DriveToCoordinate(drive, SmartDashboard.getNumber("x Amount", 0.5), SmartDashboard.getNumber("y Amount", 0.5))
+
+            
         );
     
     }
