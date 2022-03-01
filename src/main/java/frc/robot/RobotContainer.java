@@ -21,6 +21,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubSystem;
 import frc.robot.subsystems.Magazine;
+import frc.robot.subsystems.MagazineSubsystem;
 
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
@@ -29,7 +30,7 @@ public class RobotContainer {
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
-  private final Magazine m_Magazine = new Magazine();
+  private final MagazineSubsystem m_Magazine = new Magazine();
   private final ShooterCommGroup m_shooterCommGroup = new ShooterCommGroup(m_Magazine, m_ShooterSubSystem, m_drivetrainSubsystem);
   SendableChooser m_chooser = new SendableChooser();
 
