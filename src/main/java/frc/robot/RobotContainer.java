@@ -66,20 +66,20 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-	  //Reset Gyro
-    new Button(driverControls::getLeftBumperPressed).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    //Shoot
+    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenPressed(m_ShooterSubSystem::run);
+    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenPressed(m_magazineSubsystem::loadContinuous);
+    
+    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenReleased(m_ShooterSubSystem::stop);
+    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenReleased(m_magazineSubsystem::stop);
 
-	  //Crawl
-    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenPressed(m_drivetrainSubsystem::crawl);
-    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenReleased(m_drivetrainSubsystem::resetSpeed);
+    //Retract Intake
+    new Button(driverControls::getLeftBumper).whenPressed(m_intakeSubsystem::retractIntake);
+    new Button(driverControls::getLeftBumper).whenReleased(m_intakeSubsystem::neutralIntake);
 
-	  //Sprint
-	  new Button(() -> driverControls.getLeftTriggerAxis() > 0.7).whenPressed(m_drivetrainSubsystem::sprint);
-    new Button(() -> driverControls.getLeftTriggerAxis() > 0.7).whenReleased(m_drivetrainSubsystem::resetSpeed);
-
-    //More Sprint
-    new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::moresprint);
-    new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+    //Extend Intake
+    new Button(() -> driverControls.getLeftTriggerAxis() > 0.7).whenPressed(m_intakeSubsystem::deployIntake);
+    new Button(() -> driverControls.getLeftTriggerAxis() > 0.7).whenReleased(m_intakeSubsystem::neutralIntake);
 
     //Field Oriented- NEEDS TO BE DONE
     new Button(driverControls::getLeftStickButton);
@@ -97,27 +97,31 @@ public class RobotContainer {
 		new Button(() -> operatorControls.getLeftY() > 0.1).whenPressed(m_climberSubsystem::deployClimber);
 		new Button(() -> operatorControls.getLeftY() < -0.1).whenPressed(m_climberSubsystem::retractClimber);
 
-    //Shoot
-    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenPressed(m_ShooterSubSystem::run);
-    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenPressed(m_magazineSubsystem::loadContinuous);
+    //Pull to Next Level- NEEDS TO BE DONE
+    new Button(operatorControls::getRightBumper);
+    new Button(operatorControls::getRightBumper);
 
-    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenReleased(m_ShooterSubSystem::stop);
-    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenReleased(m_magazineSubsystem::stop);
+    new Button(operatorControls::getLeftBumper);
+    new Button(operatorControls::getLeftBumper);
 
-    //Retract Intake
-    new Button(operatorControls::getLeftBumper).whenPressed(m_intakeSubsystem::retractIntake);
-    new Button(operatorControls::getLeftBumper).whenReleased(m_intakeSubsystem::neutralIntake);
+    //Reset Gyro
+    new Button(() -> operatorControls.getPOV() == 0).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
-    //Extend Intake
-    new Button(() -> operatorControls.getLeftTriggerAxis() > 0.7).whenPressed(m_intakeSubsystem::deployIntake);
-    new Button(() -> operatorControls.getLeftTriggerAxis() > 0.7).whenReleased(m_intakeSubsystem::neutralIntake);
+	  //Crawl
+    new Button(operatorControls::getAButton).whenPressed(m_drivetrainSubsystem::crawl);
+    new Button(operatorControls::getAButton).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
+	  //Sprint
+	  new Button(operatorControls::getBButton).whenPressed(m_drivetrainSubsystem::sprint);
+    new Button(operatorControls::getBButton).whenReleased(m_drivetrainSubsystem::resetSpeed);
+
+    //More Sprint
+    new Button(operatorControls::getYButton).whenPressed(m_drivetrainSubsystem::moresprint);
+    new Button(operatorControls::getYButton).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
     //Shooter Command Group
     delay = SmartDashboard.getNumber("Delay", delay);
     // new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay));
-
-    
 
     // SmartDashboard.putData("Prepare to Gather", new PrepareIntakeToGather(m_intakeSubsystem));
     // SmartDashboard.putData("Retract Intake", new InstantCommand(m_intakeSubsystem::retractIntake, m_intakeSubsystem));
