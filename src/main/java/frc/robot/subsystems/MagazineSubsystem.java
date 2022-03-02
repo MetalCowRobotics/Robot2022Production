@@ -1,0 +1,59 @@
+package frc.robot.subsystems;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
+public class MagazineSubsystem extends SubsystemBase {
+    private CANSparkMax magMotor = new CANSparkMax(Constants.MAGAZINE_MOTOR, MotorType.kBrushless);
+    private DigitalInput ballSensor = new DigitalInput(Constants.MAGAZINE_SENSOR);
+    private double speed = 0;
+    private boolean ballOnSensor = false;
+    private boolean ballPassed = false;
+    private boolean lastState = false;
+    private boolean runContinuous = false;
+
+    public void run() {
+        speed = 0.05;
+    }
+
+    public void stop() {
+        speed = 0;
+        runContinuous = false;
+    }
+
+    public boolean getState() {
+        return ballSensor.get();
+    }
+
+    public void loadContinuous() {
+        runContinuous = true;
+        ballPassed = false;
+        speed = 0.05;
+    }
+
+    @Override
+    public void periodic() {
+
+        if (runContinuous) {
+            magMotor.set(Constants.MAGAZINE_SPEED);
+        } else {
+            if (!ballOnSensor && ballSensor.get() && !lastState) { // Get if the ball is currently over the sensor
+                ballOnSensor = true;
+            } else if (ballOnSensor && ballSensor.get() != lastState) { // Get right after ball is past the sensor
+                speed = 0;
+                ballOnSensor = false;
+                ballPassed = true;
+            } else if (!ballPassed) { // Run motor
+                speed = Constants.MAGAZINE_SPEED;
+                ballPassed = false;
+            }
+
+            magMotor.set(speed);
+            lastState = ballSensor.get();
+        }
+    }
+}
