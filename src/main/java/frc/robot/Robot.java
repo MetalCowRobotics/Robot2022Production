@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.DriveMotorPath;
 import frc.robot.commands.StartShootBall;
+import frc.robot.subsystems.Motor;
 
 
 
@@ -20,12 +22,6 @@ import frc.robot.commands.StartShootBall;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private Command autonomousCommand;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private RobotContainer m_robotContainer;
 
 
   /**
@@ -34,16 +30,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
-    // SmartDashboard.putData("Auto choices", m_chooser);
-    
-    m_robotContainer = new RobotContainer();
-
-
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    SmartDashboard.putBoolean("Field Mode", true);
-    SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
   }
 
   /**
@@ -56,7 +42,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     //do i need this? from Dean
-    CommandScheduler.getInstance().run();
+    // CommandScheduler.getInstance().run();
   }
 
   /**
@@ -71,10 +57,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autonomousCommand = m_robotContainer.getAutoCommand();
-    if(autonomousCommand != null){
-      autonomousCommand.schedule();
-    }
+    CommandScheduler.getInstance().schedule(new DriveMotorPath(new Motor()));
   }
 
   /** This function is called periodically during autonomous. */
