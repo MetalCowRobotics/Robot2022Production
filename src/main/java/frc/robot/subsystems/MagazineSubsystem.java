@@ -14,6 +14,7 @@ public class MagazineSubsystem extends SubsystemBase {
     private boolean ballOnSensor = false;
     private boolean ballPassed = false;
     private boolean lastState = false;
+    private boolean runContinuous = false;
 
     public void run() {
         speed = 0.05;
@@ -21,31 +22,38 @@ public class MagazineSubsystem extends SubsystemBase {
 
     public void stop() {
         speed = 0;
+        runContinuous = false;
     }
 
     public boolean getState() {
         return ballSensor.get();
     }
 
-    public void resetSensor() {
+    public void loadContinuous() {
+        runContinuous = true;
         ballPassed = false;
+        speed = 0.05;
     }
 
     @Override
     public void periodic() {
 
-        if (!ballOnSensor && ballSensor.get() && !lastState) { // Get if the ball is currently over the sensor
-            ballOnSensor = true;
-        } else if (ballOnSensor && ballSensor.get() != lastState) {  // Get right after ball is past the sensor
-            speed = 0;
-            ballOnSensor = false;
-            ballPassed = true;
-        } else if (!ballPassed){ // Run motor
-            speed = 0.05;
-            ballPassed = false;
-        }
+        if (runContinuous) {
+            magMotor.set(Constants.MAGAZINE_SPEED);
+        } else {
+            if (!ballOnSensor && ballSensor.get() && !lastState) { // Get if the ball is currently over the sensor
+                ballOnSensor = true;
+            } else if (ballOnSensor && ballSensor.get() != lastState) { // Get right after ball is past the sensor
+                speed = 0;
+                ballOnSensor = false;
+                ballPassed = true;
+            } else if (!ballPassed) { // Run motor
+                speed = Constants.MAGAZINE_SPEED;
+                ballPassed = false;
+            }
 
-        magMotor.set(speed);
-        lastState = ballSensor.get();
+            magMotor.set(speed);
+            lastState = ballSensor.get();
+        }
     }
 }

@@ -92,7 +92,10 @@ public class RobotContainer {
 
     // //Shoot
     // new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
+    new Button(operatorControls::getRightBumper).whenPressed(m_magazineSubsystem::loadContinuous);
     // new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
+    new Button(operatorControls::getRightBumper).whenReleased(m_magazineSubsystem::stop);
+
 
     //Shooter Command Group
     delay = SmartDashboard.getNumber("Delay", delay);
@@ -107,7 +110,6 @@ public class RobotContainer {
     // SmartDashboard.setDefaultNumber("y Amount", 0);
     // SmartDashboard.putData("DriveStraight", new DriveStraight(0, 0.3, m_drivetrainSubsystem, 4/*SmartDashboard.getNumber("Drive Amount", 0)*/));
     // SmartDashboard.putData("Drive to Coord", new DriveToCoordinate(m_drivetrainSubsystem, SmartDashboard.getNumber("x Amount", 0), SmartDashboard.getNumber("y Amount", 0)));
-    SmartDashboard.putData("Reset Magazine", new InstantCommand(m_magazineSubsystem::resetSensor, m_magazineSubsystem));
 
   }
 
