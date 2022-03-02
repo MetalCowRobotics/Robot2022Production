@@ -29,10 +29,10 @@ import frc.robot.subsystems.MagazineSubsystem;
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
-  // private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
-  // private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-  // private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
+  private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
+  private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
   private double delay = 0;
   // private final ShootBall m_shootball = new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay);
@@ -67,33 +67,34 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 	  //Reset Gyro
-    // new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
-	  // // //Crawl
-    // new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
-    // new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+	  //Crawl
+    new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
+    new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-	  // //Sprint
-	  // new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
-    // new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+	  //Sprint
+	  new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
+    new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-    // //Switch Field Mode
-	  // new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
+    //Switch Field Mode
+	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
 
-    // //Climb
-		// new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
-		// new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+    //Climb
+		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
+		new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
 
-		// new Button(operatorControls::getLeftBumper).whenPressed(m_climberSubsystem::retractClimberMotor);
-		// new Button(operatorControls::getLeftBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+		new Button(operatorControls::getLeftBumper).whenPressed(m_climberSubsystem::retractClimberMotor);
+		new Button(operatorControls::getLeftBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
 
-		// new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
-		// new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
+		new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
+		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
 
-    // //Shoot
-    // new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
+    //Shoot
+    new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
     new Button(operatorControls::getRightBumper).whenPressed(m_magazineSubsystem::loadContinuous);
-    // new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
+
+    new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
     new Button(operatorControls::getRightBumper).whenReleased(m_magazineSubsystem::stop);
 
 
