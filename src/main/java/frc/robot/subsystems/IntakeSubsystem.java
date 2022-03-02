@@ -14,7 +14,6 @@ import frc.robot.Library;
 public class IntakeSubsystem extends SubsystemBase {
     private boolean debug = false;
 
-    public static final int INTAKE_ROLLER_CAN_NUM = 1;
     private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR, MotorType.kBrushless);
     private double motorSpeed = 0;
 
@@ -32,7 +31,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void run(){
-        motorSpeed = 0.05;
+        motorSpeed = Constants.INTAKE_SPEED;
     }
 
     public void stop(){
