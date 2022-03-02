@@ -42,11 +42,11 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    // m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-    //         m_drivetrainSubsystem,
-    //         () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //         () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //         () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+            m_drivetrainSubsystem,
+            () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
 
@@ -67,35 +67,50 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
 	  //Reset Gyro
-    new Button(driverControls::getBackButton).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+    new Button(driverControls::getLeftBumperPressed).whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
 	  //Crawl
-    new Button(driverControls::getLeftBumper).whenPressed(m_drivetrainSubsystem::crawl);
-    new Button(driverControls::getLeftBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
+    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenPressed(m_drivetrainSubsystem::crawl);
+    new Button(() -> driverControls.getRightTriggerAxis() > 0.7).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 	  //Sprint
-	  new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::sprint);
+	  new Button(() -> driverControls.getLeftTriggerAxis() > 0.7).whenPressed(m_drivetrainSubsystem::sprint);
+    new Button(() -> driverControls.getLeftTriggerAxis() > 0.7).whenReleased(m_drivetrainSubsystem::resetSpeed);
+
+    //More Sprint
+    new Button(driverControls::getRightBumper).whenPressed(m_drivetrainSubsystem::moresprint);
     new Button(driverControls::getRightBumper).whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-    //Switch Field Mode
-	  new Button(operatorControls::getBackButton).whenPressed(m_climberSubsystem::switchFieldMode);
+    //Field Oriented- NEEDS TO BE DONE
+    new Button(driverControls::getLeftStickButton);
 
-    //Climb
-		new Button(operatorControls::getRightBumper).whenPressed(m_climberSubsystem::extendClimberMotor);
-		new Button(operatorControls::getRightBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+    //Robot Oriented- NEEDS TO BE DONE
+    new Button(driverControls::getRightStickButton);
 
-		new Button(operatorControls::getLeftBumper).whenPressed(m_climberSubsystem::retractClimberMotor);
-		new Button(operatorControls::getLeftBumper).whenReleased(m_climberSubsystem::stopClimberMotor);
+    //Climb & Elevator
+		new Button(() -> operatorControls.getRightY() > 0.1).whenPressed(m_climberSubsystem::extendClimberMotor);
+		new Button(() -> operatorControls.getRightY() > 0.1).whenReleased(m_climberSubsystem::stopClimberMotor);
 
-		new Button(operatorControls::getAButton).whenPressed(m_climberSubsystem::deployClimber);
-		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
+		new Button(() -> operatorControls.getRightY() < -0.1).whenPressed(m_climberSubsystem::retractClimberMotor);
+		new Button(() -> operatorControls.getRightY() < -0.1).whenReleased(m_climberSubsystem::stopClimberMotor);
+
+		new Button(() -> operatorControls.getLeftY() > 0.1).whenPressed(m_climberSubsystem::deployClimber);
+		new Button(() -> operatorControls.getLeftY() < -0.1).whenPressed(m_climberSubsystem::retractClimber);
 
     //Shoot
-    new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
-    new Button(operatorControls::getRightBumper).whenPressed(m_magazineSubsystem::loadContinuous);
+    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenPressed(m_ShooterSubSystem::run);
+    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenPressed(m_magazineSubsystem::loadContinuous);
 
-    new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
-    new Button(operatorControls::getRightBumper).whenReleased(m_magazineSubsystem::stop);
+    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenReleased(m_ShooterSubSystem::stop);
+    new Button(() -> operatorControls.getRightTriggerAxis() > 0.7).whenReleased(m_magazineSubsystem::stop);
+
+    //Retract Intake
+    new Button(operatorControls::getLeftBumper).whenPressed(m_intakeSubsystem::retractIntake);
+    new Button(operatorControls::getLeftBumper).whenReleased(m_intakeSubsystem::neutralIntake);
+
+    //Extend Intake
+    new Button(() -> operatorControls.getLeftTriggerAxis() > 0.7).whenPressed(m_intakeSubsystem::deployIntake);
+    new Button(() -> operatorControls.getLeftTriggerAxis() > 0.7).whenReleased(m_intakeSubsystem::neutralIntake);
 
 
     //Shooter Command Group

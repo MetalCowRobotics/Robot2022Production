@@ -110,6 +110,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   final double SPRINT_SCALAR = 1.5;
   final double BASE_SPEED = 0.5;
   final double CRAWL_SCALAR = 0.2;
+  final double MORESPRINT_SCALAR = 1.85;
 
   public double driveSpeed = BASE_SPEED;
 
@@ -268,6 +269,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
 public void sprint() {
         driveSpeed = BASE_SPEED * SPRINT_SCALAR;
+}
+
+public void moresprint() {
+        driveSpeed = BASE_SPEED * MORESPRINT_SCALAR;
 }
 
 public void resetSpeed() {
