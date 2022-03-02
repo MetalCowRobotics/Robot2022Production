@@ -90,4 +90,7 @@ public final class Constants {
 
     //Intake Speed
     // TODO add speed
+
+    //Climber
+    public static final double CLIMB_SPEED = 0.05;
 }
