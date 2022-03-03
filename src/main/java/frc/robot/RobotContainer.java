@@ -19,6 +19,8 @@ import frc.robot.commands.IntakeOn;
 import frc.robot.commands.IntakeOff;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.DeployIntake;
+import frc.robot.commands.ShooterCommGroup;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -35,7 +37,7 @@ public class RobotContainer {
   private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
   private double delay = 0;
-  // private final ShootBall m_shootball = new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay);
+  private final ShootBall m_shootball = new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
