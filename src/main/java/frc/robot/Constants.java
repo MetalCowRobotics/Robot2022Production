@@ -97,17 +97,6 @@ public final class Constants {
     /////::::::::::::::CONTROLLER BINDINGS:::::::::::::://///
     /////////////////////////////////////////////////////////
 
-    /*
-        [][  ]_        _[  ][]
-       /       \______/       \
-       |  []   []    []   []  |
-       |[]  []          []  []|
-       |  []  ( )    ( )  []  |
-       |     ____________     |
-       |    /            \    |
-       \___/              \___/    
-    */
-
     //Driver
         //Pigeon
         public final static Button D_RESET_GYRO = new Button(driverControls::getBackButton);
