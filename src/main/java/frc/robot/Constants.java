@@ -99,32 +99,32 @@ public final class Constants {
 
     //Driver
         //Pigeon
-        public final static Button D_RESET_GYRO = new Button(driverControls::getBackButton);
+        public final static Button CONT_RESET_GYRO = new Button(driverControls::getBackButton);
 
         //Intake
-        public final static Button D_INTAKE_DEPLOY = new Button(driverControls::getRightBumper);
-        public final static Button D_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
+        public final static Button CONT_INTAKE_DEPLOY = new Button(driverControls::getRightBumper);
+        public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
         //Sprint
-        public final static Button D_SPRINT = new Button(driverControls::getBButton);
+        public final static Button CONT_SPRINT = new Button(driverControls::getBButton);
 
         //Crawl
-        public final static Button D_CRAWL = new Button(driverControls::getAButton);
+        public final static Button CONT_CRAWL = new Button(driverControls::getAButton);
 
 
     //Operator
         //Shooter
-        public final static Button O_SHOOTER_RUN = new Button(operatorControls::getRightBumper);
-        public final static Button O_SHOOTER_STOP = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_SHOOTER_RUN = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_SHOOTER_STOP = new Button(operatorControls::getRightBumper);
 
         //Field Mode
-        public final static Button O_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
+        public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
 
         //Climber
-        public final static Button O_CLIMBER_UP = new Button(operatorControls::getRightBumper);
-        public final static Button O_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button O_CLIMBER_OUT = new Button(operatorControls::getYButton);
-        public final static Button O_CLIMBER_IN = new Button(operatorControls::getAButton);
+        public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
 
 
 }

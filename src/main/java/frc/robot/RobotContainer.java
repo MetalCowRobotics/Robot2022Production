@@ -63,42 +63,42 @@ public class RobotContainer {
 
     //Driver
 		//Reset Gyro
-		Constants.D_RESET_GYRO.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+		Constants.CONT_RESET_GYRO.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
 
 		//Crawl
-		Constants.D_CRAWL.whenPressed(m_drivetrainSubsystem::crawl);
-		Constants.D_CRAWL.whenReleased(m_drivetrainSubsystem::resetSpeed);
+		Constants.CONT_CRAWL.whenPressed(m_drivetrainSubsystem::crawl);
+		Constants.CONT_CRAWL.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Sprint
-		Constants.D_SPRINT.whenPressed(m_drivetrainSubsystem::sprint);
-		Constants.D_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
+		Constants.CONT_SPRINT.whenPressed(m_drivetrainSubsystem::sprint);
+		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Intake
-		Constants.D_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
-		Constants.D_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
-		Constants.D_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
-		Constants.D_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
+		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
+		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
+		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
 
 	//Operator
 		//Switch Field Mode
-		Constants.O_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
+		Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
 
 		//Climb
-		Constants.O_CLIMBER_UP.whenPressed(m_climberSubsystem::extendClimberMotor);
-		Constants.O_CLIMBER_UP.whenReleased(m_climberSubsystem::stopClimberMotor);
+		Constants.CONT_CLIMBER_UP.whenPressed(m_climberSubsystem::extendClimberMotor);
+		Constants.CONT_CLIMBER_UP.whenReleased(m_climberSubsystem::stopClimberMotor);
 
-		Constants.O_CLIMBER_DOWN.whenPressed(m_climberSubsystem::retractClimberMotor);
-		Constants.O_CLIMBER_DOWN.whenReleased(m_climberSubsystem::stopClimberMotor);
+		Constants.CONT_CLIMBER_DOWN.whenPressed(m_climberSubsystem::retractClimberMotor);
+		Constants.CONT_CLIMBER_DOWN.whenReleased(m_climberSubsystem::stopClimberMotor);
 
-		Constants.O_CLIMBER_OUT.whenPressed(m_climberSubsystem::deployClimber);
-		Constants.O_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
+		Constants.CONT_CLIMBER_OUT.whenPressed(m_climberSubsystem::deployClimber);
+		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.O_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
-		Constants.O_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+		Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
+		Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		Constants.O_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
-		Constants.O_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
+		Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
+		Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group
