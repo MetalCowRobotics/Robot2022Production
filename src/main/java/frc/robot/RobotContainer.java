@@ -10,11 +10,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DoDelay;
+import frc.robot.commands.DriveStraight;
+import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.DeployIntake;
+import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.MagazineSubsystem;
-import frc.robot.subsystems.ShooterSubSystem;
 
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
@@ -22,10 +27,10 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-  private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
   private double delay = 0;
-  // private final ShootBall m_shootball = new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay);
+  private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
@@ -89,16 +94,16 @@ public class RobotContainer {
 		Constants.O_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.O_SHOOTER_RUN.whenPressed(m_ShooterSubSystem::run);
+		Constants.O_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
 		Constants.O_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		Constants.O_SHOOTER_RUN.whenReleased(m_ShooterSubSystem::stop);
+		Constants.O_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
 		Constants.O_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group
     delay = SmartDashboard.getNumber("Delay", delay);
-    // new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay));
+    // new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay));
 
     
 

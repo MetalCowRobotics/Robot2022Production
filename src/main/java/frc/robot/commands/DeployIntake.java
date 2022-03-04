@@ -11,10 +11,10 @@ This can be an InstantCommand()
         .whenPressed(new InstantCommand(m_intakeSubsystem::deployIntake, m_intakeSubsystem));
 */
 
-public class PrepareIntakeToGather extends CommandBase {
+public class DeployIntake extends CommandBase {
     private final IntakeSubsystem m_intakeSubsytem;
 
-    public PrepareIntakeToGather(IntakeSubsystem m_intakeSubsytem) {
+    public DeployIntake(IntakeSubsystem m_intakeSubsytem) {
         this.m_intakeSubsytem = m_intakeSubsytem;
         addRequirements(m_intakeSubsytem);
     }
