@@ -15,17 +15,14 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
-import frc.robot.commands.IntakeOn;
-import frc.robot.commands.IntakeOff;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.DeployIntake;
-import frc.robot.commands.ShooterCommGroup;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubSystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.MagazineSubsystem;
 
 public class RobotContainer {
@@ -34,10 +31,10 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
-  private final ShooterSubSystem m_ShooterSubSystem = new ShooterSubSystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
   private double delay = 0;
-  private final ShootBall m_shootball = new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay);
+  private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
 
   private final double CONTROLLER_DEADBAND = 0.1;
@@ -93,16 +90,16 @@ public class RobotContainer {
 		new Button(operatorControls::getBButton).whenPressed(m_climberSubsystem::retractClimber);
 
     //Shoot
-    new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubSystem::run);
+    new Button(operatorControls::getRightBumper).whenPressed(m_ShooterSubsystem::run);
     new Button(operatorControls::getRightBumper).whenPressed(m_magazineSubsystem::loadContinuous);
 
-    new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubSystem::stop);
+    new Button(operatorControls::getRightBumper).whenReleased(m_ShooterSubsystem::stop);
     new Button(operatorControls::getRightBumper).whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group
     delay = SmartDashboard.getNumber("Delay", delay);
-    // new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubSystem, m_drivetrainSubsystem, delay));
+    // new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay));
 
     
 
