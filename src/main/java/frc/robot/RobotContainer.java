@@ -8,13 +8,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
+import frc.robot.commands.DrivePath;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -32,6 +35,23 @@ public class RobotContainer {
   private double delay = 0;
   private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
+  private final SequentialCommandGroup LOW_BALL_2_BALL_AUTO = new SequentialCommandGroup(
+    new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv"),
+    new TurnDegrees(m_drivetrainSubsystem, 180),
+    new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase2.csv")
+  );
+
+  private final SequentialCommandGroup MID_BALL_2_BALL_AUTO = new SequentialCommandGroup(
+    new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase1.csv"),
+    new TurnDegrees(m_drivetrainSubsystem, 180),
+    new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase2.csv")
+  );
+
+  private final SequentialCommandGroup HIGH_BALL_2_BALL_AUTO = new SequentialCommandGroup(
+    new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase1.csv"),
+    new TurnDegrees(m_drivetrainSubsystem, 180),
+    new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase2.csv")
+  );
 
   private final double CONTROLLER_DEADBAND = 0.1;
 
