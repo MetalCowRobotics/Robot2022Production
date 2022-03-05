@@ -1,19 +1,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubSystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
-public class ShooterStopAndStart extends CommandBase {
-    private ShooterSubSystem m_motor1;
+public class StopShooterWheel extends CommandBase {
+    private ShooterSubsystem m_motor1;
     private boolean checkState = true;
-    public ShooterStopAndStart(ShooterSubSystem motor1) {
+    public StopShooterWheel(ShooterSubsystem motor1) {
        m_motor1 = motor1;
        addRequirements(m_motor1);
     }
 
     @Override 
     public void execute() {
-        m_motor1.run();
+        m_motor1.stop();
         checkState = false;
     }
 

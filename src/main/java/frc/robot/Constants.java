@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import java.util.function.Function;
+
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.Button;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,17 +18,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    /**
-     * The left-to-right distance between the drivetrain wheels
-     *
-     * Should be measured from center to center.
-     */
-    public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5; // FIXME Measure and set trackwidth
-    /**
-     * The front-to-back distance between the drivetrain wheels.
-     *
-     * Should be measured from center to center.
-     */
+    
+    private final static XboxController driverControls = new XboxController(0);
+    private final static XboxController operatorControls = new XboxController(1);
 
     /////////////////////////////////////////////////////////
     /////::::::::::::::::CAN/DIO INDEXES:::::::::::::::://///
@@ -84,10 +81,50 @@ public final class Constants {
     //Drivetrain
     public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5;
     public static final double DRIVETRAIN_RAMP_SPEED = 0.6;
+    public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5;
 
     //Magazine Speed
     public static final double MAGAZINE_SPEED = 0.05;
 
     //Intake Speed
-    // TODO add speed
+    public static final double INTAKE_SPEED = 0.05;
+
+    //Climber
+    public static final double CLIMB_SPEED = 0.05;
+
+
+    /////////////////////////////////////////////////////////
+    /////::::::::::::::CONTROLLER BINDINGS:::::::::::::://///
+    /////////////////////////////////////////////////////////
+
+    //Driver
+        //Pigeon
+        public final static Button CONT_RESET_GYRO = new Button(driverControls::getBackButton);
+
+        //Intake
+        public final static Button CONT_INTAKE_DEPLOY = new Button(driverControls::getRightBumper);
+        public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
+
+        //Sprint
+        public final static Button CONT_SPRINT = new Button(driverControls::getBButton);
+
+        //Crawl
+        public final static Button CONT_CRAWL = new Button(driverControls::getAButton);
+
+
+    //Operator
+        //Shooter
+        public final static Button CONT_SHOOTER_RUN = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_SHOOTER_STOP = new Button(operatorControls::getRightBumper);
+
+        //Field Mode
+        public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
+
+        //Climber
+        public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
+
+
 }
