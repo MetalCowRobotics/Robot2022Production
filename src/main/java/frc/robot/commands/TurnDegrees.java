@@ -18,10 +18,12 @@ public class TurnDegrees extends CommandBase {
     private DrivetrainSubsystem m_drivetrain;
     private double speed;
     private double angle;
+    private double sign;
 
-    public TurnDegrees(DrivetrainSubsystem drive, double angle) {
+    public TurnDegrees(DrivetrainSubsystem drive, double angle, double direction) {
         this.m_drivetrain = drive;
         this.angle = angle;
+        this.sign = direction;
     }
 
     // Called just before this Command runs the first time
@@ -33,7 +35,7 @@ public class TurnDegrees extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double actualSpeed = Math.copySign(Math.atan(Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees()) / 180) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, angle);
+        double actualSpeed = Math.copySign(Math.atan(Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees()) / 180) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign);
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                     0,

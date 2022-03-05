@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
@@ -17,6 +18,11 @@ import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.StartGathering;
+import frc.robot.commands.StartShooterWheel;
+import frc.robot.commands.StartShooting;
+import frc.robot.commands.StopGathering;
+import frc.robot.commands.StopShooting;
 import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -27,30 +33,69 @@ import frc.robot.subsystems.MagazineSubsystem;
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
+
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
+
   private double delay = 0;
-  private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
+
   SendableChooser m_chooser = new SendableChooser();
+
   private final SequentialCommandGroup LOW_BALL_2_BALL_AUTO = new SequentialCommandGroup(
-    new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv"),
-    new TurnDegrees(m_drivetrainSubsystem, 180),
-    new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase2.csv")
+    new ParallelCommandGroup(
+      new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv"),
+      new StartShooterWheel(m_ShooterSubsystem),
+      new SequentialCommandGroup(
+        new DoDelay(2), 
+        new StartGathering(m_intakeSubsystem)
+      )
+    ),
+    new ParallelCommandGroup(
+      new StopGathering(m_intakeSubsystem),
+      new TurnDegrees(m_drivetrainSubsystem, 180, 1)
+    ),
+    new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase2.csv"),
+    new StartShooting(m_magazineSubsystem),
+    new DoDelay(4),
+    new StopShooting(m_magazineSubsystem)
   );
 
   private final SequentialCommandGroup MID_BALL_2_BALL_AUTO = new SequentialCommandGroup(
-    new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase1.csv"),
-    new TurnDegrees(m_drivetrainSubsystem, 180),
-    new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase2.csv")
+    new ParallelCommandGroup(
+      new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase1.csv"),
+      new StartShooterWheel(m_ShooterSubsystem),
+      new StartGathering(m_intakeSubsystem)
+    ),
+    new ParallelCommandGroup(
+      new StopGathering(m_intakeSubsystem),
+      new TurnDegrees(m_drivetrainSubsystem, 180, 1)
+    ),
+    new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase2.csv"),
+    new StartShooting(m_magazineSubsystem),
+    new DoDelay(4),
+    new StopShooting(m_magazineSubsystem)
   );
 
   private final SequentialCommandGroup HIGH_BALL_2_BALL_AUTO = new SequentialCommandGroup(
-    new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase1.csv"),
-    new TurnDegrees(m_drivetrainSubsystem, 180),
-    new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase2.csv")
+    new ParallelCommandGroup(
+      new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase1.csv"),
+      new StartShooterWheel(m_ShooterSubsystem),
+      new SequentialCommandGroup(
+        new DoDelay(2), 
+        new StartGathering(m_intakeSubsystem)
+      )
+    ),
+    new ParallelCommandGroup(
+      new StopGathering(m_intakeSubsystem),
+      new TurnDegrees(m_drivetrainSubsystem, 180, 1)
+    ),
+    new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase2.csv"),
+    new StartShooting(m_magazineSubsystem),
+    new DoDelay(4),
+    new StopShooting(m_magazineSubsystem)
   );
 
   private final double CONTROLLER_DEADBAND = 0.1;
