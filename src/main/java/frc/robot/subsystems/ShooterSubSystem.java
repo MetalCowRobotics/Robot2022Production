@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class ShooterSubSystem extends SubsystemBase {
+public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
@@ -18,7 +18,7 @@ public class ShooterSubSystem extends SubsystemBase {
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
-    public ShooterSubSystem() {
+    public ShooterSubsystem() {
         pid = leftMotor.getPIDController();
 
         SmartDashboard.putNumber("Shooter Target", 500);
