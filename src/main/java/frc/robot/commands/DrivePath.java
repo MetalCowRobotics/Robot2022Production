@@ -56,6 +56,9 @@ public class DrivePath extends CommandBase {
 
         double xComponent = speed * Math.cos(angle);
         double yComponent = speed * Math.sin(angle);
+
+        SmartDashboard.putNumber("path x", Math.min(xComponent * 5, 5.0));
+        SmartDashboard.putNumber("path y", Math.min(yComponent * 5, 5.0));
         
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
