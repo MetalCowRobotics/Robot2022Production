@@ -24,6 +24,8 @@ public class ClimberSubsystem extends SubsystemBase {
     private double climbSpeed = 0;
     private boolean fieldMode = true;
 
+    public final static double ELEVATOR_MOTOR_DEADZONE = 50.0;
+
     public ClimberSubsystem() {
         m_climber_2.follow(m_climber_1);
     }
@@ -32,9 +34,14 @@ public class ClimberSubsystem extends SubsystemBase {
         this.debug = debug;
     }
 
+    public double getElevatorPosition() {
+        return m_climber_1.getEncoder().getPosition();
+    }
+
     @Override
     public void periodic() {
         m_climber_1.set(climbSpeed);
+        SmartDashboard.putNumber("elevator position", getElevatorPosition());
     }
 
     public void switchFieldMode() {
