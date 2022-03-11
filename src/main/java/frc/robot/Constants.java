@@ -27,7 +27,7 @@ public final class Constants {
     /////////////////////////////////////////////////////////
 
     //Magazine
-    public static final int MAGAZINE_MOTOR = 15;
+    public static final int MAGAZINE_MOTOR = 13;
     public static final int MAGAZINE_SENSOR = 0;
 
     //Intake
@@ -60,7 +60,7 @@ public final class Constants {
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 6;
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(2 + 180);
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(182);
 
         //Back Left Module
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11;
