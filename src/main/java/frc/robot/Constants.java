@@ -27,11 +27,11 @@ public final class Constants {
     /////////////////////////////////////////////////////////
 
     //Magazine
-    public static final int MAGAZINE_MOTOR = 15;
+    public static final int MAGAZINE_MOTOR = 13;
     public static final int MAGAZINE_SENSOR = 0;
 
     //Intake
-    public static final int INTAKE_MOTOR = 16;
+    public static final int INTAKE_MOTOR = 20;
     public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
     public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
 
@@ -43,7 +43,7 @@ public final class Constants {
 
     //Shooter
     public static final int SHOOTER_MOTOR_LEFT = 17;
-    public static final int SHOOTER_MOTOR_RIGHT = 16; //Needs changing
+    public static final int SHOOTER_MOTOR_RIGHT = 16;
 
     //Drivetrain
 
@@ -84,13 +84,13 @@ public final class Constants {
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5;
 
     //Magazine Speed
-    public static final double MAGAZINE_SPEED = 0.05;
+    public static final double MAGAZINE_SPEED = 0.3;
 
     //Intake Speed
     public static final double INTAKE_SPEED = 0.05;
 
     //Climber
-    public static final double CLIMB_SPEED = 0.05;
+    public static final double CLIMB_SPEED = 0.3;
 
 
     /////////////////////////////////////////////////////////

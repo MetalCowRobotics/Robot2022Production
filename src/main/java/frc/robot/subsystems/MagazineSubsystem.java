@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -17,7 +18,7 @@ public class MagazineSubsystem extends SubsystemBase {
     private boolean runContinuous = false;
 
     public void run() {
-        speed = 0.05;
+        speed = Constants.MAGAZINE_SPEED;
     }
 
     public void stop() {
@@ -32,14 +33,14 @@ public class MagazineSubsystem extends SubsystemBase {
     public void loadContinuous() {
         runContinuous = true;
         ballPassed = false;
-        speed = 0.05;
+        speed = SmartDashboard.getNumber("mag speed", 0.3);
     }
 
     @Override
     public void periodic() {
 
         if (runContinuous) {
-            magMotor.set(Constants.MAGAZINE_SPEED);
+            magMotor.set(-speed);
         } else {
             if (!ballOnSensor && ballSensor.get() && !lastState) { // Get if the ball is currently over the sensor
                 ballOnSensor = true;
@@ -52,7 +53,7 @@ public class MagazineSubsystem extends SubsystemBase {
                 ballPassed = false;
             }
 
-            magMotor.set(speed);
+            magMotor.set(-speed);
             lastState = ballSensor.get();
         }
     }

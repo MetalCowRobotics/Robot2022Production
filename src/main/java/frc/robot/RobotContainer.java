@@ -15,6 +15,8 @@ import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.StartShooterWheel;
+import frc.robot.commands.StopShooterWheel;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -25,7 +27,7 @@ public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
@@ -37,11 +39,13 @@ public class RobotContainer {
 
   public RobotContainer() {
 
+    SmartDashboard.putNumber("mag speed", 0.3);
+
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
             () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+            () -> modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
 
@@ -74,14 +78,15 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Intake
-		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
-		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
-		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
-		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
+		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
+		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
+		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
 
 	//Operator
 		//Switch Field Mode
 		Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
+    Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_ShooterSubsystem::switchFieldMode);
 
 		//Climb
 		Constants.CONT_CLIMBER_UP.whenPressed(m_climberSubsystem::extendClimberMotor);
@@ -94,10 +99,12 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+		Constants.CONT_SHOOTER_RUN.whenPressed(new StartShooterWheel(m_ShooterSubsystem));
+    if (m_ShooterSubsystem.isReady()) {
+		  Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+    }
 
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
+		Constants.CONT_SHOOTER_RUN.whenReleased(new StopShooterWheel(m_ShooterSubsystem));
 		Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
 
 

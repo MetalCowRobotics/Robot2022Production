@@ -28,6 +28,7 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
@@ -95,7 +96,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
   // FIXME Remove if you are using a Pigeon
-  private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
+  private final Pigeon2 m_pigeon = new Pigeon2(DRIVETRAIN_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
 //  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
@@ -232,34 +233,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
         }
 
-  /**
-   * Sets the gyroscope angle to zero. This can be used to set the direction the robot is currently facing to the
-   * 'forwards' direction.
-   */
   public void zeroGyroscope() {
-    // FIXME Remove if you are using a Pigeon
-    m_pigeon.setFusedHeading(0.0);
-
-    // FIXME Uncomment if you are using a NavX
-//    m_navx.zeroYaw();
+    m_pigeon.setYaw(90);
   }
 
   public Rotation2d getGyroscopeRotation() {
-        // m_pigeon.getFusedHeading();
-
-        SmartDashboard.putNumber("gyro angle", m_pigeon.getFusedHeading());
-        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getFusedHeading() % 360));
-        // return Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading());
-
-
-    // FIXME Uncomment if you are using a NavX
-//    if (m_navx.isMagnetometerCalibrated()) {
-//      // We will only get valid fused headings if the magnetometer is calibrated
-//      return Rotation2d.fromDegrees(m_navx.getFusedHeading());
-//    }
-//
-//    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
-//    return Rotation2d.fromDegrees(360.0 - m_navx.getYaw());
+        SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
+        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getYaw() % 360));
   }
 
   public void crawl() {
