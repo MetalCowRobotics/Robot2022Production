@@ -232,6 +232,8 @@ public void resetSpeed() {
   @Override
   public void periodic() {
         // SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
+
+        
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SmartDashboard.putNumber("x coordinate", getCoordinate()[0]);
     SmartDashboard.putNumber("y coordinate", getCoordinate()[1]);

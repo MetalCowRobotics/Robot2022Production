@@ -34,7 +34,7 @@ public class RobotContainer {
   private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
 
-  private final double CONTROLLER_DEADBAND = 0.1;
+  private final double CONTROLLER_DEADBAND = 0.2;
 
   public RobotContainer() {
 
