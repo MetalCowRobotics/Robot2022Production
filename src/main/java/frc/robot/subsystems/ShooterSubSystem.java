@@ -23,7 +23,7 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
         pid = leftMotor.getPIDController();
 
-        SmartDashboard.putNumber("Shooter Target", 500);
+        SmartDashboard.putNumber("Speed Correction", 0);
 
         // PID coefficients
         kP = 0.00012;
@@ -54,12 +54,20 @@ public class ShooterSubsystem extends SubsystemBase {
         rightMotor.follow(leftMotor, true);
     }
 
-    public void run() {
-        // if (fieldMode) {
-            targetSpeed = -SmartDashboard.getNumber("Shooter Target", 1500);
-        // } else {
-        //     targetSpeed = 0;
-        // }
+    public void shootHigh() {
+        if (fieldMode) {
+            targetSpeed = -Constants.HIGH_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
+        } else {
+            targetSpeed = 0;
+        }
+    }
+
+    public void shootLow() {
+        if (fieldMode) {
+            targetSpeed = -Constants.LOW_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
+        } else {
+            targetSpeed = 0;
+        }
     }
 
     public void stop() {

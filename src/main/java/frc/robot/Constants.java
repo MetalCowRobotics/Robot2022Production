@@ -83,14 +83,22 @@ public final class Constants {
     public static final double DRIVETRAIN_RAMP_SPEED = 0.6;
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5;
 
+    public static final double BASE_SPEED = 0.5;
+    public static final double SPRINT_SCALAR = 2;
+    public static final double CRAWL_SCALAR = 0.2;
+
     //Magazine Speed
     public static final double MAGAZINE_SPEED = 0.3;
 
     //Intake Speed
-    public static final double INTAKE_SPEED = 0.05;
+    public static final double INTAKE_SPEED = 0.5;
 
     //Climber
-    public static final double CLIMB_SPEED = 0.3;
+    public static final double CLIMB_SPEED = 0.4;
+
+    //Shooter
+    public static final double HIGH_SHOT_SPEED = 2000;
+    public static final double LOW_SHOT_SPEED = 1750;
 
 
     /////////////////////////////////////////////////////////
@@ -106,16 +114,16 @@ public final class Constants {
         public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
         //Sprint
-        public final static Button CONT_SPRINT = new Button(driverControls::getBButton);
+        public final static Button CONT_SPRINT = new Button(driverControls::getRightBumper);
 
         //Crawl
-        public final static Button CONT_CRAWL = new Button(driverControls::getAButton);
+        public final static Button CONT_CRAWL = new Button(driverControls::getLeftBumper);
 
 
     //Operator
         //Shooter
-        public final static Button CONT_SHOOTER_RUN = new Button(operatorControls::getRightBumper);
-        public final static Button CONT_SHOOTER_STOP = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_SHOOTER_HIGH = new Button(() -> operatorControls.getLeftTriggerAxis() > 0.3);
+        public final static Button CONT_SHOOTER_LOW = new Button(() -> operatorControls.getRightTriggerAxis() > 0.3);
 
         //Field Mode
         public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);

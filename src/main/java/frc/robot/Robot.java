@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     SmartDashboard.putBoolean("Field Mode", true);
-    SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
+    SmartDashboard.putNumber("Drivetrain Scalar", 1);
   }
 
   /**

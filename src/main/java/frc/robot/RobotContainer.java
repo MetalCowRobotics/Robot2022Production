@@ -25,7 +25,6 @@ import frc.robot.subsystems.MagazineSubsystem;
 
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
-  private final XboxController operatorControls = new XboxController(1);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
@@ -99,13 +98,23 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.CONT_SHOOTER_RUN.whenPressed(new StartShooterWheel(m_ShooterSubsystem));
+    //Shoot High
+		Constants.CONT_SHOOTER_HIGH.whenPressed(m_ShooterSubsystem::shootHigh);//new StartShooterWheel(m_ShooterSubsystem));
     if (m_ShooterSubsystem.isReady()) {
-		  Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+		  Constants.CONT_SHOOTER_HIGH.whenPressed(m_magazineSubsystem::loadContinuous);
     }
 
-		Constants.CONT_SHOOTER_RUN.whenReleased(new StopShooterWheel(m_ShooterSubsystem));
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
+		Constants.CONT_SHOOTER_HIGH.whenReleased(m_ShooterSubsystem::stop);//new StopShooterWheel(m_ShooterSubsystem));
+		Constants.CONT_SHOOTER_HIGH.whenReleased(m_magazineSubsystem::stop);
+
+    //Shoot Low
+    Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);//new StartShooterWheel(m_ShooterSubsystem));
+    if (m_ShooterSubsystem.isReady()) {
+		  Constants.CONT_SHOOTER_LOW.whenPressed(m_magazineSubsystem::loadContinuous);
+    }
+
+		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);//new StopShooterWheel(m_ShooterSubsystem));
+		Constants.CONT_SHOOTER_LOW.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group
