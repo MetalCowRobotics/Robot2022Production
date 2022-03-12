@@ -61,6 +61,9 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
+    new Button(driverControls::getRightBumper).whenPressed(m_intakeSubsystem::deployIntake);
+    new Button (driverControls::getRightBumper).whenPressed(m_intakeSubsystem::retractIntake);
+
     //Driver
 		//Reset Gyro
 		Constants.CONT_RESET_GYRO.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
