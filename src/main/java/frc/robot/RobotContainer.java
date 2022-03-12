@@ -82,14 +82,14 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Intake
-		Constants.CONT_INTAKE_DEPLOY.whenPressed(new DeployIntake(m_intakeSubsystem));
-		Constants.CONT_INTAKE_RETRACT.whenPressed(new RetractIntake(m_intakeSubsystem));
+		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new DeployIntake(m_intakeSubsystem));
+		// Constants.CONT_INTAKE_RETRACT.whenPressed(new RetractIntake(m_intakeSubsystem));
 
 		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartIntakeWheels(m_intakeSubsystem));
 		// Constants.CONT_INTAKE_RETRACT.whenPressed(new StopIntakeWheels(m_intakeSubsystem));
 
-    // Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
-		// Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
+    Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
+		Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
 
 	//Operator
 		//Switch Field Mode
