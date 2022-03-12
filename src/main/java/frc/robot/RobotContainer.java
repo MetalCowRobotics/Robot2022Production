@@ -25,7 +25,7 @@ public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
@@ -74,10 +74,10 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Intake
-		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
-		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
-		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
-		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
+		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
+		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
+		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
 
 	//Operator
 		//Switch Field Mode
@@ -94,11 +94,11 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+		// Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
+		// Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
+		// Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
+		// Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group

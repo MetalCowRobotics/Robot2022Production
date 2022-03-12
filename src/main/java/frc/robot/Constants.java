@@ -38,8 +38,9 @@ public final class Constants {
     //Climber
     public static final int CLIMBER_DRIVE_MOTOR_1 = 18;
     public static final int CLIMBER_DRIVE_MOTOR_2 = 19;
-    public static final int CLIMBER_DEPLOY = 2;
-    public static final int CLIMBER_RETRACT = 3;
+
+    public static final int CLIMBER_DEPLOY = 4;
+    public static final int CLIMBER_RETRACT = 2;
 
     //Shooter
     public static final int SHOOTER_MOTOR_LEFT = 17;
@@ -84,13 +85,19 @@ public final class Constants {
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5;
 
     //Magazine Speed
-    public static final double MAGAZINE_SPEED = 0.05;
+    public static final double MAGAZINE_SPEED = 0.00;
 
     //Intake Speed
-    public static final double INTAKE_SPEED = 0.05;
+    public static final double INTAKE_SPEED = 0.00;
 
     //Climber
-    public static final double CLIMB_SPEED = 0.05;
+    public static final double CLIMB_SPEED = 0.4;
+
+    public static final double CLIMB_MID_BAR_EXTENDED_POSITION = 1.09;
+    public static final double CLIMB_FULL_RETRACTED_POSITION = .05;
+    public static final double CLIMB_HIGH_BAR_EXTENDED_POSITION = .05;
+    public static final double CLIMB_TRAVERSAL_RETRACTED_POSITION = .05; 
+    public static final double CLIMB_CLEAR_BAR_POSITION = 0.1;
 
 
     /////////////////////////////////////////////////////////
