@@ -40,12 +40,12 @@ public class MagazineSubsystem extends SubsystemBase {
     public void periodic() {
 
         if (runContinuous) {
-            magMotor.set(-speed);
+            magMotor.set(-speed); // Run Continuously for Shooting
         } else {
             if (!ballOnSensor && ballSensor.get() && !lastState) { // Get if the ball is currently over the sensor
-                ballOnSensor = true;
+                ballOnSensor = true; // Change state and keep running
             } else if (ballOnSensor && ballSensor.get() != lastState) { // Get right after ball is past the sensor
-                speed = 0;
+                speed = 0; // Change state and stop magazine.  We are holding a ball up in the magazine
                 ballOnSensor = false;
                 ballPassed = true;
             } else if (!ballPassed) { // Run motor
