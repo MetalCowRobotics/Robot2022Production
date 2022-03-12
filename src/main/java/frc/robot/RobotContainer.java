@@ -106,11 +106,11 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+		// Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
+		// Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
+		// Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
+		// Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group
