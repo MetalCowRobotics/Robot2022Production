@@ -31,7 +31,7 @@ public final class Constants {
     public static final int MAGAZINE_SENSOR = 0;
 
     //Intake
-    public static final int INTAKE_MOTOR = 16;
+    public static final int INTAKE_MOTOR = 13;
     public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
     public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
 
@@ -125,6 +125,6 @@ public final class Constants {
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
         public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
         public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
-
+    }
 
 }
