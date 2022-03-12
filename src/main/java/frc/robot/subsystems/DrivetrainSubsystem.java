@@ -28,6 +28,7 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.swervedrivespecialties.swervelib.Mk3SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
@@ -95,7 +96,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   // The important thing about how you configure your gyroscope is that rotating the robot counter-clockwise should
   // cause the angle reading to increase until it wraps back over to zero.
   // FIXME Remove if you are using a Pigeon
-  private final PigeonIMU m_pigeon = new PigeonIMU(DRIVETRAIN_PIGEON_ID);
+  private final Pigeon2 m_pigeon = new Pigeon2(DRIVETRAIN_PIGEON_ID);
   // FIXME Uncomment if you are using a NavX
 //  private final AHRS m_navx = new AHRS(SPI.Port.kMXP, (byte) 200); // NavX connected over MXP
 
@@ -107,8 +108,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  final double SPRINT_SCALAR = 1.5;
-  final double BASE_SPEED = 0.5;
+  final double SPRINT_SCALAR = 1.45;
+  final double BASE_SPEED = 0.65;
   final double CRAWL_SCALAR = 0.2;
 
   public double driveSpeed = BASE_SPEED;
@@ -238,7 +239,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
    */
   public void zeroGyroscope() {
     // FIXME Remove if you are using a Pigeon
-    m_pigeon.setFusedHeading(0.0);
+    m_pigeon.setYaw(90.0);
 
     // FIXME Uncomment if you are using a NavX
 //    m_navx.zeroYaw();
@@ -247,8 +248,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public Rotation2d getGyroscopeRotation() {
         // m_pigeon.getFusedHeading();
 
-        SmartDashboard.putNumber("gyro angle", m_pigeon.getFusedHeading());
-        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getFusedHeading() % 360));
+        SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
+        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getYaw() % 360));
         // return Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading());
 
 
@@ -290,6 +291,8 @@ public void resetSpeed() {
   @Override
   public void periodic() {
         // SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
+
+        
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
     SmartDashboard.putNumber("x coordinate", getCoordinate()[0]);
     SmartDashboard.putNumber("y coordinate", getCoordinate()[1]);
@@ -298,7 +301,7 @@ public void resetSpeed() {
 
 //     position = odometer.update(Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading()), states[0], states[1], states[2], states[3]);
 
-        double drivetrainScalar = SmartDashboard.getNumber("Drivetrain Scalar", 0.5);
+        double drivetrainScalar = SmartDashboard.getNumber("Drivetrain Scalar", 1);
 
         m_frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE * driveSpeed * drivetrainScalar,
                 states[0].angle.getRadians());

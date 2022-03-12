@@ -25,7 +25,7 @@ public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final XboxController operatorControls = new XboxController(1);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
@@ -33,14 +33,14 @@ public class RobotContainer {
   private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
 
-  private final double CONTROLLER_DEADBAND = 0.1;
+  private final double CONTROLLER_DEADBAND = 0.2;
 
   public RobotContainer() {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
@@ -74,10 +74,10 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Intake
-		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
-		Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
-		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
-		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
+		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
+		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
+		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
 
 	//Operator
 		//Switch Field Mode
