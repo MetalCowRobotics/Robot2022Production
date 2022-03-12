@@ -22,8 +22,10 @@ public class TurnDegrees extends CommandBase {
 
     public TurnDegrees(DrivetrainSubsystem drive, double angle, double direction) {
         this.m_drivetrain = drive;
-        this.angle = angle;
+        this.angle = (drive.getGyroscopeRotation().getDegrees() + angle) % 360;
         this.sign = direction;
+
+        addRequirements(drive);
     }
 
     // Called just before this Command runs the first time
@@ -35,7 +37,10 @@ public class TurnDegrees extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double actualSpeed = Math.copySign(Math.atan(Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees()) / 180) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign);
+        double difference = Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees());
+        SmartDashboard.putNumber("difference", difference);
+        double actualSpeed = Math.copySign(Math.atan(Math.toRadians(difference)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign);
+        SmartDashboard.putNumber("turn speed", actualSpeed);
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                     0,
@@ -49,7 +54,7 @@ public class TurnDegrees extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees()) < 2;
+        return Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees()) < 5;
     }
 
     // Called once after isFinished returns true

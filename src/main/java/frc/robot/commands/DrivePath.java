@@ -23,9 +23,10 @@ public class DrivePath extends CommandBase {
     private double speed;
     private double angle;
     private double rotationSpeed;
-    
+    private double heading;
+    private boolean resetGyro;
 
-    public DrivePath(DrivetrainSubsystem drive, String fileName) {
+    public DrivePath(DrivetrainSubsystem drive, String fileName, boolean resetGyro) {
         m_drivetrain = drive;
         csvFile = new File(Filesystem.getDeployDirectory() + "/pathplanner/generatedCSV/" + fileName);
         try {
@@ -38,6 +39,10 @@ public class DrivePath extends CommandBase {
         } catch (Exception e) {
             SmartDashboard.putBoolean("found file", false);
         }
+        addRequirements(drive);
+        getNextLine();
+        drive.zeroGyroscopeToAngle(heading);
+        this.resetGyro = resetGyro;
     }
 
     // Called just before this Command runs the first time
@@ -57,13 +62,13 @@ public class DrivePath extends CommandBase {
         double xComponent = speed * Math.cos(angle);
         double yComponent = speed * Math.sin(angle);
 
-        SmartDashboard.putNumber("path x", Math.min(xComponent * 5, 5.0));
-        SmartDashboard.putNumber("path y", Math.min(yComponent * 5, 5.0));
+        SmartDashboard.putNumber("path x", Math.min(xComponent, 5.0));
+        SmartDashboard.putNumber("path y", Math.min(yComponent, 5.0));
         
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                    xComponent,
-                    yComponent,
+                    xComponent * 3.28,
+                    yComponent * 3.28,
                     rotationSpeed,
                     m_drivetrain.getGyroscopeRotation()
             )
@@ -78,6 +83,8 @@ public class DrivePath extends CommandBase {
         time = Double.parseDouble(values[0].substring(1));
         angle = Math.toRadians(Double.parseDouble(values[4]));
         rotationSpeed = Math.toRadians(Double.parseDouble(values[values.length - 1]));
+
+        heading = Double.parseDouble(values[4]);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -90,7 +97,11 @@ public class DrivePath extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         m_timer.stop();
+        m_timer.reset();
         m_drivetrain.drive(new ChassisSpeeds(0, 0, 0));
+        if (resetGyro) {
+            m_drivetrain.zeroGyroscopeToAngle(heading);
+        }
     }
 
 }
