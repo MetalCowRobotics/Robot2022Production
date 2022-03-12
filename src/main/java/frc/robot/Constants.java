@@ -113,6 +113,10 @@ public final class Constants {
 
 
     //Operator
+        //Switch Camera Feeds
+        public final static Button CONT_SWITCH_CAMERA_1 = new Button(operatorControls::getXButton);
+        public final static Button CONT_SWITCH_CAMERA_2 = new Button(operatorControls::getBButton);
+
         //Shooter
         public final static Button CONT_SHOOTER_RUN = new Button(operatorControls::getRightBumper);
         public final static Button CONT_SHOOTER_STOP = new Button(operatorControls::getRightBumper);

@@ -15,6 +15,7 @@ import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
+import frc.robot.commands.ToggleCameraFeed;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -29,6 +30,7 @@ public class RobotContainer {
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
+  private final ToggleCameraFeed m_toggleCameraFeed = new ToggleCameraFeed();
   private double delay = 0;
   private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
@@ -80,6 +82,10 @@ public class RobotContainer {
 		Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
 
 	//Operator
+    //Switch Camera Feed
+    Constants.CONT_SWITCH_CAMERA_1.whenPressed(m_toggleCameraFeed::switchToCamera1);
+    Constants.CONT_SWITCH_CAMERA_2.whenPressed(m_toggleCameraFeed::switchToCamera2);
+
 		//Switch Field Mode
 		Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
 
