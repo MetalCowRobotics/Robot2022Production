@@ -108,9 +108,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   private ChassisSpeeds m_chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-  final double SPRINT_SCALAR = 1.307;
+  final double SPRINT_SCALAR = 1.45;
   final double BASE_SPEED = 0.65;
-  final double CRAWL_SCALAR = 0.769;
+  final double CRAWL_SCALAR = 0.2;
 
   public double driveSpeed = BASE_SPEED;
 
