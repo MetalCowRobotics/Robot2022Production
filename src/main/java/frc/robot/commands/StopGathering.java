@@ -6,7 +6,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 public class StopGathering extends SequentialCommandGroup{
     public StopGathering(IntakeSubsystem intake) {
         addCommands(
-            new StartIntakeWheels(intake),
+            new StopIntakeWheels(intake),
             new RetractIntake(intake)        
         );
     }
