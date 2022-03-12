@@ -13,10 +13,13 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
-import frc.robot.commands.StartShooterWheel;
-import frc.robot.commands.StopShooterWheel;
+import frc.robot.commands.StartGathering;
+import frc.robot.commands.StartIntakeWheels;
+import frc.robot.commands.StopGathering;
+import frc.robot.commands.StopIntakeWheels;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -26,7 +29,7 @@ import frc.robot.subsystems.MagazineSubsystem;
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
@@ -64,6 +67,9 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
+    // new Button(driverControls::getRightBumper).whenPressed(m_intakeSubsystem::deployIntake);
+    // new Button (driverControls::getRightBumper).whenPressed(m_intakeSubsystem::retractIntake);
+
     //Driver
 		//Reset Gyro
 		Constants.CONT_RESET_GYRO.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
@@ -77,10 +83,14 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
 		//Intake
-		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::deployIntake);
-		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
-		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
-		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new DeployIntake(m_intakeSubsystem));
+		// Constants.CONT_INTAKE_RETRACT.whenPressed(new RetractIntake(m_intakeSubsystem));
+
+		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartIntakeWheels(m_intakeSubsystem));
+		// Constants.CONT_INTAKE_RETRACT.whenPressed(new StopIntakeWheels(m_intakeSubsystem));
+
+    Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
+		Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
 
 	//Operator
 		//Switch Field Mode

@@ -4,19 +4,9 @@
 
 package frc.robot;
 
-import java.util.function.Function;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants {
     
     private final static XboxController driverControls = new XboxController(0);
@@ -31,15 +21,15 @@ public final class Constants {
     public static final int MAGAZINE_SENSOR = 0;
 
     //Intake
-    public static final int INTAKE_MOTOR = 20;
-    public static final int INTAKE_DEPLOYMENT_EXTEND = 0;
-    public static final int INTAKE_DEPLOYMENT_RETRACT = 1;
+    public static final int INTAKE_MOTOR = 15;
+    public static final int INTAKE_DEPLOYMENT_EXTEND = 2;
+    public static final int INTAKE_DEPLOYMENT_RETRACT = 3;
 
     //Climber
     public static final int CLIMBER_DRIVE_MOTOR_1 = 18;
     public static final int CLIMBER_DRIVE_MOTOR_2 = 19;
-    public static final int CLIMBER_DEPLOY = 2;
-    public static final int CLIMBER_RETRACT = 3;
+    public static final int CLIMBER_DEPLOY = 0;
+    public static final int CLIMBER_RETRACT = 1;
 
     //Shooter
     public static final int SHOOTER_MOTOR_LEFT = 17;
@@ -91,7 +81,7 @@ public final class Constants {
     public static final double MAGAZINE_SPEED = 0.3;
 
     //Intake Speed
-    public static final double INTAKE_SPEED = 0.5;
+    public static final double INTAKE_SPEED = 0.6;
 
     //Climber
     public static final double CLIMB_SPEED = 0.4;
@@ -133,6 +123,4 @@ public final class Constants {
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
         public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
         public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
-
-
 }
