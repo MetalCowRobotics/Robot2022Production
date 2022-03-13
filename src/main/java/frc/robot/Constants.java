@@ -18,7 +18,8 @@ public final class Constants {
 
     //Magazine
     public static final int MAGAZINE_MOTOR = 13;
-    public static final int MAGAZINE_SENSOR = 0;
+    public static final int MAGAZINE_SENSOR_FRONT = 0;
+    public static final int MAGAZINE_SENSOR_TOP = 1;
 
     //Intake
     public static final int INTAKE_MOTOR = 15;
@@ -104,10 +105,10 @@ public final class Constants {
         public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
         //Sprint
-        public final static Button CONT_SPRINT = new Button(driverControls::getRightBumper);
+        public final static Button CONT_SPRINT = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
 
         //Crawl
-        public final static Button CONT_CRAWL = new Button(driverControls::getLeftBumper);
+        public final static Button CONT_CRAWL = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
 
 
     //Operator
@@ -121,6 +122,6 @@ public final class Constants {
         //Climber
         public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
-        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getAButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getYButton);
 }

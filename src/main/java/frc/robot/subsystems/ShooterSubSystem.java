@@ -98,11 +98,12 @@ public class ShooterSubsystem extends SubsystemBase {
         }
         pid.setReference(targetSpeed, CANSparkMax.ControlType.kVelocity);
         SmartDashboard.putNumber("Current Speed", -encoder.getVelocity());
+        SmartDashboard.putNumber("Target Speed", targetSpeed);
         SmartDashboard.putBoolean("isReady", isReady());
     }
 
     public boolean isReady() {
-        if (encoder.getVelocity() >= targetSpeed) {
+        if (-encoder.getVelocity() >= -targetSpeed) {
             return true;
         } else {
             return false;

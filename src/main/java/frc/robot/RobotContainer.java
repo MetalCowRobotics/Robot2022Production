@@ -13,6 +13,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.LoadBall;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
@@ -41,13 +42,11 @@ public class RobotContainer {
 
   public RobotContainer() {
 
-    SmartDashboard.putNumber("mag speed", 0.3);
-
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
             () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+            () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
 
@@ -66,6 +65,8 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
+
+    new Button(m_magazineSubsystem::getIfFull).whenPressed(new StopGathering(m_intakeSubsystem));
 
     // new Button(driverControls::getRightBumper).whenPressed(m_intakeSubsystem::deployIntake);
     // new Button (driverControls::getRightBumper).whenPressed(m_intakeSubsystem::retractIntake);
@@ -110,9 +111,7 @@ public class RobotContainer {
 		//Shoot
     //Shoot High
 		Constants.CONT_SHOOTER_HIGH.whenPressed(m_ShooterSubsystem::shootHigh);//new StartShooterWheel(m_ShooterSubsystem));
-    if (m_ShooterSubsystem.isReady()) {
-		  Constants.CONT_SHOOTER_HIGH.whenPressed(m_magazineSubsystem::loadContinuous);
-    }
+		Constants.CONT_SHOOTER_HIGH.whenPressed(() -> m_magazineSubsystem.loadContinuous(m_ShooterSubsystem.isReady()));
 
 		Constants.CONT_SHOOTER_HIGH.whenReleased(m_ShooterSubsystem::stop);//new StopShooterWheel(m_ShooterSubsystem));
 		Constants.CONT_SHOOTER_HIGH.whenReleased(m_magazineSubsystem::stop);
@@ -120,7 +119,7 @@ public class RobotContainer {
     //Shoot Low
     Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);//new StartShooterWheel(m_ShooterSubsystem));
     if (m_ShooterSubsystem.isReady()) {
-		  Constants.CONT_SHOOTER_LOW.whenPressed(m_magazineSubsystem::loadContinuous);
+		  Constants.CONT_SHOOTER_LOW.whenPressed(() -> m_magazineSubsystem.loadContinuous(m_ShooterSubsystem.isReady()));
     }
 
 		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);//new StopShooterWheel(m_ShooterSubsystem));
