@@ -103,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public boolean isReady() {
-        if (-encoder.getVelocity() >= -targetSpeed) {
+        if (-encoder.getVelocity() >= (-targetSpeed - 50) && targetSpeed != 0) {
             return true;
         } else {
             return false;
