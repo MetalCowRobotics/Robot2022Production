@@ -44,8 +44,8 @@ public class RobotContainer {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
@@ -68,9 +68,6 @@ public class RobotContainer {
 
     new Button(m_magazineSubsystem::getIfFull).whenPressed(new StopGathering(m_intakeSubsystem));
 
-    // new Button(driverControls::getRightBumper).whenPressed(m_intakeSubsystem::deployIntake);
-    // new Button (driverControls::getRightBumper).whenPressed(m_intakeSubsystem::retractIntake);
-
     //Driver
 		//Reset Gyro
 		Constants.CONT_RESET_GYRO.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
@@ -82,13 +79,6 @@ public class RobotContainer {
 		//Sprint
 		Constants.CONT_SPRINT.whenPressed(m_drivetrainSubsystem::sprint);
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
-
-		//Intake
-		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new DeployIntake(m_intakeSubsystem));
-		// Constants.CONT_INTAKE_RETRACT.whenPressed(new RetractIntake(m_intakeSubsystem));
-
-		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartIntakeWheels(m_intakeSubsystem));
-		// Constants.CONT_INTAKE_RETRACT.whenPressed(new StopIntakeWheels(m_intakeSubsystem));
 
     Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
 		Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
@@ -109,21 +99,12 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-    //Shoot High
-		Constants.CONT_SHOOTER_HIGH.whenPressed(m_ShooterSubsystem::shootHigh);//new StartShooterWheel(m_ShooterSubsystem));
-		Constants.CONT_SHOOTER_HIGH.whenPressed(() -> m_magazineSubsystem.loadContinuous(m_ShooterSubsystem.isReady()));
+    Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);
+		Constants.CONT_SHOOTER_FIRE.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		Constants.CONT_SHOOTER_HIGH.whenReleased(m_ShooterSubsystem::stop);//new StopShooterWheel(m_ShooterSubsystem));
-		Constants.CONT_SHOOTER_HIGH.whenReleased(m_magazineSubsystem::stop);
 
-    //Shoot Low
-    Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);//new StartShooterWheel(m_ShooterSubsystem));
-    if (m_ShooterSubsystem.isReady()) {
-		  Constants.CONT_SHOOTER_LOW.whenPressed(() -> m_magazineSubsystem.loadContinuous(m_ShooterSubsystem.isReady()));
-    }
-
-		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);//new StopShooterWheel(m_ShooterSubsystem));
-		Constants.CONT_SHOOTER_LOW.whenReleased(m_magazineSubsystem::stop);
+		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);
+		Constants.CONT_SHOOTER_FIRE.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group

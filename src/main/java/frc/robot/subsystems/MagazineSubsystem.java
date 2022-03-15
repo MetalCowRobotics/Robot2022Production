@@ -38,11 +38,9 @@ public class MagazineSubsystem extends SubsystemBase {
         runContinuous = false;
     }
 
-    public void loadContinuous(boolean isReady) {
-        if (isReady) {
+    public void loadContinuous() {
             runContinuous = true;
             speed = Constants.MAGAZINE_SPEED;
-        }
     }
 
     @Override

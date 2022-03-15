@@ -13,7 +13,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
-    private RelativeEncoder encoder = leftMotor.getEncoder();
+    private RelativeEncoder encoder;
     private double targetSpeed = 0;
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
@@ -21,7 +21,8 @@ public class ShooterSubsystem extends SubsystemBase {
     private boolean fieldMode = true;
 
     public ShooterSubsystem() {
-        pid = leftMotor.getPIDController();
+        pid = rightMotor.getPIDController();
+        encoder = rightMotor.getEncoder();
 
         SmartDashboard.putNumber("Speed Correction", 0);
 
@@ -51,20 +52,12 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
-        rightMotor.follow(leftMotor, true);
-    }
-
-    public void shootHigh() {
-        if (fieldMode) {
-            targetSpeed = -Constants.HIGH_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
-        } else {
-            targetSpeed = 0;
-        }
+        leftMotor.follow(rightMotor, true);
     }
 
     public void shootLow() {
         if (fieldMode) {
-            targetSpeed = -Constants.LOW_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
+            targetSpeed = Constants.LOW_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
         } else {
             targetSpeed = 0;
         }
@@ -96,14 +89,14 @@ public class ShooterSubsystem extends SubsystemBase {
             pid.setOutputRange(min, max); 
             kMinOutput = min; kMaxOutput = max; 
         }
-        pid.setReference(targetSpeed, CANSparkMax.ControlType.kVelocity);
-        SmartDashboard.putNumber("Current Speed", -encoder.getVelocity());
+        pid.setReference(-targetSpeed, CANSparkMax.ControlType.kVelocity);
+        SmartDashboard.putNumber("Current Speed", Math.abs(encoder.getVelocity()));
         SmartDashboard.putNumber("Target Speed", targetSpeed);
         SmartDashboard.putBoolean("isReady", isReady());
     }
 
     public boolean isReady() {
-        if (-encoder.getVelocity() >= (-targetSpeed - 50) && targetSpeed != 0) {
+        if (Math.abs(encoder.getVelocity()) >= (targetSpeed - 50) && targetSpeed != 0) {
             return true;
         } else {
             return false;

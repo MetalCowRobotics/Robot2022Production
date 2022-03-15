@@ -113,8 +113,8 @@ public final class Constants {
 
     //Operator
         //Shooter
-        public final static Button CONT_SHOOTER_HIGH = new Button(() -> operatorControls.getLeftTriggerAxis() > 0.3);
         public final static Button CONT_SHOOTER_LOW = new Button(() -> operatorControls.getRightTriggerAxis() > 0.3);
+        public final static Button CONT_SHOOTER_FIRE = new Button(operatorControls::getBButton);
 
         //Field Mode
         public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
