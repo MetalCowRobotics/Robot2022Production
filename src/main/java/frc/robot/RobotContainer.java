@@ -16,6 +16,7 @@ import frc.robot.commands.DoDelay;
 import frc.robot.commands.DrivePath;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.StartGathering;
@@ -24,6 +25,9 @@ import frc.robot.commands.StartShooting;
 import frc.robot.commands.StopGathering;
 import frc.robot.commands.StopShooting;
 import frc.robot.commands.TurnDegrees;
+import frc.robot.commands.StartIntakeWheels;
+import frc.robot.commands.StopGathering;
+import frc.robot.commands.StopIntakeWheels;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -35,7 +39,7 @@ public class RobotContainer {
   private final XboxController operatorControls = new XboxController(1);
 
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
-  // private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
@@ -49,34 +53,34 @@ public class RobotContainer {
       new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv", false),
       new StartShooterWheel(m_ShooterSubsystem),
       new SequentialCommandGroup(
-        new DoDelay(2) 
-        // new StartGathering(m_intakeSubsystem)
+        new DoDelay(2), 
+        new StartGathering(m_intakeSubsystem)
       )
     ),
     new ParallelCommandGroup(
-      // new StopGathering(m_intakeSubsystem),
+      new StopGathering(m_intakeSubsystem),
       new TurnDegrees(m_drivetrainSubsystem, 180, 1)
     ),
     new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase2.csv", true),
-    // new StartShooting(m_magazineSubsystem),
-    new DoDelay(4)
-    // new StopShooting(m_magazineSubsystem)
+    new StartShooting(m_magazineSubsystem),
+    new DoDelay(4),
+    new StopShooting(m_magazineSubsystem)
   );
 
   private final SequentialCommandGroup MID_BALL_2_BALL_AUTO = new SequentialCommandGroup(
     new ParallelCommandGroup(
       new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase1.csv", false),
-      new StartShooterWheel(m_ShooterSubsystem)
-      // new StartGathering(m_intakeSubsystem)
+      new StartShooterWheel(m_ShooterSubsystem),
+      new StartGathering(m_intakeSubsystem)
     ),
     new ParallelCommandGroup(
-      // new StopGathering(m_intakeSubsystem),
+      new StopGathering(m_intakeSubsystem),
       new TurnDegrees(m_drivetrainSubsystem, 180, 1)
     ),
     new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase2.csv", true),
-    // new StartShooting(m_magazineSubsystem),
-    new DoDelay(4)
-    // new StopShooting(m_magazineSubsystem)
+    new StartShooting(m_magazineSubsystem),
+    new DoDelay(4),
+    new StopShooting(m_magazineSubsystem)
   );
 
   private final SequentialCommandGroup HIGH_BALL_2_BALL_AUTO = new SequentialCommandGroup(
@@ -84,28 +88,28 @@ public class RobotContainer {
       new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase1.csv", false),
       new StartShooterWheel(m_ShooterSubsystem),
       new SequentialCommandGroup(
-        new DoDelay(2)
-        // new StartGathering(m_intakeSubsystem)
+        new DoDelay(2),
+        new StartGathering(m_intakeSubsystem)
       )
     ),
     new ParallelCommandGroup(
-      // new StopGathering(m_intakeSubsystem),
+      new StopGathering(m_intakeSubsystem),
       new TurnDegrees(m_drivetrainSubsystem, 180, 1)
     ),
     new DrivePath(m_drivetrainSubsystem, "HighBall2BallAutoPhase2.csv", true),
-    // new StartShooting(m_magazineSubsystem),
-    new DoDelay(4)
-    // new StopShooting(m_magazineSubsystem)
+    new StartShooting(m_magazineSubsystem),
+    new DoDelay(4),
+    new StopShooting(m_magazineSubsystem)
   );
 
-  private final double CONTROLLER_DEADBAND = 0.1;
+  private final double CONTROLLER_DEADBAND = 0.2;
 
   public RobotContainer() {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
             m_drivetrainSubsystem,
-            () -> -modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+            () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
       // Configure the button bindings
       configureButtonBindings();
@@ -121,11 +125,14 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
-    return new SequentialCommandGroup(new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv", false), new TurnDegrees(m_drivetrainSubsystem, 180, 1), new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase2.csv", false));
-    // return ;
+    return new SequentialCommandGroup(new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase1.csv", false), new TurnDegrees(m_drivetrainSubsystem, 180, 1), new DrivePath(m_drivetrainSubsystem, "MidBall2BallAutoPhase2.csv", false));
+    // return LOW_BALL_2_BALL_AUTO;
   }
 
   private void configureButtonBindings() {
+
+    // new Button(driverControls::getRightBumper).whenPressed(m_intakeSubsystem::deployIntake);
+    // new Button (driverControls::getRightBumper).whenPressed(m_intakeSubsystem::retractIntake);
 
     //Driver
 		//Reset Gyro
@@ -144,10 +151,18 @@ public class RobotContainer {
 		// Constants.CONT_INTAKE_DEPLOY.whenReleased(m_intakeSubsystem::run);
 		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::retractIntake);
 		// Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new DeployIntake(m_intakeSubsystem));
+		// Constants.CONT_INTAKE_RETRACT.whenPressed(new RetractIntake(m_intakeSubsystem));
+
+		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartIntakeWheels(m_intakeSubsystem));
+		// Constants.CONT_INTAKE_RETRACT.whenPressed(new StopIntakeWheels(m_intakeSubsystem));
+
+    Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
+		Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
 
 	//Operator
 		//Switch Field Mode
-		Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
+		// Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
 
 		//Climb
 		Constants.CONT_CLIMBER_UP.whenPressed(m_climberSubsystem::extendClimberMotor);
@@ -160,11 +175,11 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
-		Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+		// Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
+		// Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
-		Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
+		// Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
+		// Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group
@@ -183,21 +198,11 @@ public class RobotContainer {
 
   }
 
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
-    // Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 0, 1);
-    // An ExampleCommand will run in autonomous
-    // return new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv");
-    //autoCommand;
-    // return new SequentialCommandGroup(new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase1.csv"), new DrivePath(m_drivetrainSubsystem, "LowBall2BallAutoPhase2.csv"));
-    return new TurnDegrees(m_drivetrainSubsystem, 180, 1);
-  }
 
   private static double deadband(double value, double deadband) {
     if (Math.abs(value) > deadband) {
@@ -219,3 +224,4 @@ public class RobotContainer {
     return null; //m_drivetrainSubsystem;
   }
 }
+

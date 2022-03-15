@@ -5,9 +5,11 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class StartGathering extends SequentialCommandGroup{
     public StartGathering(IntakeSubsystem intake) {
+        addRequirements(intake);
         addCommands(
             new DeployIntake(intake),
-            new StartIntakeWheels(intake)
+            new StartIntakeWheels(intake),
+            new NeutralIntake(intake)
         );
     }
 }
