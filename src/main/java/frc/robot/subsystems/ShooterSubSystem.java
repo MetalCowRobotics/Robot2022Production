@@ -13,21 +13,24 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
-    private RelativeEncoder encoder = leftMotor.getEncoder();
+    private RelativeEncoder encoder;
     private double targetSpeed = 0;
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
-    public ShooterSubsystem() {
-        pid = leftMotor.getPIDController();
+    private boolean fieldMode = true;
 
-        SmartDashboard.putNumber("Shooter Target", 500);
+    public ShooterSubsystem() {
+        pid = rightMotor.getPIDController();
+        encoder = rightMotor.getEncoder();
+
+        SmartDashboard.putNumber("Speed Correction", 0);
 
         // PID coefficients
-        kP = 0.00006;
-        kI = 0.000001;
+        kP = 0.00012;
+        kI = 0.0000005;
         kD = 0.0001;
-        kIz = 10000;
+        kIz = 1000;
         kFF = 0.000015;
         kMaxOutput = 1;
         kMinOutput = -1;
@@ -49,11 +52,15 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
-        rightMotor.follow(leftMotor, true);
+        leftMotor.follow(rightMotor, true);
     }
 
-    public void run() {
-        targetSpeed = SmartDashboard.getNumber("Shooter Target", 0);
+    public void shootLow() {
+        if (fieldMode) {
+            targetSpeed = Constants.LOW_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
+        } else {
+            targetSpeed = 0;
+        }
     }
 
     public void stop() {
@@ -64,13 +71,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void periodic() {
         // read PID coefficients from SmartDashboard
-        double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double ff = SmartDashboard.getNumber("Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Max Output", 0);
-        double min = SmartDashboard.getNumber("Min Output", 0);
+        double p = SmartDashboard.getNumber("P Gain", 0.00012);
+        double i = SmartDashboard.getNumber("I Gain", 0.0000005);
+        double d = SmartDashboard.getNumber("D Gain", 0.0001);
+        double iz = SmartDashboard.getNumber("I Zone", 1000);
+        double ff = SmartDashboard.getNumber("Feed Forward", 0.000015);
+        double max = SmartDashboard.getNumber("Max Output", -1);
+        double min = SmartDashboard.getNumber("Min Output", 1);
 
         // if PID coefficients on SmartDashboard have changed, write new values to controller
         if((p != kP)) { pid.setP(p); kP = p; }
@@ -82,18 +89,22 @@ public class ShooterSubsystem extends SubsystemBase {
             pid.setOutputRange(min, max); 
             kMinOutput = min; kMaxOutput = max; 
         }
-
-        pid.setReference(targetSpeed, CANSparkMax.ControlType.kVelocity);
-        SmartDashboard.putNumber("Current Speed", encoder.getVelocity());
+        pid.setReference(-targetSpeed, CANSparkMax.ControlType.kVelocity);
+        SmartDashboard.putNumber("Current Speed", Math.abs(encoder.getVelocity()));
+        SmartDashboard.putNumber("Target Speed", targetSpeed);
         SmartDashboard.putBoolean("isReady", isReady());
     }
 
     public boolean isReady() {
-        if (encoder.getVelocity() >= targetSpeed) {
+        if (Math.abs(encoder.getVelocity()) >= (targetSpeed - 50) && targetSpeed != 0) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public void switchFieldMode() {
+        fieldMode = !fieldMode;
     }
 
 }

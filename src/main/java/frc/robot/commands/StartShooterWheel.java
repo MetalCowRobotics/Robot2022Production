@@ -13,7 +13,7 @@ public class StartShooterWheel extends CommandBase {
 
     @Override 
     public void execute() {
-        m_motor1.run();
+        m_motor1.shootLow();
         checkState = false;
     }
 

@@ -4,19 +4,9 @@
 
 package frc.robot;
 
-import java.util.function.Function;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants {
     
     private final static XboxController driverControls = new XboxController(0);
@@ -28,7 +18,8 @@ public final class Constants {
 
     //Magazine
     public static final int MAGAZINE_MOTOR = 13;
-    public static final int MAGAZINE_SENSOR = 0;
+    public static final int MAGAZINE_SENSOR_FRONT = 0;
+    public static final int MAGAZINE_SENSOR_TOP = 1;
 
     //Intake
     public static final int INTAKE_MOTOR = 15;
@@ -43,7 +34,7 @@ public final class Constants {
 
     //Shooter
     public static final int SHOOTER_MOTOR_LEFT = 17;
-    public static final int SHOOTER_MOTOR_RIGHT = 16; //Needs changing
+    public static final int SHOOTER_MOTOR_RIGHT = 16;
 
     //Drivetrain
 
@@ -83,14 +74,22 @@ public final class Constants {
     public static final double DRIVETRAIN_RAMP_SPEED = 0.6;
     public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5;
 
+    public static final double BASE_SPEED = 0.5;
+    public static final double SPRINT_SCALAR = 2;
+    public static final double CRAWL_SCALAR = 0.2;
+
     //Magazine Speed
-    public static final double MAGAZINE_SPEED = -0.3;
+    public static final double MAGAZINE_SPEED = 0.3;
 
     //Intake Speed
     public static final double INTAKE_SPEED = 0.6;
 
     //Climber
-    public static final double CLIMB_SPEED = 0.05;
+    public static final double CLIMB_SPEED = 0.4;
+
+    //Shooter
+    public static final double HIGH_SHOT_SPEED = 2000;
+    public static final double LOW_SHOT_SPEED = 1750;
 
 
     /////////////////////////////////////////////////////////
@@ -106,16 +105,16 @@ public final class Constants {
         public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
         //Sprint
-        public final static Button CONT_SPRINT = new Button(driverControls::getBButton);
+        public final static Button CONT_SPRINT = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
 
         //Crawl
-        public final static Button CONT_CRAWL = new Button(driverControls::getAButton);
+        public final static Button CONT_CRAWL = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
 
 
     //Operator
         //Shooter
-        public final static Button CONT_SHOOTER_RUN = new Button(operatorControls::getRightBumper);
-        public final static Button CONT_SHOOTER_STOP = new Button(operatorControls::getRightBumper);
+        public final static Button CONT_SHOOTER_LOW = new Button(() -> operatorControls.getRightTriggerAxis() > 0.3);
+        public final static Button CONT_SHOOTER_FIRE = new Button(operatorControls::getBButton);
 
         //Field Mode
         public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
@@ -123,6 +122,6 @@ public final class Constants {
         //Climber
         public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
-        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getAButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getYButton);
 }

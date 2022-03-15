@@ -13,6 +13,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.LoadBall;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
@@ -28,7 +29,6 @@ import frc.robot.subsystems.MagazineSubsystem;
 
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
-  private final XboxController operatorControls = new XboxController(1);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
@@ -66,8 +66,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
 
-    // new Button(driverControls::getRightBumper).whenPressed(m_intakeSubsystem::deployIntake);
-    // new Button (driverControls::getRightBumper).whenPressed(m_intakeSubsystem::retractIntake);
+    new Button(m_magazineSubsystem::getIfFull).whenPressed(new StopGathering(m_intakeSubsystem));
 
     //Driver
 		//Reset Gyro
@@ -81,19 +80,13 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenPressed(m_drivetrainSubsystem::sprint);
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-		//Intake
-		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new DeployIntake(m_intakeSubsystem));
-		// Constants.CONT_INTAKE_RETRACT.whenPressed(new RetractIntake(m_intakeSubsystem));
-
-		// Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartIntakeWheels(m_intakeSubsystem));
-		// Constants.CONT_INTAKE_RETRACT.whenPressed(new StopIntakeWheels(m_intakeSubsystem));
-
     Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
 		Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
 
 	//Operator
 		//Switch Field Mode
-		// Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
+		Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_climberSubsystem::switchFieldMode);
+    Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_ShooterSubsystem::switchFieldMode);
 
 		//Climb
 		Constants.CONT_CLIMBER_UP.whenPressed(m_climberSubsystem::extendClimberMotor);
@@ -106,11 +99,12 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
-		// Constants.CONT_SHOOTER_RUN.whenPressed(m_ShooterSubsystem::run);
-		// Constants.CONT_SHOOTER_RUN.whenPressed(m_magazineSubsystem::loadContinuous);
+    Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);
+		Constants.CONT_SHOOTER_FIRE.whenPressed(m_magazineSubsystem::loadContinuous);
 
-		// Constants.CONT_SHOOTER_RUN.whenReleased(m_ShooterSubsystem::stop);
-		// Constants.CONT_SHOOTER_RUN.whenReleased(m_magazineSubsystem::stop);
+
+		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);
+		Constants.CONT_SHOOTER_FIRE.whenReleased(m_magazineSubsystem::stop);
 
 
     //Shooter Command Group

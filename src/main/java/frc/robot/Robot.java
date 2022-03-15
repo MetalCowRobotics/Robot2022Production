@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,6 +27,7 @@ public class Robot extends TimedRobot {
   private Command autonomousCommand;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private RobotContainer m_robotContainer;
+  private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
 
   /**
@@ -42,7 +45,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData(CommandScheduler.getInstance());
     SmartDashboard.putBoolean("Field Mode", true);
-    SmartDashboard.putNumber("Drivetrain Scalar", 0.5);
+    SmartDashboard.putNumber("Drivetrain Scalar", 1);
   }
 
   /**
@@ -74,6 +77,7 @@ public class Robot extends TimedRobot {
     if(autonomousCommand != null){
       autonomousCommand.schedule();
     }
+    compressor.enableDigital();
   }
 
   /** This function is called periodically during autonomous. */
@@ -84,7 +88,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    compressor.enableDigital();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
