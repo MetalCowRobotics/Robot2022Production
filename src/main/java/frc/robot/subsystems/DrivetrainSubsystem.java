@@ -246,14 +246,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public void zeroGyroscopeToAngle(double angle) {
-          m_pigeon.setYaw((angle + 90) % 360);
+          m_pigeon.setYaw((angle - 90) % 360);
   }
 
   public Rotation2d getGyroscopeRotation() {
         // m_pigeon.getFusedHeading();
 
         SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
-        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getYaw() % 360));
+        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getAbsoluteCompassHeading()));
         // return Rotation2d.fromDegrees(m_pigeon.getAbsoluteCompassHeading());
 
 

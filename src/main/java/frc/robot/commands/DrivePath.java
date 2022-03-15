@@ -41,7 +41,7 @@ public class DrivePath extends CommandBase {
         }
         addRequirements(drive);
         getNextLine();
-        drive.zeroGyroscopeToAngle(heading);
+        drive.zeroGyroscopeToAngle(heading % 360);
         this.resetGyro = resetGyro;
     }
 

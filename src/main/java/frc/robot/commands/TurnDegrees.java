@@ -39,7 +39,7 @@ public class TurnDegrees extends CommandBase {
     public void execute() {
         double difference = Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees());
         SmartDashboard.putNumber("difference", difference);
-        double actualSpeed = Math.copySign(Math.atan(Math.toRadians(difference)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign);
+        double actualSpeed = Math.copySign(Math.atan(Math.toRadians(difference)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign) * 0.7;
         SmartDashboard.putNumber("turn speed", actualSpeed);
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
