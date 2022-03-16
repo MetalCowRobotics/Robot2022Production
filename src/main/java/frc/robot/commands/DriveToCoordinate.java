@@ -17,7 +17,7 @@ public class DriveToCoordinate extends CommandBase {
 
     private final double POSITION_TOLERANCE = 5;
 
-    private double MAX_SPEED = 0.3; 
+    private double MAX_SPEED = 0.5; 
 
     private double targetX;
     private double targetY; 

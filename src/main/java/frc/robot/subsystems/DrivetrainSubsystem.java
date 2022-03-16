@@ -131,10 +131,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private Pose2d position = new Pose2d();
 
   public DrivetrainSubsystem() {
-        Translation2d backRightPosition = new Translation2d(0.292, -0.292);
-        Translation2d backLeftPosition = new Translation2d(-0.292, -0.292);
-        Translation2d frontRightPosition = new Translation2d(0.292, 0.292);
-        Translation2d frontLeftPosition = new Translation2d(-0.292, 0.292);
+        Translation2d backRightPosition = new Translation2d(0.3302, -0.3556);
+        Translation2d backLeftPosition = new Translation2d(-0.3302, -0.3556);
+        Translation2d frontRightPosition = new Translation2d(0.3302, 0.3556);
+        Translation2d frontLeftPosition = new Translation2d(-0.3302, 0.3556);
 
         SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
                 frontLeftPosition, frontRightPosition, backLeftPosition, backRightPosition
