@@ -30,7 +30,7 @@ public class ShooterSubsystem extends SubsystemBase {
         kP = 0.00012;
         kI = 0.0000005;
         kD = 0.0001;
-        kIz = 1000;
+        kIz = 3000;
         kFF = 0.000015;
         kMaxOutput = 1;
         kMinOutput = -1;
@@ -57,7 +57,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void shootLow() {
         if (fieldMode) {
-            targetSpeed = Constants.LOW_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
+            targetSpeed = Constants.HIGH_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
         } else {
             targetSpeed = 0;
         }
