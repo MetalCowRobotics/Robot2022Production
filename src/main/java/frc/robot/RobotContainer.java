@@ -61,7 +61,7 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
-    return (Command) m_chooser.getSelected();
+    return new DriveStraight(85, 0.3, m_drivetrainSubsystem, 30);
   }
 
   private void configureButtonBindings() {
@@ -129,10 +129,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
+    Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
     // Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 0, 1);
     // An ExampleCommand will run in autonomous
-    return null;//autoCommand;
+    return autoCommand;//autoCommand;
   }
 
   private static double deadband(double value, double deadband) {

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import frc.robot.Constants;
@@ -20,12 +21,15 @@ public class ClimberSubsystem extends SubsystemBase {
             MotorType.kBrushless);
     private static final DoubleSolenoid m_climberDeploy = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
             Constants.CLIMBER_DEPLOY, Constants.CLIMBER_RETRACT);
+    private RelativeEncoder m_climbEncoder = m_climber_1.getEncoder();
 
     private double climbSpeed = 0;
     private boolean fieldMode = true;
+    private double startPosition;
 
     public ClimberSubsystem() {
         m_climber_2.follow(m_climber_1);
+        startPosition = m_climbEncoder.getPosition();
     }
 
     public void setDebug(boolean debug) {
@@ -35,6 +39,7 @@ public class ClimberSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         m_climber_1.set(climbSpeed);
+        SmartDashboard.putNumber("climber", m_climber_1.getEncoder().getPosition());
     }
 
     public void switchFieldMode() {
@@ -58,13 +63,15 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void extendClimberMotor() {
         if (!fieldMode) {
-            climbSpeed = Constants.CLIMB_SPEED;
+            if (Math.abs(m_climbEncoder.getPosition() - startPosition) < 63) {
+                climbSpeed = -Constants.CLIMB_SPEED;
+            }
         }
     }
 
     public void retractClimberMotor() {
         if (!fieldMode) {
-            climbSpeed = -Constants.CLIMB_SPEED;
+            climbSpeed = Constants.CLIMB_SPEED;
         }
     }
 

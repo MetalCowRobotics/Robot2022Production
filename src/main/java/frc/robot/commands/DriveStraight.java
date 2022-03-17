@@ -48,11 +48,13 @@ public class DriveStraight extends CommandBase {
         }
 
         SmartDashboard.putNumber("current tics", m_drivetrain.getPosition());
+        SmartDashboard.putNumber(" ds x comp", driveVector[0] * m_drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
+        SmartDashboard.putNumber(" ds y comp", driveVector[1] * m_drivetrain.MAX_VELOCITY_METERS_PER_SECOND);
 
         m_drivetrain.drive(
                 ChassisSpeeds.fromFieldRelativeSpeeds(
-                        driveVector[0],
-                        driveVector[1],
+                        driveVector[0] * m_drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
+                        driveVector[1] * m_drivetrain.MAX_VELOCITY_METERS_PER_SECOND,
                         0,
                         m_drivetrain.getGyroscopeRotation()
                 )

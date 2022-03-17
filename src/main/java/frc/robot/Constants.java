@@ -122,6 +122,6 @@ public final class Constants {
         //Climber
         public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getAButton);
-        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
 }
