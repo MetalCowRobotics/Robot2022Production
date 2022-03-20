@@ -16,9 +16,10 @@ public class MagazineSubsystem extends SubsystemBase {
 
     private double speed = 0;
     private boolean runContinuous = false;
-
+    private double rampRate = 0.5;
     public MagazineSubsystem() {
-        
+        magMotor.setOpenLoopRampRate(rampRate);
+        magMotor.setClosedLoopRampRate(rampRate);
     }
 
     public boolean getBallInFront() {

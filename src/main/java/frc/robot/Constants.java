@@ -88,7 +88,7 @@ public final class Constants {
     public static final double CLIMB_SPEED = 0.4;
 
     //Shooter
-    public static final double HIGH_SHOT_SPEED = 3000;
+    public static final double HIGH_SHOT_SPEED = 3200;
     public static final double LOW_SHOT_SPEED = 1750;
 
 

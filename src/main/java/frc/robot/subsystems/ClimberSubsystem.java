@@ -31,6 +31,7 @@ public class ClimberSubsystem extends SubsystemBase {
         m_climber_2.follow(m_climber_1);
         startPosition = m_climbEncoder.getPosition();
         SmartDashboard.putNumber("start climb", startPosition);
+        SmartDashboard.putNumber("climber limit", 69);
     }
 
     public void setDebug(boolean debug) {
@@ -65,7 +66,7 @@ public class ClimberSubsystem extends SubsystemBase {
     public void extendClimberMotor() {
         if (!fieldMode) {
             // SmartDashboard.putNumber("difference", Math.abs(m_climbEncoder.getPosition() - startPosition))
-            if (Math.abs(m_climbEncoder.getPosition() - startPosition) < 69) {
+            if (Math.abs(m_climbEncoder.getPosition() - startPosition) < SmartDashboard.getNumber("climber limit", 69)) {
                 climbSpeed = -Constants.CLIMB_SPEED;
             } else {
                 climbSpeed = 0;

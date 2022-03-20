@@ -175,6 +175,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         BACK_LEFT_MODULE_STEER_ENCODER,
         BACK_LEFT_MODULE_STEER_OFFSET
         );
+        zeroGyroscope();
         }
 
   public void zeroGyroscope() {
@@ -182,8 +183,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getGyroscopeRotation() {
-        SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
-        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getYaw() % 360));
+        double angle = m_pigeon.getYaw() % 360;
+        if (angle < 0) {
+                angle += 360;
+        }
+        SmartDashboard.putNumber("Robot Angle", angle);
+        return Rotation2d.fromDegrees(angle);
   }
 
   public void crawl() {

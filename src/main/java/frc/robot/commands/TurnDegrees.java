@@ -16,15 +16,17 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class TurnDegrees extends CommandBase {
 
     private DrivetrainSubsystem m_drivetrain;
-    private double speed;
+    private double turnSpeed = Math.PI / 8;
     private double angle;
-    private double sign;
 
     public TurnDegrees(DrivetrainSubsystem drive, double angle, double direction) {
         this.m_drivetrain = drive;
         this.angle = (drive.getGyroscopeRotation().getDegrees() + angle) % 360;
-        this.sign = direction;
-
+        SmartDashboard.putNumber("goal angle", angle);
+        if (angle < 0) {
+            angle += 360;
+        }
+        turnSpeed *= direction;
         addRequirements(drive);
     }
 
@@ -37,16 +39,16 @@ public class TurnDegrees extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double difference = Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees());
-        SmartDashboard.putNumber("difference", difference);
-        double actualSpeed = Math.copySign(Math.atan(Math.toRadians(difference)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign) * 0.3;
-        actualSpeed = Math.max(actualSpeed, (Math.PI / 2) * 3);
-        SmartDashboard.putNumber("turn speed", actualSpeed);
+        // double difference = Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees());
+        // SmartDashboard.putNumber("difference", difference);
+        // double actualSpeed = Math.copySign(Math.atan(Math.toRadians(difference)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign) * 0.3;
+        // actualSpeed = Math.max(actualSpeed, (Math.PI / 2) * 3);
+        SmartDashboard.putNumber("turn speed", turnSpeed / DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                     0,
                     0,
-                    actualSpeed,
+                    turnSpeed / m_drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
                     m_drivetrain.getGyroscopeRotation()
             )
         );
@@ -55,7 +57,11 @@ public class TurnDegrees extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees()) < 5;
+        return getDifference() < 2;
+    }
+
+    public double getDifference() {
+        return Math.abs(angle - m_drivetrain.getGyroscopeRotation().getDegrees());
     }
 
     // Called once after isFinished returns true

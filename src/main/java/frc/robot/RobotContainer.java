@@ -68,23 +68,25 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
+    m_drivetrainSubsystem.zeroGyroscope();
     // return new DriveStraight(85, 0.3, m_drivetrainSubsystem, 30);
-    // return new TurnDegrees(m_drivetrainSubsystem, 180, -1);
-    // return new SequentialCommandGroup(new StartShooterWheel(m_ShooterSubsystem), new DoDelay(3), new StartMagazine(m_magazineSubsystem), new DoDelay(2), new DriveStraight(270, 0.3, m_drivetrainSubsystem, 140));
+    // return new TurnDegrees(m_drivetrainSubsystem, 180, 1);
+    // return new SequentialCommandGroup(new StartShooterWheel(m_ShooterSubsystem), new DoDelay(3), new StartMagazine(m_magazineSubsystem), new DoDelay(2), new DriveStraight(90, 0.3, m_drivetrainSubsystem, 90));
     return new SequentialCommandGroup(
       new StartGathering(m_intakeSubsystem),
-      new DriveStraight(90, 0.4, m_drivetrainSubsystem, 129),
+      new StartGathering(m_intakeSubsystem),
+      new DriveStraight(90, 0.3, m_drivetrainSubsystem, 50),
       new StopGathering(m_intakeSubsystem),
       new TurnDegrees(m_drivetrainSubsystem, 180, -1),
-      new DriveStraight(270, 0.4, m_drivetrainSubsystem, 129),
+      new DriveStraight(270, 0.3, m_drivetrainSubsystem, 55),
 
       new StartShooterWheel(m_ShooterSubsystem), 
       new DoDelay(3), 
-      new StartMagazine(m_magazineSubsystem),
-      new DoDelay(0.75),
-      new StopMagazine(m_magazineSubsystem),
-      new DoDelay(1),
       new StartMagazine(m_magazineSubsystem)
+      // new DoDelay(0.75),
+      // new StopMagazine(m_magazineSubsystem),
+      // new DoDelay(1),
+      // new StartMagazine(m_magazineSubsystem)
     );
   }
 
