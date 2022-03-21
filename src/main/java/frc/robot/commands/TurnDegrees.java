@@ -16,7 +16,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class TurnDegrees extends CommandBase {
 
     private DrivetrainSubsystem m_drivetrain;
-    private double turnSpeed = Math.PI / 8;
+    private double turnSpeed = Math.PI;
     private double angle;
 
     public TurnDegrees(DrivetrainSubsystem drive, double angle, double direction) {
@@ -43,12 +43,13 @@ public class TurnDegrees extends CommandBase {
         // SmartDashboard.putNumber("difference", difference);
         // double actualSpeed = Math.copySign(Math.atan(Math.toRadians(difference)) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND, sign) * 0.3;
         // actualSpeed = Math.max(actualSpeed, (Math.PI / 2) * 3);
-        SmartDashboard.putNumber("turn speed", turnSpeed / DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
+        SmartDashboard.putNumber("turn speed", DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
+        SmartDashboard.putNumber("difference", getDifference());
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                     0,
                     0,
-                    turnSpeed / m_drivetrain.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+                    turnSpeed,
                     m_drivetrain.getGyroscopeRotation()
             )
         );

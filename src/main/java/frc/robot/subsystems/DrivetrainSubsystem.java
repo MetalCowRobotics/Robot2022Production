@@ -179,7 +179,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
   public void zeroGyroscope() {
-    m_pigeon.setYaw(90);
+    m_pigeon.setYaw(85);
   }
 
   public Rotation2d getGyroscopeRotation() {
@@ -223,6 +223,7 @@ public void resetSpeed() {
 
         
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    SmartDashboard.putNumber("gyro position", getGyroscopeRotation().getDegrees());
     SmartDashboard.putNumber("x coordinate", getCoordinate()[0]);
     SmartDashboard.putNumber("y coordinate", getCoordinate()[1]);
 //     SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);

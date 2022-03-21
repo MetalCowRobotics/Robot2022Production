@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
@@ -47,6 +48,23 @@ public class RobotContainer {
 
   private final double CONTROLLER_DEADBAND = 0.2;
 
+  private final Command LOW_BALL_2_BALL = new SequentialCommandGroup(
+    new StartGathering(m_intakeSubsystem),
+    new StartGathering(m_intakeSubsystem),
+    new DriveStraight(90, 0.45, m_drivetrainSubsystem, 48),
+    new DoDelay(0.5),
+    new StopGathering(m_intakeSubsystem),
+    // new DriveStraight(0, 0.6, m_drivetrainSubsystem, 30),
+    new ParallelCommandGroup(
+      new StartShooterWheel(m_ShooterSubsystem),
+      new TurnDegrees(m_drivetrainSubsystem, 180, -1)
+    ),
+    new DriveStraight(19.65 + 270, 0.6, m_drivetrainSubsystem, Math.hypot(30, 84)),
+ 
+    new DoDelay(1), 
+    new StartMagazine(m_magazineSubsystem)
+  );
+
   public RobotContainer() {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
@@ -68,26 +86,28 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
-    m_drivetrainSubsystem.zeroGyroscope();
+    // m_drivetrainSubsystem.zeroGyroscope();
     // return new DriveStraight(85, 0.3, m_drivetrainSubsystem, 30);
     // return new TurnDegrees(m_drivetrainSubsystem, 180, 1);
     // return new SequentialCommandGroup(new StartShooterWheel(m_ShooterSubsystem), new DoDelay(3), new StartMagazine(m_magazineSubsystem), new DoDelay(2), new DriveStraight(90, 0.3, m_drivetrainSubsystem, 90));
-    return new SequentialCommandGroup(
-      new StartGathering(m_intakeSubsystem),
-      new StartGathering(m_intakeSubsystem),
-      new DriveStraight(90, 0.3, m_drivetrainSubsystem, 50),
-      new StopGathering(m_intakeSubsystem),
-      new TurnDegrees(m_drivetrainSubsystem, 180, -1),
-      new DriveStraight(270, 0.3, m_drivetrainSubsystem, 55),
+    return LOW_BALL_2_BALL;
+    // return new SequentialCommandGroup(
+    //   new DoDelay(0.5),
+    //   new StartGathering(m_intakeSubsystem),
+    //   new StartGathering(m_intakeSubsystem),
+    //   new DriveStraight(90, 0.3, m_drivetrainSubsystem, 52),
+    //   new StopGathering(m_intakeSubsystem),
+    //   new TurnDegrees(m_drivetrainSubsystem, 175, -1),
+    //   new DriveStraight(270, 0.3, m_drivetrainSubsystem, 86),
 
-      new StartShooterWheel(m_ShooterSubsystem), 
-      new DoDelay(3), 
-      new StartMagazine(m_magazineSubsystem)
-      // new DoDelay(0.75),
-      // new StopMagazine(m_magazineSubsystem),
-      // new DoDelay(1),
-      // new StartMagazine(m_magazineSubsystem)
-    );
+    //   new StartShooterWheel(m_ShooterSubsystem), 
+    //   new DoDelay(3), 
+    //   new StartMagazine(m_magazineSubsystem)
+    //   // new DoDelay(0.75),
+    //   // new StopMagazine(m_magazineSubsystem),
+    //   // new DoDelay(1),
+    //   // new StartMagazine(m_magazineSubsystem)
+    // );
   }
 
   private void configureButtonBindings() {
