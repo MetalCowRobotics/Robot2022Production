@@ -45,11 +45,12 @@ public class TurnDegrees extends CommandBase {
         // actualSpeed = Math.max(actualSpeed, (Math.PI / 2) * 3);
         SmartDashboard.putNumber("turn speed", DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND);
         SmartDashboard.putNumber("difference", getDifference());
+        double rampScalar = 1.0 / (1 + Math.exp(getDifference() + 5));
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                     0,
                     0,
-                    turnSpeed,
+                    turnSpeed * rampScalar,
                     m_drivetrain.getGyroscopeRotation()
             )
         );
