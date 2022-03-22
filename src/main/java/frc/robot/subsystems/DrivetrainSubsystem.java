@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import frc.robot.Constants;
 
@@ -254,5 +255,42 @@ public void resetSpeed() {
   private double convertMotorVelocity(double ticSpeed) {
         return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
   }
+
+  PIDController facingPidController = new PIDController(0.7, 0, 0.4);
+  private void faceTarget() {
+        double[] robotPosition = getCoordinate();
+        double distance = Math.hypot(robotPosition[0], robotPosition[1]);
+
+        double targetHeading = Math.acos(robotPosition[0] / distance);
+        targetHeading = Math.toDegrees(targetHeading) + 90;
+        SmartDashboard.putNumber("goal-facing heading", targetHeading);
+
+        double correction = findShortestPath(m_pigeon.getYaw(), targetHeading);
+        SmartDashboard.putNumber("facing difference", correction);
+  }
+
+public double makeAbsolute(double heading) {
+  heading %= 360;
+  if (heading < 0) {
+          heading += 360;
+  }
+
+  return heading;
+}
+
+public double findShortestPath(double start, double end) {
+  start = makeAbsolute(start);
+  end = makeAbsolute(end);
+  double difference = end - start;
+  difference = makeAbsolute(difference);
+  if (difference > 180) {
+          difference = makeAbsolute(360 - difference);
+  }
+  if (makeAbsolute(start + difference) == end) {
+          return difference;
+  } else {
+          return -difference;
+  }
+}
 
 }
