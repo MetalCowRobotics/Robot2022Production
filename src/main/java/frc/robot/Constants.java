@@ -82,7 +82,7 @@ public final class Constants {
     public static final double MAGAZINE_SPEED = 0.3;
 
     //Intake Speed
-    public static final double INTAKE_SPEED = 0.6;
+    public static final double INTAKE_SPEED = 0.8;
 
     //Climber
     public static final double CLIMB_SPEED = 0.4;
@@ -110,6 +110,9 @@ public final class Constants {
         //Crawl
         public final static Button CONT_CRAWL = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
 
+        // Swerve
+        public final static Button CONT_FIELD_ORIENTED = new Button(driverControls::getAButton);
+        public final static Button CONT_ROBOT_ORIENTED = new Button(driverControls::getXButton);
 
     //Operator
         //Shooter

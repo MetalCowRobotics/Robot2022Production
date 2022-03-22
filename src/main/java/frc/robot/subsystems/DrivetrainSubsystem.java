@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import frc.robot.Constants;
 
@@ -179,7 +180,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
   public void zeroGyroscope() {
-    m_pigeon.setYaw(85);
+    m_pigeon.setYaw(90);
   }
 
   public Rotation2d getGyroscopeRotation() {
@@ -217,8 +218,22 @@ public void resetSpeed() {
         return coordinate;
   }
 
+  PIDController driftPidController = new PIDController(7.0, 0.00, 0.4);
+  double heading;
+  double pXY;
+
+  public void correctDrift() {
+        double xySpeed = Math.abs(m_chassisSpeeds.vxMetersPerSecond) + Math.abs(m_chassisSpeeds.vyMetersPerSecond);
+        if (Math.abs(m_chassisSpeeds.omegaRadiansPerSecond) > 0.0 || pXY <= 0) {
+                heading += getGyroscopeRotation().getDegrees();
+        } else if (xySpeed > 0) {
+                m_chassisSpeeds.omegaRadiansPerSecond += driftPidController.calculate(getGyroscopeRotation().getDegrees(), heading);
+        }
+  }
+
   @Override
   public void periodic() {
+        correctDrift();
         // SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
 
         
@@ -259,7 +274,8 @@ public void resetSpeed() {
   }
 
   private double convertMotorVelocity(double ticSpeed) {
-        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
+        // return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
+        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (((4 / 2.54) / 100) * Math.PI);
   }
 
 }
