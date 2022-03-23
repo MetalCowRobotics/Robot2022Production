@@ -45,25 +45,25 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 8;
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 7;
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 9;
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(58.7 + 180);
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(59.6 + 180);
 
         //Front Right Module
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 6;
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(3.4);
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(1.5);
 
         //Back Left Module
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11;
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 10;
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 12;
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(346.1 + 180);
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(345.4 + 180);
 
         //Back Right Module
         public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 2;
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 1;
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 3;
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(94.2);
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(94.5);
 
     /////////////////////////////////////////////////////////
     /////:::::::::::::::::::CONSTANTS::::::::::::::::::://///
@@ -88,7 +88,7 @@ public final class Constants {
     public static final double CLIMB_SPEED = 0.4;
 
     //Shooter
-    public static final double HIGH_SHOT_SPEED = 2000;
+    public static final double HIGH_SHOT_SPEED = 3000;
     public static final double LOW_SHOT_SPEED = 1750;
 
 
@@ -105,10 +105,10 @@ public final class Constants {
         public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
         //Sprint
-        public final static Button CONT_SPRINT = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
+        public final static Button CONT_SPRINT = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
 
         //Crawl
-        public final static Button CONT_CRAWL = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
+        public final static Button CONT_CRAWL = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
 
 
     //Operator
@@ -122,6 +122,6 @@ public final class Constants {
         //Climber
         public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getAButton);
-        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
 }
