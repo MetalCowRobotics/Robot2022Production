@@ -36,6 +36,9 @@ public final class Constants {
     public static final int SHOOTER_MOTOR_LEFT = 17;
     public static final int SHOOTER_MOTOR_RIGHT = 16;
 
+    public static final int HOOD_UP = 4;
+    public static final int HOOD_DOWN = 5;
+
     //Drivetrain
 
         //Pigeon
@@ -115,6 +118,10 @@ public final class Constants {
         //Shooter
         public final static Button CONT_SHOOTER_LOW = new Button(() -> operatorControls.getRightTriggerAxis() > 0.3);
         public final static Button CONT_SHOOTER_FIRE = new Button(operatorControls::getBButton);
+
+        //Hood
+        public final static Button CONT_HOOD_UP = new Button(() -> operatorControls.getPOV() > 270 || operatorControls.getPOV() < 90);
+        public final static Button CONT_HOOD_DOWN = new Button(() -> operatorControls.getPOV() < 270 && operatorControls.getPOV() > 90);
 
         //Field Mode
         public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);

@@ -106,6 +106,10 @@ public class RobotContainer {
 		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);
 		Constants.CONT_SHOOTER_FIRE.whenReleased(m_magazineSubsystem::stop);
 
+    //Hood
+    Constants.CONT_HOOD_UP.whenReleased(m_ShooterSubsystem::hoodUp);
+    Constants.CONT_HOOD_DOWN.whenReleased(m_ShooterSubsystem::hoodDown);
+
 
     //Shooter Command Group
     delay = SmartDashboard.getNumber("Delay", delay);

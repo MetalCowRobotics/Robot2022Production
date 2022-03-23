@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -12,6 +14,9 @@ import frc.robot.Constants;
 public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
+
+    private static final DoubleSolenoid hoodPosition = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+    Constants.HOOD_UP, Constants.HOOD_DOWN);
 
     private RelativeEncoder encoder;
     private double targetSpeed = 0;
@@ -53,6 +58,14 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
         leftMotor.follow(rightMotor, true);
+    }
+
+    public void hoodUp() {
+        hoodPosition.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void hoodDown() {
+        hoodPosition.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void shootLow() {
