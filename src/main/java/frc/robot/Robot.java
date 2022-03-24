@@ -78,7 +78,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutoCommand();
     if(autonomousCommand != null) {
-      CommandScheduler.getInstance().schedule(true, autonomousCommand);
+      CommandScheduler.getInstance().schedule(autonomousCommand);
     }
     compressor.enableDigital();
   }

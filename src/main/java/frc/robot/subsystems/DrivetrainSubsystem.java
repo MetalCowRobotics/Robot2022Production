@@ -45,6 +45,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import frc.robot.Constants;
 
@@ -175,6 +176,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         BACK_LEFT_MODULE_STEER_ENCODER,
         BACK_LEFT_MODULE_STEER_OFFSET
         );
+        zeroGyroscope();
         }
 
   public void zeroGyroscope() {
@@ -182,8 +184,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getGyroscopeRotation() {
-        SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
-        return Rotation2d.fromDegrees(Math.abs(m_pigeon.getYaw() % 360));
+        double angle = m_pigeon.getYaw() % 360;
+        if (angle < 0) {
+                angle += 360;
+        }
+        SmartDashboard.putNumber("Robot Angle", angle);
+        return Rotation2d.fromDegrees(angle);
   }
 
   public void crawl() {
@@ -212,12 +218,27 @@ public void resetSpeed() {
         return coordinate;
   }
 
+  PIDController driftPidController = new PIDController(7.0, 0.00, 0.4);
+  double heading;
+  double pXY;
+
+  public void correctDrift() {
+        double xySpeed = Math.abs(m_chassisSpeeds.vxMetersPerSecond) + Math.abs(m_chassisSpeeds.vyMetersPerSecond);
+        if (Math.abs(m_chassisSpeeds.omegaRadiansPerSecond) > 0.0 || pXY <= 0) {
+                heading += getGyroscopeRotation().getDegrees();
+        } else if (xySpeed > 0) {
+                m_chassisSpeeds.omegaRadiansPerSecond += driftPidController.calculate(getGyroscopeRotation().getDegrees(), heading);
+        }
+  }
+
   @Override
   public void periodic() {
+        correctDrift();
         // SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
 
         
     SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(m_chassisSpeeds);
+    SmartDashboard.putNumber("gyro position", getGyroscopeRotation().getDegrees());
     SmartDashboard.putNumber("x coordinate", getCoordinate()[0]);
     SmartDashboard.putNumber("y coordinate", getCoordinate()[1]);
 //     SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
@@ -253,7 +274,8 @@ public void resetSpeed() {
   }
 
   private double convertMotorVelocity(double ticSpeed) {
-        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
+        // return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
+        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (((4 / 2.54) / 100) * Math.PI);
   }
 
 }
