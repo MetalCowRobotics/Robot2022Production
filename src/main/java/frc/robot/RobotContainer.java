@@ -205,18 +205,9 @@ public class RobotContainer {
       m_intakeSubsystem.stop();
     });
 
-    // Constants.CONT_FIELD_ORIENTED.whenPressed(() -> m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
-    //   m_drivetrainSubsystem,
-    //   () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //   () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //   () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75))));
-
-    // Constants.CONT_ROBOT_ORIENTED.whenPressed(() -> m_drivetrainSubsystem.setDefaultCommand(new RobotOrientedDriveCommand(
-    //     m_drivetrainSubsystem,
-    //     () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //     () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-    //     () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75))));
-
+    //Hood
+    Constants.CONT_HOOD_UP.whenReleased(m_ShooterSubsystem::hoodUp);
+    Constants.CONT_HOOD_DOWN.whenReleased(m_ShooterSubsystem::hoodDown);
 
 
     //Shooter Command Group

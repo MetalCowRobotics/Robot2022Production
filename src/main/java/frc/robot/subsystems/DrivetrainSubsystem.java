@@ -261,6 +261,7 @@ public void resetSpeed() {
                 states[3].angle.getRadians());
 //     m_backRightModule.getDriveVelocity()
         updatePosition();
+        SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
   }
 
   public void updatePosition() {
