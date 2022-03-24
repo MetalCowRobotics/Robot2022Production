@@ -71,11 +71,14 @@ public class Robot extends TimedRobot {
    * below with additional strings. If using the SendableChooser make sure to add them to the
    * chooser code above as well.
    */
+
+  boolean autonomous = true;
+
   @Override
   public void autonomousInit() {
     autonomousCommand = m_robotContainer.getAutoCommand();
-    if(autonomousCommand != null){
-      autonomousCommand.schedule();
+    if(autonomousCommand != null) {
+      CommandScheduler.getInstance().schedule(true, autonomousCommand);
     }
     compressor.enableDigital();
   }
@@ -90,6 +93,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     compressor.enableDigital();
+    
   }
 
   /** This function is called periodically during operator control. */

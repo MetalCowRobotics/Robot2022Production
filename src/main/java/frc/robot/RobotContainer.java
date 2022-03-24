@@ -8,19 +8,26 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
-import frc.robot.commands.LoadBall;
+// import frc.robot.com_smmands.LoadBall;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.StartGathering;
 import frc.robot.commands.StartIntakeWheels;
+import frc.robot.commands.StartMagazine;
+import frc.robot.commands.StartShooterWheel;
+import frc.robot.commands.StartShooterWheel;
 import frc.robot.commands.StopGathering;
 import frc.robot.commands.StopIntakeWheels;
+import frc.robot.commands.StopMagazine;
+import frc.robot.commands.StopShooterWheel;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -46,7 +53,7 @@ public class RobotContainer {
             m_drivetrainSubsystem,
             () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
             () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
-            () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)));
+            () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75)));
       // Configure the button bindings
       configureButtonBindings();
 
@@ -61,7 +68,24 @@ public class RobotContainer {
   }
 
   public Command getAutoCommand(){
-    return (Command) m_chooser.getSelected();
+    // return new DriveStraight(85, 0.3, m_drivetrainSubsystem, 30);
+    // return new TurnDegrees(m_drivetrainSubsystem, 180, -1);
+    // return new SequentialCommandGroup(new StartShooterWheel(m_ShooterSubsystem), new DoDelay(3), new StartMagazine(m_magazineSubsystem), new DoDelay(2), new DriveStraight(270, 0.3, m_drivetrainSubsystem, 140));
+    return new SequentialCommandGroup(
+      new StartGathering(m_intakeSubsystem),
+      new DriveStraight(90, 0.4, m_drivetrainSubsystem, 129),
+      new StopGathering(m_intakeSubsystem),
+      new TurnDegrees(m_drivetrainSubsystem, 180, -1),
+      new DriveStraight(270, 0.4, m_drivetrainSubsystem, 129),
+
+      new StartShooterWheel(m_ShooterSubsystem), 
+      new DoDelay(3), 
+      new StartMagazine(m_magazineSubsystem),
+      new DoDelay(0.75),
+      new StopMagazine(m_magazineSubsystem),
+      new DoDelay(1),
+      new StartMagazine(m_magazineSubsystem)
+    );
   }
 
   private void configureButtonBindings() {
@@ -89,7 +113,7 @@ public class RobotContainer {
     Constants.CONT_SWITCH_FIELD_MODE.whenPressed(m_ShooterSubsystem::switchFieldMode);
 
 		//Climb
-		Constants.CONT_CLIMBER_UP.whenPressed(m_climberSubsystem::extendClimberMotor);
+		Constants.CONT_CLIMBER_UP.whileHeld(m_climberSubsystem::extendClimberMotor);
 		Constants.CONT_CLIMBER_UP.whenReleased(m_climberSubsystem::stopClimberMotor);
 
 		Constants.CONT_CLIMBER_DOWN.whenPressed(m_climberSubsystem::retractClimberMotor);
@@ -100,11 +124,17 @@ public class RobotContainer {
 
 		//Shoot
     Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);
-		Constants.CONT_SHOOTER_FIRE.whenPressed(m_magazineSubsystem::loadContinuous);
+		Constants.CONT_SHOOTER_FIRE.whenPressed(() -> {
+      m_magazineSubsystem.loadContinuous();
+      m_intakeSubsystem.run();
+    });
 
 
 		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);
-		Constants.CONT_SHOOTER_FIRE.whenReleased(m_magazineSubsystem::stop);
+		Constants.CONT_SHOOTER_FIRE.whenReleased(() -> {
+      m_magazineSubsystem.stop();
+      m_intakeSubsystem.stop();
+    });
 
     //Hood
     Constants.CONT_HOOD_UP.whenReleased(m_ShooterSubsystem::hoodUp);
@@ -133,7 +163,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
+    Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
     // Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 0, 1);
     // An ExampleCommand will run in autonomous
     return null;//autoCommand;
