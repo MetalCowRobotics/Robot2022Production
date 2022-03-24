@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 public final class Constants {
     
@@ -85,9 +86,10 @@ public final class Constants {
     public static final double MAGAZINE_SPEED = 0.3;
 
     //Intake Speed
-    public static final double INTAKE_SPEED = 0.8;
+    public static final double INTAKE_SPEED = 0.9;
 
     //Climber
+
     public static final double CLIMB_SPEED = 0.4;
 
     //Shooter
@@ -123,8 +125,8 @@ public final class Constants {
         public final static Button CONT_SHOOTER_FIRE = new Button(operatorControls::getBButton);
 
         //Hood
-        public final static Button CONT_HOOD_UP = new Button(() -> operatorControls.getPOV() > 270 || operatorControls.getPOV() < 90);
-        public final static Button CONT_HOOD_DOWN = new Button(() -> operatorControls.getPOV() < 270 && operatorControls.getPOV() > 90);
+        public final static POVButton CONT_HOOD_UP = new POVButton(operatorControls, 0);
+        public final static POVButton CONT_HOOD_DOWN = new POVButton(operatorControls, 180);
 
         //Field Mode
         public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
