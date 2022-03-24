@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.robot.commands.DefaultDriveCommand;
@@ -16,6 +18,7 @@ import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
 // import frc.robot.com_smmands.LoadBall;
 import frc.robot.commands.RetractIntake;
+import frc.robot.commands.RobotOrientedDriveCommand;
 import frc.robot.commands.DeployIntake;
 import frc.robot.commands.ShootBall;
 import frc.robot.commands.StartGathering;
@@ -47,6 +50,53 @@ public class RobotContainer {
 
   private final double CONTROLLER_DEADBAND = 0.2;
 
+  private final Command LOW_BALL_2_BALL = new SequentialCommandGroup(
+    new StartGathering(m_intakeSubsystem),
+    new StartGathering(m_intakeSubsystem),
+    new DriveStraight(90, 0.45, m_drivetrainSubsystem, 48),
+    new DoDelay(0.5),
+    new StopGathering(m_intakeSubsystem),
+    // new DriveStraight(0, 0.6, m_drivetrainSubsystem, 30),
+    new StartShooterWheel(m_ShooterSubsystem),
+    new TurnDegrees(m_drivetrainSubsystem, 180, -1),
+    new DriveStraight(19.65 + 270, 0.7, m_drivetrainSubsystem, Math.hypot(30, 84)),
+    new StartMagazine(m_magazineSubsystem)
+  );
+
+  private final Command HIGH_BALL_2_BALL = new SequentialCommandGroup(
+    new StartGathering(m_intakeSubsystem),
+    new StartGathering(m_intakeSubsystem),
+    new DriveStraight(90, 0.45, m_drivetrainSubsystem, 48),
+    new DoDelay(0.5),
+    new StopGathering(m_intakeSubsystem),
+    // new DriveStraight(0, 0.6, m_drivetrainSubsystem, 30),
+    new StartShooterWheel(m_ShooterSubsystem),
+    new TurnDegrees(m_drivetrainSubsystem, 180, -1),
+    new DriveStraight(270 - 19.65, 0.7, m_drivetrainSubsystem, Math.hypot(30, 84)),
+    new StartMagazine(m_magazineSubsystem)
+  );
+
+  private final Command ANYWHERE_1_BALL = new SequentialCommandGroup(
+    new StartShooterWheel(m_ShooterSubsystem), 
+    new DoDelay(3), 
+    new StartMagazine(m_magazineSubsystem), 
+    new DoDelay(2), 
+    new DriveStraight(90, 0.3, m_drivetrainSubsystem, 90)
+  );
+
+  // private final SequentialCommandGroup LOW_START_4BALL = new SequentialCommandGroup(
+  //   LOW_BALL_2_BALL,
+  //   new DoDelay(1.5),
+  //   new DriveStraight(90, 0.7, m_drivetrainSubsystem, 12),
+  //   new TurnDegrees(m_drivetrainSubsystem, 129 - 180, 1),
+  //   new StartGathering(m_intakeSubsystem),
+  //   new DriveStraight(39, 0.7, m_drivetrainSubsystem, 120),
+  //   new TurnDegrees(m_drivetrainSubsystem, 141 - 5, 1),
+  //   new StopGathering(m_intakeSubsystem),
+  //   new DriveStraight(141 + 80, 0.7, m_drivetrainSubsystem, 120),
+  //   new StartMagazine(m_magazineSubsystem)
+  // );
+
   public RobotContainer() {
 
     m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
@@ -57,35 +107,41 @@ public class RobotContainer {
       // Configure the button bindings
       configureButtonBindings();
 
-      // m_chooser.setDefaultOption("Drive to -1,0", new DriveToCoordinate(m_drivetrainSubsystem, -1, 0));
-      // m_chooser.addOption("Drive to 1,0", new DriveToCoordinate(m_drivetrainSubsystem, 1, 0));
-      // m_chooser.addOption("Drive to 0,-1", new DriveToCoordinate(m_drivetrainSubsystem, 0, -1));
+
+      m_chooser.addOption("High 2 Ball", HIGH_BALL_2_BALL);
+      m_chooser.addOption("Low 2 Ball", LOW_BALL_2_BALL);
+      m_chooser.setDefaultOption("1 Ball", ANYWHERE_1_BALL);
       // m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
       // m_chooser.addOption("Delay Drive Forward", m_shootball);
-      SmartDashboard.putNumber("Delay", delay);
-
+      SmartDashboard.putNumber("Delay", 0);
+      // new RetractIntake(m_intakeSubsystem);
       SmartDashboard.putData("Autonomous Command", m_chooser);
+
   }
 
   public Command getAutoCommand(){
+    // m_drivetrainSubsystem.zeroGyroscope();
     // return new DriveStraight(85, 0.3, m_drivetrainSubsystem, 30);
-    // return new TurnDegrees(m_drivetrainSubsystem, 180, -1);
-    // return new SequentialCommandGroup(new StartShooterWheel(m_ShooterSubsystem), new DoDelay(3), new StartMagazine(m_magazineSubsystem), new DoDelay(2), new DriveStraight(270, 0.3, m_drivetrainSubsystem, 140));
-    return new SequentialCommandGroup(
-      new StartGathering(m_intakeSubsystem),
-      new DriveStraight(90, 0.4, m_drivetrainSubsystem, 129),
-      new StopGathering(m_intakeSubsystem),
-      new TurnDegrees(m_drivetrainSubsystem, 180, -1),
-      new DriveStraight(270, 0.4, m_drivetrainSubsystem, 129),
+    // return new TurnDegrees(m_drivetrainSubsystem, 180, 1);
+    // return new SequentialCommandGroup(new StartShooterWheel(m_ShooterSubsystem), new DoDelay(3), new StartMagazine(m_magazineSubsystem), new DoDelay(2), new DriveStraight(90, 0.3, m_drivetrainSubsystem, 90));
+    return new SequentialCommandGroup(new DoDelay(SmartDashboard.getNumber("Delay", 0)), (Command) m_chooser.getSelected());
+    // return new SequentialCommandGroup(
+    //   new DoDelay(0.5),
+    //   new StartGathering(m_intakeSubsystem),
+    //   new StartGathering(m_intakeSubsystem),
+    //   new DriveStraight(90, 0.3, m_drivetrainSubsystem, 52),
+    //   new StopGathering(m_intakeSubsystem),
+    //   new TurnDegrees(m_drivetrainSubsystem, 175, -1),
+    //   new DriveStraight(270, 0.3, m_drivetrainSubsystem, 86),
 
-      new StartShooterWheel(m_ShooterSubsystem), 
-      new DoDelay(3), 
-      new StartMagazine(m_magazineSubsystem),
-      new DoDelay(0.75),
-      new StopMagazine(m_magazineSubsystem),
-      new DoDelay(1),
-      new StartMagazine(m_magazineSubsystem)
-    );
+    //   new StartShooterWheel(m_ShooterSubsystem), 
+    //   new DoDelay(3), 
+    //   new StartMagazine(m_magazineSubsystem)
+    //   // new DoDelay(0.75),
+    //   // new StopMagazine(m_magazineSubsystem),
+    //   // new DoDelay(1),
+    //   // new StartMagazine(m_magazineSubsystem)
+    // );
   }
 
   private void configureButtonBindings() {
@@ -104,8 +160,21 @@ public class RobotContainer {
 		Constants.CONT_SPRINT.whenPressed(m_drivetrainSubsystem::sprint);
 		Constants.CONT_SPRINT.whenReleased(m_drivetrainSubsystem::resetSpeed);
 
-    Constants.CONT_INTAKE_DEPLOY.whenPressed(new StartGathering(m_intakeSubsystem));
-		Constants.CONT_INTAKE_RETRACT.whenPressed(new StopGathering(m_intakeSubsystem));
+    Constants.CONT_INTAKE_DEPLOY.whenPressed(() -> {
+      if (m_intakeSubsystem.isDown()) {
+        CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
+      } else {
+        CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
+      }
+    });
+
+    Constants.CONT_INTAKE_RETRACT.whenPressed(() -> {
+      if (m_intakeSubsystem.isDown()) {
+        CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
+      } else {
+        CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
+      }
+    });
 
 	//Operator
 		//Switch Field Mode
@@ -136,9 +205,22 @@ public class RobotContainer {
       m_intakeSubsystem.stop();
     });
 
+    // Constants.CONT_FIELD_ORIENTED.whenPressed(() -> m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    //   m_drivetrainSubsystem,
+    //   () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+    //   () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+    //   () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75))));
+
+    // Constants.CONT_ROBOT_ORIENTED.whenPressed(() -> m_drivetrainSubsystem.setDefaultCommand(new RobotOrientedDriveCommand(
+    //     m_drivetrainSubsystem,
+    //     () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+    //     () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
+    //     () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75))));
+
+
 
     //Shooter Command Group
-    delay = SmartDashboard.getNumber("Delay", delay);
+    // delay = SmartDashboard.getNumber("Delay", delay);
     // new Button(operatorControls::getXButton).whenPressed(new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay));
 
     
@@ -162,7 +244,7 @@ public class RobotContainer {
     Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
     // Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 0, 1);
     // An ExampleCommand will run in autonomous
-    return null;//autoCommand;
+    return LOW_BALL_2_BALL;//autoCommand;
   }
 
   private static double deadband(double value, double deadband) {

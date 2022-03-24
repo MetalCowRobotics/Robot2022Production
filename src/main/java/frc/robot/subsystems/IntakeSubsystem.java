@@ -17,6 +17,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     private CANSparkMax intakeMotor = new CANSparkMax(Constants.INTAKE_MOTOR, MotorType.kBrushless);
     private double motorSpeed = 0;
+    private boolean isDown;
 
     // private static final Spark m_intakeRoller = new Spark(INTAKE_ROLLER_CAN_NUM);
     private static final DoubleSolenoid m_intakeDeployment 
@@ -48,11 +49,13 @@ public class IntakeSubsystem extends SubsystemBase {
     public void deployIntake() {
         m_intakeDeployment.set(DoubleSolenoid.Value.kForward);
         Library.pushDashboard("IntakeDeployment state", "deployed", debug);
+        isDown = true;
     }
 
     public void retractIntake() {
         m_intakeDeployment.set(DoubleSolenoid.Value.kReverse);
         Library.pushDashboard("IntakeDeployment state", "retracted", debug);
+        isDown = false;
     }
 
     public void neutralIntake() {
@@ -66,6 +69,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void turnIntakeOff() {
 
+    }
+
+    public boolean isDown() {
+        return isDown;
     }
 
 }
