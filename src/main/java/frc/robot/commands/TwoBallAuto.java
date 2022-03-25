@@ -13,11 +13,12 @@ public class TwoBallAuto extends SequentialCommandGroup {
             new StartGathering(m_intakeSubsystem),
             new StartShooterWheel(m_ShooterSubsystem),
             // new StartGathering(m_intakeSubsystem),
-            new DriveStraight(90, 0.45, m_drivetrainSubsystem, 43 + 25),
+            new DriveStraight(90, 0.45, m_drivetrainSubsystem, 43 + 21),
             // new DoDelay(0.5),
             // new StopGathering(m_intakeSubsystem),
             new TurnDegrees(m_drivetrainSubsystem, 195, -1),
             // new DriveStraight(90, 0.45, m_drivetrainSubsystem, 20),
+            new DoDelay(2),
             new StartIntakeWheels(m_intakeSubsystem),
             new StartMagazine(m_magazineSubsystem)
 
