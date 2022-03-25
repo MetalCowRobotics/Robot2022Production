@@ -1,14 +1,7 @@
 package frc.robot.commands;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Scanner;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -47,11 +40,14 @@ public class TurnDegrees extends CommandBase {
         SmartDashboard.putNumber("difference", getDifference());
         double rampScalar = 1.0 / (1 + Math.exp(-(getDifference() + 5)));
         SmartDashboard.putNumber("ramped turn speed", turnSpeed * rampScalar);
+        System.out.print("dif: " + getDifference());
+        System.out.print(" scalar:" + rampScalar);
+        System.out.println(" speed" + turnSpeed * Math.max(rampScalar, 0.4));
         m_drivetrain.drive(
             ChassisSpeeds.fromFieldRelativeSpeeds(
                     0,
                     0,
-                    turnSpeed * Math.max(rampScalar, 0.2),
+                    turnSpeed,
                     m_drivetrain.getGyroscopeRotation()
             )
         );
@@ -60,6 +56,7 @@ public class TurnDegrees extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
+        
         return getDifference() < 2;
     }
 

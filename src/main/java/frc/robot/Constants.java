@@ -80,10 +80,10 @@ public final class Constants {
 
     public static final double BASE_SPEED = 0.5;
     public static final double SPRINT_SCALAR = 2;
-    public static final double CRAWL_SCALAR = 0.2;
+    public static final double CRAWL_SCALAR = .6;
 
     //Magazine Speed
-    public static final double MAGAZINE_SPEED = 0.3;
+    public static final double MAGAZINE_SPEED = 0.5;
 
     //Intake Speed
     public static final double INTAKE_SPEED = 0.9;
@@ -95,6 +95,9 @@ public final class Constants {
     //Shooter
     public static final double HIGH_SHOT_SPEED = 3200;
     public static final double LOW_SHOT_SPEED = 1750;
+
+    public static final double FAR_SHOT_SPEED = 3400;
+    public static final double CLOSE_SHOT_SPEED = 3200;
 
 
     /////////////////////////////////////////////////////////

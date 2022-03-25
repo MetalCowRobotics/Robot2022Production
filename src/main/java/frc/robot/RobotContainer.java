@@ -16,6 +16,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.OneBallAuto;
 // import frc.robot.com_smmands.LoadBall;
 import frc.robot.commands.RetractIntake;
 import frc.robot.commands.RobotOrientedDriveCommand;
@@ -31,6 +32,7 @@ import frc.robot.commands.StopIntakeWheels;
 import frc.robot.commands.StopMagazine;
 import frc.robot.commands.StopShooterWheel;
 import frc.robot.commands.TurnDegrees;
+import frc.robot.commands.TwoBallAuto;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -50,39 +52,23 @@ public class RobotContainer {
 
   private final double CONTROLLER_DEADBAND = 0.2;
 
-  private final Command LOW_BALL_2_BALL = new SequentialCommandGroup(
-    new StartGathering(m_intakeSubsystem),
-    new StartGathering(m_intakeSubsystem),
-    new DriveStraight(90, 0.45, m_drivetrainSubsystem, 48),
-    new DoDelay(0.5),
-    new StopGathering(m_intakeSubsystem),
-    // new DriveStraight(0, 0.6, m_drivetrainSubsystem, 30),
-    new StartShooterWheel(m_ShooterSubsystem),
-    new TurnDegrees(m_drivetrainSubsystem, 180, -1),
-    new DriveStraight(19.65 + 270, 0.7, m_drivetrainSubsystem, Math.hypot(30, 84)),
-    new StartMagazine(m_magazineSubsystem)
-  );
+  // private final Command LOW_BALL_2_BALL = new SequentialCommandGroup(
+  //   new StartGathering(m_intakeSubsystem),
+  //   new StartGathering(m_intakeSubsystem),
+  //   new DriveStraight(85, 0.45, m_drivetrainSubsystem, 48),
+  //   new DoDelay(0.5),
+  //   new StopGathering(m_intakeSubsystem),
+  //   // new DriveStraight(0, 0.6, m_drivetrainSubsystem, 30),
+  //   new StartShooterWheel(m_ShooterSubsystem),
+  //   new TurnDegrees(m_drivetrainSubsystem, 180, -1),
+  //   new DriveStraight(19.65 + 270, 0.7, m_drivetrainSubsystem, Math.hypot(30, 85)),
+  //   new StartMagazine(m_magazineSubsystem)
+  // );
 
-  private final Command HIGH_BALL_2_BALL = new SequentialCommandGroup(
-    new StartGathering(m_intakeSubsystem),
-    new StartGathering(m_intakeSubsystem),
-    new DriveStraight(90, 0.45, m_drivetrainSubsystem, 48),
-    new DoDelay(0.5),
-    new StopGathering(m_intakeSubsystem),
-    // new DriveStraight(0, 0.6, m_drivetrainSubsystem, 30),
-    new StartShooterWheel(m_ShooterSubsystem),
-    new TurnDegrees(m_drivetrainSubsystem, 180, -1),
-    new DriveStraight(270 - 19.65, 0.7, m_drivetrainSubsystem, Math.hypot(30, 84)),
-    new StartMagazine(m_magazineSubsystem)
-  );
+  private final Command HIGH_BALL_2_BALL = new TwoBallAuto(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem);
 
-  private final Command ANYWHERE_1_BALL = new SequentialCommandGroup(
-    new StartShooterWheel(m_ShooterSubsystem), 
-    new DoDelay(3), 
-    new StartMagazine(m_magazineSubsystem), 
-    new DoDelay(2), 
-    new DriveStraight(90, 0.3, m_drivetrainSubsystem, 90)
-  );
+  private final Command ANYWHERE_1_BALL = new OneBallAuto(m_magazineSubsystem, m_ShooterSubsystem, m_drivetrainSubsystem);
+  
 
   // private final SequentialCommandGroup LOW_START_4BALL = new SequentialCommandGroup(
   //   LOW_BALL_2_BALL,
@@ -109,7 +95,7 @@ public class RobotContainer {
 
 
       m_chooser.addOption("High 2 Ball", HIGH_BALL_2_BALL);
-      m_chooser.addOption("Low 2 Ball", LOW_BALL_2_BALL);
+      // m_chooser.addOption("Low 2 Ball", LOW_BALL_2_BALL);
       m_chooser.setDefaultOption("1 Ball", ANYWHERE_1_BALL);
       // m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
       // m_chooser.addOption("Delay Drive Forward", m_shootball);
@@ -235,7 +221,7 @@ public class RobotContainer {
     Command autoCommand = new DriveStraight(0, 0.3, m_drivetrainSubsystem, 12);
     // Command autoCommand = new DriveToCoordinate(m_drivetrainSubsystem, 0, 1);
     // An ExampleCommand will run in autonomous
-    return LOW_BALL_2_BALL;//autoCommand;
+    return null;//autoCommand;
   }
 
   private static double deadband(double value, double deadband) {
