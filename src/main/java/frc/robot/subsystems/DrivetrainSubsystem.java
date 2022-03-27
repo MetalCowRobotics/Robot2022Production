@@ -225,7 +225,7 @@ public void resetSpeed() {
   public void correctDrift() {
         double xySpeed = Math.abs(m_chassisSpeeds.vxMetersPerSecond) + Math.abs(m_chassisSpeeds.vyMetersPerSecond);
         if (Math.abs(m_chassisSpeeds.omegaRadiansPerSecond) > 0.0 || pXY <= 0) {
-                heading += getGyroscopeRotation().getDegrees();
+                heading = getGyroscopeRotation().getDegrees();
         } else if (xySpeed > 0) {
                 m_chassisSpeeds.omegaRadiansPerSecond += driftPidController.calculate(getGyroscopeRotation().getDegrees(), heading);
         }

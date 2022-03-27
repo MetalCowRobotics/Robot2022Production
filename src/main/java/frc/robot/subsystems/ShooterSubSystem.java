@@ -22,6 +22,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private double targetSpeed = 0;
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+    private double goalSpeed;
 
     private boolean fieldMode = true;
 
@@ -58,21 +59,32 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
         leftMotor.follow(rightMotor, true);
+        if (hoodPosition.get().equals(DoubleSolenoid.Value.kForward)) {
+            goalSpeed = Constants.HIGH_SHOT_SPEED + 625;
+        } else if (hoodPosition.get().equals(DoubleSolenoid.Value.kReverse)) {
+            goalSpeed = Constants.HIGH_SHOT_SPEED + 75;   
+        } else {
+            hoodUp();
+        }
     }
 
     public void hoodUp() {
+        goalSpeed = Constants.HIGH_SHOT_SPEED + 525;
         hoodPosition.set(DoubleSolenoid.Value.kForward);
+        SmartDashboard.putBoolean("Hood Up", true);
+        SmartDashboard.putBoolean("Hood Down", false);
     }
 
     public void hoodDown() {
+        goalSpeed = Constants.HIGH_SHOT_SPEED + 75;
         hoodPosition.set(DoubleSolenoid.Value.kReverse);
+        SmartDashboard.putBoolean("Hood Up", false);
+        SmartDashboard.putBoolean("Hood Down", true);
     }
 
     public void shootLow() {
         if (fieldMode) {
-            targetSpeed = Constants.HIGH_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
-        } else {
-            targetSpeed = 0;
+            targetSpeed = goalSpeed + SmartDashboard.getNumber("Speed Correction", 0);
         }
     }
 
@@ -102,7 +114,11 @@ public class ShooterSubsystem extends SubsystemBase {
             pid.setOutputRange(min, max); 
             kMinOutput = min; kMaxOutput = max; 
         }
-        pid.setReference(-targetSpeed, CANSparkMax.ControlType.kVelocity);
+        if (targetSpeed != 0) {
+            pid.setReference(-targetSpeed, CANSparkMax.ControlType.kVelocity);
+        } else {
+            rightMotor.set(0);
+        }
         SmartDashboard.putNumber("Current Speed", Math.abs(encoder.getVelocity()));
         SmartDashboard.putNumber("Target Speed", targetSpeed);
         SmartDashboard.putBoolean("isReady", isReady());
