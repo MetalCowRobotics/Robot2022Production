@@ -83,7 +83,7 @@ public final class Constants {
     public static final double CRAWL_SCALAR = .6;
 
     //Magazine Speed
-    public static final double MAGAZINE_SPEED = 0.5;
+    public static final double MAGAZINE_SPEED = 0.4;
 
     //Intake Speed
     public static final double INTAKE_SPEED = 0.9;
