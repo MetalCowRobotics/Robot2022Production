@@ -67,7 +67,7 @@ public class ClimberSubsystem extends SubsystemBase {
         if (!fieldMode) {
             // SmartDashboard.putNumber("difference", Math.abs(m_climbEncoder.getPosition() - startPosition))
             if (Math.abs(m_climbEncoder.getPosition() - startPosition) < SmartDashboard.getNumber("climber limit", 69)) {
-                climbSpeed = -Constants.CLIMB_SPEED;
+                climbSpeed = -Constants.CLIMB_SPEED_OUT;
             } else {
                 climbSpeed = 0;
             }
@@ -76,13 +76,12 @@ public class ClimberSubsystem extends SubsystemBase {
 
     public void retractClimberMotor() {
         if (!fieldMode) {
-            climbSpeed = Constants.CLIMB_SPEED;
+            climbSpeed = Constants.CLIMB_SPEED_IN;
         }
     }
 
     public void stopClimberMotor() {
         climbSpeed = 0;
-        // TODO implement friction brake?
     }
 
 }

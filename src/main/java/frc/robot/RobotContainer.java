@@ -201,8 +201,8 @@ public class RobotContainer {
     });
 
     //Hood
-    Constants.CONT_HOOD_UP.whenReleased(m_ShooterSubsystem::hoodUp);
-    Constants.CONT_HOOD_DOWN.whenReleased(m_ShooterSubsystem::hoodDown);
+    Constants.CONT_HOOD_FAR_SHOT.whenReleased(m_ShooterSubsystem::hoodFarShot);
+    Constants.CONT_HOOD_CLOSE_SHOT.whenReleased(m_ShooterSubsystem::hoodCloseShot);
 
 
     //Shooter Command Group

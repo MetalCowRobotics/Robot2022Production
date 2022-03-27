@@ -16,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
     private static final DoubleSolenoid hoodPosition = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-    Constants.HOOD_UP, Constants.HOOD_DOWN);
+    Constants.HOOD_CLOSE_SHOT, Constants.HOOD_FAR_SHOT);
 
     private RelativeEncoder encoder;
     private double targetSpeed = 0;
@@ -60,23 +60,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
         leftMotor.follow(rightMotor, true);
         if (hoodPosition.get().equals(DoubleSolenoid.Value.kForward)) {
-            goalSpeed = Constants.HIGH_SHOT_SPEED + 625;
+            goalSpeed = Constants.SHOOTER_BASE_SPEED + 625;
         } else if (hoodPosition.get().equals(DoubleSolenoid.Value.kReverse)) {
-            goalSpeed = Constants.HIGH_SHOT_SPEED + 75;   
+            goalSpeed = Constants.SHOOTER_BASE_SPEED + 75;   
         } else {
-            hoodUp();
+            hoodFarShot();
         }
     }
 
-    public void hoodUp() {
-        goalSpeed = Constants.HIGH_SHOT_SPEED + 525;
+    public void hoodFarShot() {
+        goalSpeed = Constants.SHOOTER_BASE_SPEED + 525;
         hoodPosition.set(DoubleSolenoid.Value.kForward);
         SmartDashboard.putBoolean("Hood Up", true);
         SmartDashboard.putBoolean("Hood Down", false);
     }
 
-    public void hoodDown() {
-        goalSpeed = Constants.HIGH_SHOT_SPEED + 75;
+    public void hoodCloseShot() {
+        goalSpeed = Constants.SHOOTER_BASE_SPEED + 75;
         hoodPosition.set(DoubleSolenoid.Value.kReverse);
         SmartDashboard.putBoolean("Hood Up", false);
         SmartDashboard.putBoolean("Hood Down", true);
