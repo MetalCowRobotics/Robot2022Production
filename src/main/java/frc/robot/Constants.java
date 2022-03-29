@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 public final class Constants {
     
@@ -36,6 +37,9 @@ public final class Constants {
     public static final int SHOOTER_MOTOR_LEFT = 17;
     public static final int SHOOTER_MOTOR_RIGHT = 16;
 
+    public static final int HOOD_UP = 4;
+    public static final int HOOD_DOWN = 5;
+
     //Drivetrain
 
         //Pigeon
@@ -45,25 +49,25 @@ public final class Constants {
         public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 8;
         public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 7;
         public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 9;
-        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(58.7 + 180);
+        public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(59.6 + 180);
 
         //Front Right Module
         public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 5;
         public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
         public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 6;
-        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(3.4);
+        public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(1.5);
 
         //Back Left Module
         public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 11;
         public static final int BACK_LEFT_MODULE_STEER_MOTOR = 10;
         public static final int BACK_LEFT_MODULE_STEER_ENCODER = 12;
-        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(346.1 + 180);
+        public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(345.4 + 180);
 
         //Back Right Module
         public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 2;
         public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 1;
         public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 3;
-        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(94.2);
+        public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(94.5);
 
     /////////////////////////////////////////////////////////
     /////:::::::::::::::::::CONSTANTS::::::::::::::::::://///
@@ -76,20 +80,24 @@ public final class Constants {
 
     public static final double BASE_SPEED = 0.5;
     public static final double SPRINT_SCALAR = 2;
-    public static final double CRAWL_SCALAR = 0.2;
+    public static final double CRAWL_SCALAR = .6;
 
     //Magazine Speed
-    public static final double MAGAZINE_SPEED = 0.3;
+    public static final double MAGAZINE_SPEED = 0.4;
 
     //Intake Speed
-    public static final double INTAKE_SPEED = 0.6;
+    public static final double INTAKE_SPEED = 0.9;
 
     //Climber
+
     public static final double CLIMB_SPEED = 0.4;
 
     //Shooter
-    public static final double HIGH_SHOT_SPEED = 2000;
+    public static final double HIGH_SHOT_SPEED = 3200;
     public static final double LOW_SHOT_SPEED = 1750;
+
+    public static final double FAR_SHOT_SPEED = 3400;
+    public static final double CLOSE_SHOT_SPEED = 3200;
 
 
     /////////////////////////////////////////////////////////
@@ -105,16 +113,23 @@ public final class Constants {
         public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
         //Sprint
-        public final static Button CONT_SPRINT = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
+        public final static Button CONT_SPRINT = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
 
         //Crawl
-        public final static Button CONT_CRAWL = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
+        public final static Button CONT_CRAWL = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
 
+        // Swerve
+        public final static Button CONT_FIELD_ORIENTED = new Button(driverControls::getAButton);
+        public final static Button CONT_ROBOT_ORIENTED = new Button(driverControls::getXButton);
 
     //Operator
         //Shooter
         public final static Button CONT_SHOOTER_LOW = new Button(() -> operatorControls.getRightTriggerAxis() > 0.3);
         public final static Button CONT_SHOOTER_FIRE = new Button(operatorControls::getBButton);
+
+        //Hood
+        public final static POVButton CONT_HOOD_UP = new POVButton(operatorControls, 0);
+        public final static POVButton CONT_HOOD_DOWN = new POVButton(operatorControls, 180);
 
         //Field Mode
         public final static Button CONT_SWITCH_FIELD_MODE = new Button(operatorControls::getBackButton);
@@ -122,6 +137,6 @@ public final class Constants {
         //Climber
         public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getAButton);
-        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
 }

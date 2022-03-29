@@ -5,6 +5,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -13,10 +15,14 @@ public class ShooterSubsystem extends SubsystemBase {
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
+    private static final DoubleSolenoid hoodPosition = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
+    Constants.HOOD_UP, Constants.HOOD_DOWN);
+
     private RelativeEncoder encoder;
     private double targetSpeed = 0;
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+    private double goalSpeed;
 
     private boolean fieldMode = true;
 
@@ -30,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
         kP = 0.00012;
         kI = 0.0000005;
         kD = 0.0001;
-        kIz = 1000;
+        kIz = 3000;
         kFF = 0.000015;
         kMaxOutput = 1;
         kMinOutput = -1;
@@ -53,13 +59,32 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
         leftMotor.follow(rightMotor, true);
+        if (hoodPosition.get().equals(DoubleSolenoid.Value.kForward)) {
+            goalSpeed = Constants.HIGH_SHOT_SPEED + 625;
+        } else if (hoodPosition.get().equals(DoubleSolenoid.Value.kReverse)) {
+            goalSpeed = Constants.HIGH_SHOT_SPEED + 75;   
+        } else {
+            hoodUp();
+        }
+    }
+
+    public void hoodUp() {
+        goalSpeed = Constants.HIGH_SHOT_SPEED + 525;
+        hoodPosition.set(DoubleSolenoid.Value.kForward);
+        SmartDashboard.putBoolean("Hood Up", true);
+        SmartDashboard.putBoolean("Hood Down", false);
+    }
+
+    public void hoodDown() {
+        goalSpeed = Constants.HIGH_SHOT_SPEED + 75;
+        hoodPosition.set(DoubleSolenoid.Value.kReverse);
+        SmartDashboard.putBoolean("Hood Up", false);
+        SmartDashboard.putBoolean("Hood Down", true);
     }
 
     public void shootLow() {
         if (fieldMode) {
-            targetSpeed = Constants.LOW_SHOT_SPEED + SmartDashboard.getNumber("Speed Correction", 0);
-        } else {
-            targetSpeed = 0;
+            targetSpeed = goalSpeed + SmartDashboard.getNumber("Speed Correction", 0);
         }
     }
 
@@ -89,7 +114,11 @@ public class ShooterSubsystem extends SubsystemBase {
             pid.setOutputRange(min, max); 
             kMinOutput = min; kMaxOutput = max; 
         }
-        pid.setReference(-targetSpeed, CANSparkMax.ControlType.kVelocity);
+        if (targetSpeed != 0) {
+            pid.setReference(-targetSpeed, CANSparkMax.ControlType.kVelocity);
+        } else {
+            rightMotor.set(0);
+        }
         SmartDashboard.putNumber("Current Speed", Math.abs(encoder.getVelocity()));
         SmartDashboard.putNumber("Target Speed", targetSpeed);
         SmartDashboard.putBoolean("isReady", isReady());

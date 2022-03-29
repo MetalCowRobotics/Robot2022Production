@@ -38,8 +38,8 @@ public class DriveToCoordinate extends CommandBase {
 
         m_drivetrain = drive;
 
-        targetX = x * 100;
-        targetY = y * 100;
+        targetX = x;
+        targetY = y;
 
         addRequirements(drive);
     }
@@ -53,6 +53,7 @@ public class DriveToCoordinate extends CommandBase {
             return value;
         }
     }
+    
 
     @Override
     public void execute() {
