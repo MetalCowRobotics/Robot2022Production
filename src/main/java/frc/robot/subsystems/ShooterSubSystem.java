@@ -7,11 +7,14 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
+    
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
@@ -90,6 +93,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void stop() {
         targetSpeed = 0;
+    }
+
+    public void startRumble(XboxController controller) {
+            controller.setRumble(RumbleType.kLeftRumble, 0.5);
+            controller.setRumble(RumbleType.kRightRumble, 0.5);
+    }
+
+    public void stopRumble(XboxController controller) {
+        controller.setRumble(RumbleType.kLeftRumble, 0);
+        controller.setRumble(RumbleType.kRightRumble, 0);
     }
 
     @Override

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.MagazineSubsystem;
 
 public class RobotContainer {
   private final XboxController driverControls = new XboxController(0);
+  private final XboxController operatorControls = new XboxController(1);
   private final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final IntakeSubsystem m_intakeSubsystem = new IntakeSubsystem();
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
@@ -187,12 +189,14 @@ public class RobotContainer {
 		Constants.CONT_CLIMBER_IN.whenPressed(m_climberSubsystem::retractClimber);
 
 		//Shoot
+    new Button(m_ShooterSubsystem::isReady).whenPressed(() -> m_ShooterSubsystem.startRumble(operatorControls));
+    new Button(m_ShooterSubsystem::isReady).whenReleased(() -> m_ShooterSubsystem.stopRumble(operatorControls));
+
     Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);
 		Constants.CONT_SHOOTER_FIRE.whenPressed(() -> {
       m_magazineSubsystem.loadContinuous();
       m_intakeSubsystem.run();
     });
-
 
 		Constants.CONT_SHOOTER_LOW.whenReleased(m_ShooterSubsystem::stop);
 		Constants.CONT_SHOOTER_FIRE.whenReleased(() -> {
@@ -203,6 +207,7 @@ public class RobotContainer {
     //Hood
     Constants.CONT_HOOD_FAR_SHOT.whenReleased(m_ShooterSubsystem::hoodFarShot);
     Constants.CONT_HOOD_CLOSE_SHOT.whenReleased(m_ShooterSubsystem::hoodCloseShot);
+
 
 
     //Shooter Command Group

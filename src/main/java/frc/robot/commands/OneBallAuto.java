@@ -7,7 +7,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class OneBallAuto extends SequentialCommandGroup {
     public OneBallAuto(MagazineSubsystem m_magazineSubsystem, ShooterSubsystem m_ShooterSubsystem, DrivetrainSubsystem m_drivetrainSubsystem) {
-        m_ShooterSubsystem.hoodDown();
+        m_ShooterSubsystem.hoodFarShot();
         addCommands(
             new StartShooterWheel(m_ShooterSubsystem), 
             new DoDelay(3), 

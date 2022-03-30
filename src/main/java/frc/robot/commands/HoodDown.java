@@ -26,7 +26,7 @@ public class HoodDown extends CommandBase {
 
     @Override
     public void execute() {
-        m_shooterSubsystem.hoodDown();
+        m_shooterSubsystem.hoodCloseShot();
         SmartDashboard.putData(m_shooterSubsystem);
     }
 

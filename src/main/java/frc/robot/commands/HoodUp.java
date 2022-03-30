@@ -26,7 +26,7 @@ public class HoodUp extends CommandBase {
 
     @Override
     public void execute() {
-        m_shooterSubsystem.hoodUp();
+        m_shooterSubsystem.hoodFarShot();
         SmartDashboard.putData(m_shooterSubsystem);
     }
 
