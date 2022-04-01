@@ -234,6 +234,7 @@ public void resetSpeed() {
   @Override
   public void periodic() {
         correctDrift();
+        faceTarget();
         // SmartDashboard.putNumber("Input", backRightSteer.getSupplyCurrent());
 
         
@@ -280,6 +281,7 @@ public void resetSpeed() {
   }
 
   PIDController facingPidController = new PIDController(0.7, 0, 0.4);
+
   private void faceTarget() {
         double[] robotPosition = getCoordinate();
         double distance = Math.hypot(robotPosition[0], robotPosition[1]);
@@ -289,7 +291,7 @@ public void resetSpeed() {
         SmartDashboard.putNumber("goal-facing heading", targetHeading);
 
         double correction = findShortestPath(m_pigeon.getYaw(), targetHeading);
-        SmartDashboard.putNumber("facing difference", correction);
+        SmartDashboard.putNumber("face target correction", correction);
   }
 
 public double makeAbsolute(double heading) {
