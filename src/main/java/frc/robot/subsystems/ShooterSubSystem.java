@@ -7,16 +7,19 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
+    
     private CANSparkMax leftMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_LEFT, MotorType.kBrushless);
     private CANSparkMax rightMotor = new CANSparkMax(Constants.SHOOTER_MOTOR_RIGHT, MotorType.kBrushless);
 
     private static final DoubleSolenoid hoodPosition = new DoubleSolenoid(PneumaticsModuleType.CTREPCM,
-    Constants.HOOD_UP, Constants.HOOD_DOWN);
+    Constants.HOOD_CLOSE_SHOT, Constants.HOOD_FAR_SHOT);
 
     private RelativeEncoder encoder;
     private double targetSpeed = 0;
@@ -60,23 +63,23 @@ public class ShooterSubsystem extends SubsystemBase {
 
         leftMotor.follow(rightMotor, true);
         if (hoodPosition.get().equals(DoubleSolenoid.Value.kForward)) {
-            goalSpeed = Constants.HIGH_SHOT_SPEED + 625;
+            goalSpeed = Constants.SHOOTER_BASE_SPEED + 625;
         } else if (hoodPosition.get().equals(DoubleSolenoid.Value.kReverse)) {
-            goalSpeed = Constants.HIGH_SHOT_SPEED + 75;   
+            goalSpeed = Constants.SHOOTER_BASE_SPEED + 75;   
         } else {
-            hoodUp();
+            hoodFarShot();
         }
     }
 
-    public void hoodUp() {
-        goalSpeed = Constants.HIGH_SHOT_SPEED + 525;
+    public void hoodFarShot() {
+        goalSpeed = Constants.SHOOTER_BASE_SPEED + 525;
         hoodPosition.set(DoubleSolenoid.Value.kForward);
         SmartDashboard.putBoolean("Hood Up", true);
         SmartDashboard.putBoolean("Hood Down", false);
     }
 
-    public void hoodDown() {
-        goalSpeed = Constants.HIGH_SHOT_SPEED + 75;
+    public void hoodCloseShot() {
+        goalSpeed = Constants.SHOOTER_BASE_SPEED + 75;
         hoodPosition.set(DoubleSolenoid.Value.kReverse);
         SmartDashboard.putBoolean("Hood Up", false);
         SmartDashboard.putBoolean("Hood Down", true);
@@ -90,6 +93,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void stop() {
         targetSpeed = 0;
+    }
+
+    public void startRumble(XboxController controller) {
+            controller.setRumble(RumbleType.kLeftRumble, 0.5);
+            controller.setRumble(RumbleType.kRightRumble, 0.5);
+    }
+
+    public void stopRumble(XboxController controller) {
+        controller.setRumble(RumbleType.kLeftRumble, 0);
+        controller.setRumble(RumbleType.kRightRumble, 0);
     }
 
     @Override
