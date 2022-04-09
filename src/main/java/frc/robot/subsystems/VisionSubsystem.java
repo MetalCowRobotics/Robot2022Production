@@ -24,7 +24,10 @@ public class VisionSubsystem extends SubsystemBase {
 
     public void periodic() {
         yaw = (Double) selectedCameraTable.getEntry("targetYaw").getNumber(-70);
-        pitch = (Double) selectedCameraTable.getEntry("targetPitch").getNumber(-70);
+
+        double heightScalar = (4 / 32.85) * Math.abs(yaw);
+
+        pitch = (Double) selectedCameraTable.getEntry("targetPitch").getNumber(-70) - heightScalar;
 
         SmartDashboard.putNumber("yaw from subsystem", yaw);
         SmartDashboard.putNumber("pitch from subsystem", pitch);
@@ -41,14 +44,24 @@ public class VisionSubsystem extends SubsystemBase {
     public double getCurrentPitch() {
         return pitch;
     }
-
+// 32.85
     public double getDistance() {
-        return (104.0 - 30.5) / Math.tan(Math.toRadians(pitch +  26.5));
+        return (104.0 - 29.5) / Math.tan(Math.toRadians(pitch +  26.5));
     }
 
     public double getTargetYaw() {
-        return 90 - Math.toDegrees(Math.atan(distance / 11.5));
+        double target = 90 - Math.toDegrees(Math.atan(distance / 11.5));
+
+        if (yaw < 0) {
+            target -= 10;
+        }
+        
+        return target;
     }
+
+    public double getShooterSpeedScalar() {
+        return distance / 90;
+    } 
 
     public void startTargeting() {
         isTargeting = true;

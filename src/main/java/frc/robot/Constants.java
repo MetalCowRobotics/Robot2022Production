@@ -96,7 +96,7 @@ public final class Constants {
     //Shooter
     public static final double SHOOTER_BASE_SPEED = 3200;
 
-    public static final double FAR_SHOT_SPEED = 3400;
+    public static final double FAR_SHOT_SPEED = 3800;
     public static final double CLOSE_SHOT_SPEED = 3200;
 
 

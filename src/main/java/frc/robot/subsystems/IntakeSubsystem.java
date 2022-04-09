@@ -36,6 +36,10 @@ public class IntakeSubsystem extends SubsystemBase {
         motorSpeed = Constants.INTAKE_SPEED;
     }
 
+    public void rejectCargo() {
+        motorSpeed = -Constants.INTAKE_SPEED;
+    }
+
     public void stop(){
         motorSpeed = 0;
     }

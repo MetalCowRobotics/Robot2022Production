@@ -144,6 +144,7 @@ public class RobotContainer {
     m_drivetrainSubsystem.setDefaultCommand(new VisionDriveCommand(
       m_drivetrainSubsystem,
       m_VisionSubsystem,
+      m_ShooterSubsystem,
       () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
       () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
       () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75)));
@@ -168,19 +169,21 @@ public class RobotContainer {
 
     Constants.CONT_INTAKE_DEPLOY.whenPressed(() -> {
       if (m_intakeSubsystem.isDown()) {
-        CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
+        // CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
+        m_intakeSubsystem.retractIntake();
+        m_intakeSubsystem.stop();
       } else {
-        CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
+        // CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
+        m_intakeSubsystem.deployIntake();
+        m_intakeSubsystem.run();
       }
     });
 
-    Constants.CONT_INTAKE_RETRACT.whenPressed(() -> {
-      if (m_intakeSubsystem.isDown()) {
-        CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
-      } else {
-        CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
-      }
-    });
+    Constants.CONT_INTAKE_RETRACT.whenPressed(m_intakeSubsystem::rejectCargo);
+    Constants.CONT_INTAKE_RETRACT.whenPressed(m_magazineSubsystem::rejectCargo);
+    Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+    Constants.CONT_INTAKE_RETRACT.whenReleased(m_magazineSubsystem::stop);
+
 
 	//Operator
 		//Switch Field Mode
@@ -201,7 +204,10 @@ public class RobotContainer {
     new Button(m_ShooterSubsystem::isReady).whenPressed(() -> m_ShooterSubsystem.startRumble(operatorControls));
     new Button(m_ShooterSubsystem::isReady).whenReleased(() -> m_ShooterSubsystem.stopRumble(operatorControls));
 
-    Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);
+    Constants.CONT_SHOOTER_LOW.whenPressed(() -> {
+      m_ShooterSubsystem.shootLow();
+      m_ShooterSubsystem.scaleShooterSpeed(m_VisionSubsystem.getShooterSpeedScalar());
+    });
 		Constants.CONT_SHOOTER_FIRE.whenPressed(() -> {
       m_magazineSubsystem.loadContinuous();
       m_intakeSubsystem.run();
