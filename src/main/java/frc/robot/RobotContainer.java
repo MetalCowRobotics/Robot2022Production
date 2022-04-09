@@ -33,11 +33,14 @@ import frc.robot.commands.StopIntakeWheels;
 import frc.robot.commands.StopMagazine;
 import frc.robot.commands.StopShooterWheel;
 import frc.robot.commands.TurnDegrees;
+import frc.robot.commands.TurnToTarget;
 import frc.robot.commands.TwoBallAuto;
+import frc.robot.commands.VisionDriveCommand;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import frc.robot.subsystems.MagazineSubsystem;
 
 public class RobotContainer {
@@ -48,6 +51,7 @@ public class RobotContainer {
   private final ClimberSubsystem m_climberSubsystem = new ClimberSubsystem();
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   private final MagazineSubsystem m_magazineSubsystem = new MagazineSubsystem();
+  private final VisionSubsystem m_VisionSubsystem = new VisionSubsystem();
   private double delay = 0;
   private final ShootBall m_shootball = new ShootBall(m_ShooterSubsystem, m_drivetrainSubsystem, delay);
   SendableChooser m_chooser = new SendableChooser();
@@ -137,8 +141,10 @@ public class RobotContainer {
 
   public void configureButtonBindings() {
 
-    m_drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    m_drivetrainSubsystem.setDefaultCommand(new VisionDriveCommand(
       m_drivetrainSubsystem,
+      m_VisionSubsystem,
+      m_ShooterSubsystem,
       () -> modifyAxis(deadband(driverControls.getLeftX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
       () -> -modifyAxis(deadband(driverControls.getLeftY(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND),
       () -> -modifyAxis(deadband(driverControls.getRightX(), CONTROLLER_DEADBAND) * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND * 0.75)));
@@ -148,6 +154,10 @@ public class RobotContainer {
     //Driver
 		//Reset Gyro
 		Constants.CONT_RESET_GYRO.whenPressed(m_drivetrainSubsystem::zeroGyroscope);
+
+    //Target
+    Constants.CONT_TARGET.whenPressed(m_VisionSubsystem::startTargeting);
+    Constants.CONT_TARGET.whenReleased(m_VisionSubsystem::stopTargeting);
 
 		//Crawl
 		Constants.CONT_CRAWL.whenPressed(m_drivetrainSubsystem::crawl);
@@ -159,19 +169,21 @@ public class RobotContainer {
 
     Constants.CONT_INTAKE_DEPLOY.whenPressed(() -> {
       if (m_intakeSubsystem.isDown()) {
-        CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
+        // CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
+        m_intakeSubsystem.retractIntake();
+        m_intakeSubsystem.stop();
       } else {
-        CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
+        // CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
+        m_intakeSubsystem.deployIntake();
+        m_intakeSubsystem.run();
       }
     });
 
-    Constants.CONT_INTAKE_RETRACT.whenPressed(() -> {
-      if (m_intakeSubsystem.isDown()) {
-        CommandScheduler.getInstance().schedule(new StopGathering(m_intakeSubsystem));
-      } else {
-        CommandScheduler.getInstance().schedule(new StartGathering(m_intakeSubsystem));
-      }
-    });
+    Constants.CONT_INTAKE_RETRACT.whenPressed(m_intakeSubsystem::rejectCargo);
+    Constants.CONT_INTAKE_RETRACT.whenPressed(m_magazineSubsystem::rejectCargo);
+    Constants.CONT_INTAKE_RETRACT.whenReleased(m_intakeSubsystem::stop);
+    Constants.CONT_INTAKE_RETRACT.whenReleased(m_magazineSubsystem::stop);
+
 
 	//Operator
 		//Switch Field Mode
@@ -192,7 +204,10 @@ public class RobotContainer {
     new Button(m_ShooterSubsystem::isReady).whenPressed(() -> m_ShooterSubsystem.startRumble(operatorControls));
     new Button(m_ShooterSubsystem::isReady).whenReleased(() -> m_ShooterSubsystem.stopRumble(operatorControls));
 
-    Constants.CONT_SHOOTER_LOW.whenPressed(m_ShooterSubsystem::shootLow);
+    Constants.CONT_SHOOTER_LOW.whenPressed(() -> {
+      m_ShooterSubsystem.shootLow();
+      m_ShooterSubsystem.scaleShooterSpeed(m_VisionSubsystem.getShooterSpeedScalar());
+    });
 		Constants.CONT_SHOOTER_FIRE.whenPressed(() -> {
       m_magazineSubsystem.loadContinuous();
       m_intakeSubsystem.run();

@@ -91,6 +91,12 @@ public class ShooterSubsystem extends SubsystemBase {
         }
     }
 
+    public void scaleShooterSpeed(double scalar) {
+        if (scalar < 1.4) {
+            targetSpeed = (goalSpeed + SmartDashboard.getNumber("Speed Correction", 0)) * scalar;            
+        }
+    }
+
     public void stop() {
         targetSpeed = 0;
     }
