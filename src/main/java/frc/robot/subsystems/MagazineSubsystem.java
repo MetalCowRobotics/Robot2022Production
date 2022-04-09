@@ -34,6 +34,11 @@ public class MagazineSubsystem extends SubsystemBase {
         speed = Constants.MAGAZINE_SPEED;
     }
 
+    public void rejectCargo() {
+        speed = -Constants.MAGAZINE_SPEED;
+        runContinuous = true;
+    }
+
     public void stop() {
         speed = 0;
         runContinuous = false;
