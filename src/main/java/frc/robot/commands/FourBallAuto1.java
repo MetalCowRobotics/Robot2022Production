@@ -28,7 +28,7 @@ public class FourBallAuto1 extends SequentialCommandGroup {
             new StartIntakeWheels(m_intakeSubsystem),
             new TurnDegrees(m_drivetrainSubsystem, 0, 1),
             new DoDelay(0.3),
-            new DriveStraight(69, 0.55, m_drivetrainSubsystem, 135),
+            new DriveStraight(69, 0.55, m_drivetrainSubsystem, 137),
             new DoDelay(2),
             new DriveStraight(-101, 0.55, m_drivetrainSubsystem, 138),
             new TurnDegrees(m_drivetrainSubsystem, 190
