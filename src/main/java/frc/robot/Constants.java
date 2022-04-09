@@ -112,6 +112,9 @@ public final class Constants {
         public final static Button CONT_INTAKE_DEPLOY = new Button(driverControls::getRightBumper);
         public final static Button CONT_INTAKE_RETRACT = new Button(driverControls::getLeftBumper);
 
+        // Vision
+        public final static Button CONT_TARGET = new Button(driverControls::getAButton);
+
         //Sprint
         public final static Button CONT_SPRINT = new Button(() -> driverControls.getLeftTriggerAxis() > 0.7);
 
@@ -119,8 +122,8 @@ public final class Constants {
         public final static Button CONT_CRAWL = new Button(() -> driverControls.getRightTriggerAxis() > 0.7);
 
         // Swerve
-        public final static Button CONT_FIELD_ORIENTED = new Button(driverControls::getAButton);
-        public final static Button CONT_ROBOT_ORIENTED = new Button(driverControls::getXButton);
+        // public final static Button CONT_FIELD_ORIENTED = new Button(driverControls::getAButton);
+        // public final static Button CONT_ROBOT_ORIENTED = new Button(driverControls::getXButton);
 
     //Operator
         //Shooter
