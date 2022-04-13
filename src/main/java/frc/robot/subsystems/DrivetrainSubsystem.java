@@ -262,6 +262,7 @@ public void resetSpeed() {
 //     m_backRightModule.getDriveVelocity()
         updatePosition();
         SmartDashboard.putNumber("gyro angle", m_pigeon.getYaw());
+        SmartDashboard.putNumber("Drive Temp", backLeftDrive.getTemperature());
   }
 
   public void updatePosition() {
