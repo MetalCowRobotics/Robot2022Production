@@ -5,9 +5,10 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.MagazineSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class FourBallAuto1 extends SequentialCommandGroup {
-    public FourBallAuto1(IntakeSubsystem m_intakeSubsystem, DrivetrainSubsystem m_drivetrainSubsystem, ShooterSubsystem m_ShooterSubsystem, MagazineSubsystem m_magazineSubsystem) {
+    public FourBallAuto1(IntakeSubsystem m_intakeSubsystem, DrivetrainSubsystem m_drivetrainSubsystem, ShooterSubsystem m_ShooterSubsystem, MagazineSubsystem m_magazineSubsystem, VisionSubsystem m_visionSubsystem) {
         addCommands(
             new HoodUp(m_ShooterSubsystem),
             new StartGathering(m_intakeSubsystem),
@@ -35,6 +36,7 @@ public class FourBallAuto1 extends SequentialCommandGroup {
             , -1),
             new DoDelay(0.5),
             // new StartIntakeWheels(m_intakeSubsystem),
+            new VisionTrackingAuto(m_drivetrainSubsystem, m_visionSubsystem, 3),
             new StartMagazine(m_magazineSubsystem)
         );
 

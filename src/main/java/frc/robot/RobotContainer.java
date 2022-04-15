@@ -73,7 +73,7 @@ public class RobotContainer {
   // );
 
   private final Command HIGH_BALL_2_BALL = new TwoBallAuto(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem);
-  private final Command FOURBALL = new FourBallAuto1(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem);
+  private final Command FOURBALL = new FourBallAuto1(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem, m_VisionSubsystem);
   private final Command ANYWHERE_1_BALL = new OneBallAuto(m_magazineSubsystem, m_ShooterSubsystem, m_drivetrainSubsystem);
   
 
