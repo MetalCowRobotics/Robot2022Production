@@ -2,13 +2,18 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class VisionSubsystem extends SubsystemBase {
     private NetworkTableInstance tableInstance;
     private NetworkTable visionTable;
     private NetworkTable selectedCameraTable;
+
+    private Relay greenLightRelay;
+    private Relay.Value currentValue = Relay.Value.kOff;
     
     private double pitch;
     private double yaw;
@@ -20,6 +25,8 @@ public class VisionSubsystem extends SubsystemBase {
         tableInstance = NetworkTableInstance.getDefault();
         visionTable = tableInstance.getTable("photonvision");
         selectedCameraTable = visionTable.getSubTable("j5_WebCam_JVCU100");
+        greenLightRelay = new Relay(Constants.VISION_RELAY_INDEX);
+        greenLightRelay.set(Relay.Value.kForward);
     }
 
     public void periodic() {
@@ -35,6 +42,8 @@ public class VisionSubsystem extends SubsystemBase {
         distance = getDistance();
 
         SmartDashboard.putNumber("distance from goal", distance);
+
+        greenLightRelay.set(currentValue);
     }
 
     public double getCurrentYaw() {
@@ -65,10 +74,12 @@ public class VisionSubsystem extends SubsystemBase {
 
     public void startTargeting() {
         isTargeting = true;
+        currentValue = Relay.Value.kForward;
     }
 
     public void stopTargeting() {
         isTargeting = false;
+        currentValue = Relay.Value.kOff;
     }
 
     public boolean isTargeting() {

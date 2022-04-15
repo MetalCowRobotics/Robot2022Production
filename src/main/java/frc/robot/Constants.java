@@ -99,6 +99,10 @@ public final class Constants {
     public static final double FAR_SHOT_SPEED = 3800;
     public static final double CLOSE_SHOT_SPEED = 3200;
 
+    // Vision
+
+    public static final int VISION_RELAY_INDEX = 0;
+
 
     /////////////////////////////////////////////////////////
     /////::::::::::::::CONTROLLER BINDINGS:::::::::::::://///
