@@ -9,7 +9,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class TurnDegrees extends CommandBase {
 
     private DrivetrainSubsystem m_drivetrain;
-    private double turnSpeed = Math.PI * 1.5;
+    private double turnSpeed = Math.PI * 1.9;
     private double angle;
 
     public TurnDegrees(DrivetrainSubsystem drive, double angle, double direction) {
@@ -57,7 +57,7 @@ public class TurnDegrees extends CommandBase {
     @Override
     public boolean isFinished() {
         
-        return getDifference() < 2;
+        return getDifference() < 7;
     }
 
     public double getDifference() {
