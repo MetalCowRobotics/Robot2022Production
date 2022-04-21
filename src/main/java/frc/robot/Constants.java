@@ -91,12 +91,12 @@ public final class Constants {
     //Climber
 
     public static final double CLIMB_SPEED_IN = 0.6;
-    public static final double CLIMB_SPEED_OUT = 1;
+    public static final double CLIMB_SPEED_OUT = 0.6;
 
     //Shooter
     public static final double SHOOTER_BASE_SPEED = 3200;
 
-    public static final double FAR_SHOT_SPEED = 3800;
+    public static final double FAR_SHOT_SPEED = 3500;
     public static final double CLOSE_SHOT_SPEED = 3200;
 
     // Vision
@@ -144,6 +144,6 @@ public final class Constants {
         //Climber
         public final static Button CONT_CLIMBER_UP = new Button(operatorControls::getRightBumper);
         public final static Button CONT_CLIMBER_DOWN = new Button(operatorControls::getLeftBumper);
-        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getYButton);
-        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getAButton);
+        public final static Button CONT_CLIMBER_IN = new Button(operatorControls::getYButton);
+        public final static Button CONT_CLIMBER_OUT = new Button(operatorControls::getAButton);
 }

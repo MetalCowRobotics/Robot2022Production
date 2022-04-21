@@ -207,8 +207,8 @@ public class RobotContainer {
     new Button(m_ShooterSubsystem::isReady).whenReleased(() -> m_ShooterSubsystem.stopRumble(operatorControls));
 
     Constants.CONT_SHOOTER_LOW.whenPressed(() -> {
-      m_ShooterSubsystem.shootLow();
-      m_ShooterSubsystem.scaleShooterSpeed(m_VisionSubsystem.getShooterSpeedScalar());
+      m_ShooterSubsystem.shoot();
+      // m_ShooterSubsystem.scaleShooterSpeed(m_VisionSubsystem.getShooterSpeedScalar());
     });
 		Constants.CONT_SHOOTER_FIRE.whenPressed(() -> {
       m_magazineSubsystem.loadContinuous();
