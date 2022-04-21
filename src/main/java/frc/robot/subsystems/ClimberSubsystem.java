@@ -26,12 +26,13 @@ public class ClimberSubsystem extends SubsystemBase {
     private double climbSpeed = 0;
     private boolean fieldMode = true;
     private double startPosition;
+    private double extraExtension = 4;
 
     public ClimberSubsystem() {
         m_climber_2.follow(m_climber_1);
         startPosition = m_climbEncoder.getPosition();
         SmartDashboard.putNumber("start climb", startPosition);
-        SmartDashboard.putNumber("climber limit", 69);
+        SmartDashboard.putNumber("climber limit", 63);
     }
 
     public void setDebug(boolean debug) {
@@ -49,25 +50,30 @@ public class ClimberSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("Field Mode", fieldMode);
     }
 
-    public void retractClimber() {
+    public void deployClimber() {
         if (!fieldMode) {
             m_climberDeploy.set(DoubleSolenoid.Value.kForward);
             Library.pushDashboard("Climber Deployment state", "deployed", debug);
+            extraExtension = 0;
         }
     }
 
-    public void deployClimber() {
+    public void retractClimber() {
         if (!fieldMode) {
             m_climberDeploy.set(DoubleSolenoid.Value.kReverse);
             Library.pushDashboard("Climber Deployment state", "retracted", debug);
+            extraExtension = 10;
         }
     }
 
     public void extendClimberMotor() {
         if (!fieldMode) {
-            // SmartDashboard.putNumber("difference", Math.abs(m_climbEncoder.getPosition() - startPosition))
-            if (Math.abs(m_climbEncoder.getPosition() - startPosition) < SmartDashboard.getNumber("climber limit", 69)) {
-                climbSpeed = -Constants.CLIMB_SPEED_OUT;
+            if (Math.abs(m_climbEncoder.getPosition() - startPosition) < (SmartDashboard.getNumber("climber limit", 63) + extraExtension)) {
+                if (Math.abs(-m_climbEncoder.getPosition() - (SmartDashboard.getNumber("climber limit", 63)) + extraExtension) < 10) {
+                    climbSpeed = -(Constants.CLIMB_SPEED_OUT / 2);
+                } else {
+                    climbSpeed = -Constants.CLIMB_SPEED_OUT;
+                }
             } else {
                 climbSpeed = 0;
             }
