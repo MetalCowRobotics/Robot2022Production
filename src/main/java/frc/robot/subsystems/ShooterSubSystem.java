@@ -39,7 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
         kP = 0.00012;
         kI = 0.0000004;
         kD = 0.0002;
-        kIz = 2000;
+        kIz = 2500;
         kFF = 0.000015;
         kMaxOutput = 1;
         kMinOutput = -1;
@@ -63,9 +63,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
         leftMotor.follow(rightMotor, true);
         if (hoodPosition.get().equals(DoubleSolenoid.Value.kForward)) {
-            goalSpeed = Constants.SHOOTER_BASE_SPEED + 625;
+            goalSpeed = Constants.FAR_SHOT_SPEED;
         } else if (hoodPosition.get().equals(DoubleSolenoid.Value.kReverse)) {
-            goalSpeed = Constants.SHOOTER_BASE_SPEED + 75;   
+            goalSpeed = Constants.CLOSE_SHOT_SPEED;   
         } else {
             hoodFarShot();
         }
