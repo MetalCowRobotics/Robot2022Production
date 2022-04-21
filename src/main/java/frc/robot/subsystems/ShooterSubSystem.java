@@ -37,9 +37,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // PID coefficients
         kP = 0.00012;
-        kI = 0.0000005;
-        kD = 0.0001;
-        kIz = 3000;
+        kI = 0.0000004;
+        kD = 0.0002;
+        kIz = 2000;
         kFF = 0.000015;
         kMaxOutput = 1;
         kMinOutput = -1;
@@ -72,20 +72,20 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void hoodFarShot() {
-        goalSpeed = Constants.SHOOTER_BASE_SPEED + 525;
+        goalSpeed = Constants.FAR_SHOT_SPEED;//SHOOTER_BASE_SPEED + 525;
         hoodPosition.set(DoubleSolenoid.Value.kForward);
         SmartDashboard.putBoolean("Hood Up", true);
         SmartDashboard.putBoolean("Hood Down", false);
     }
 
     public void hoodCloseShot() {
-        goalSpeed = Constants.SHOOTER_BASE_SPEED + 75;
+        goalSpeed = Constants.CLOSE_SHOT_SPEED;//SHOOTER_BASE_SPEED + 75;
         hoodPosition.set(DoubleSolenoid.Value.kReverse);
         SmartDashboard.putBoolean("Hood Up", false);
         SmartDashboard.putBoolean("Hood Down", true);
     }
 
-    public void shootLow() {
+    public void shoot() {
         if (fieldMode) {
             targetSpeed = goalSpeed + SmartDashboard.getNumber("Speed Correction", 0);
         }

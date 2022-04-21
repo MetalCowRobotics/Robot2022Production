@@ -13,7 +13,7 @@ public class SpinUpShooterWheel extends CommandBase {
 
     @Override 
     public void execute() {
-        m_motor1.shootLow();
+        m_motor1.shoot();
         checkState = false;
     }
 
