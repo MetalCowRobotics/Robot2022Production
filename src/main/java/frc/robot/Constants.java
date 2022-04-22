@@ -133,6 +133,7 @@ public final class Constants {
         //Shooter
         public final static Button CONT_SHOOTER_LOW = new Button(() -> operatorControls.getRightTriggerAxis() > 0.3);
         public final static Button CONT_SHOOTER_FIRE = new Button(operatorControls::getBButton);
+        public final static Button CONT_SHOOTER_BOOST = new Button(operatorControls::getRightBumper);
 
         //Hood
         public final static POVButton CONT_HOOD_FAR_SHOT = new POVButton(operatorControls, 0);

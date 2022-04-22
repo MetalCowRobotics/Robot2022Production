@@ -26,6 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
     private SparkMaxPIDController pid;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
     private double goalSpeed;
+    private double boost = 0;
 
     private boolean fieldMode = true;
 
@@ -87,8 +88,16 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void shoot() {
         if (fieldMode) {
-            targetSpeed = goalSpeed + SmartDashboard.getNumber("Speed Correction", 0);
+            targetSpeed = goalSpeed + boost + SmartDashboard.getNumber("Speed Correction", 0);
         }
+    }
+
+    public void boostSpeed() {
+        boost = 200;
+    }
+
+    public void removeBoost() {
+        boost = 0;
     }
 
     public void scaleShooterSpeed(double scalar) {
