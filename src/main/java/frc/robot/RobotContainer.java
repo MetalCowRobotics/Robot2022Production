@@ -17,6 +17,7 @@ import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.DoDelay;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.DriveToCoordinate;
+import frc.robot.commands.FourBallAuto1;
 import frc.robot.commands.OneBallAuto;
 // import frc.robot.com_smmands.LoadBall;
 import frc.robot.commands.RetractIntake;
@@ -72,7 +73,7 @@ public class RobotContainer {
   // );
 
   private final Command HIGH_BALL_2_BALL = new TwoBallAuto(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem);
-
+  private final Command FOURBALL = new FourBallAuto1(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem);
   private final Command ANYWHERE_1_BALL = new OneBallAuto(m_magazineSubsystem, m_ShooterSubsystem, m_drivetrainSubsystem);
   
 
@@ -102,6 +103,7 @@ public class RobotContainer {
 
       m_chooser.addOption("2 Ball", HIGH_BALL_2_BALL);
       // m_chooser.addOption("Low 2 Ball", LOW_BALL_2_BALL);
+      m_chooser.addOption("4 Ball", FOURBALL);
       m_chooser.setDefaultOption("1 Ball", ANYWHERE_1_BALL);
       // m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
       // m_chooser.addOption("Delay Drive Forward", m_shootball);
