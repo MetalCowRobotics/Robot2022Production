@@ -74,6 +74,10 @@ public class RobotContainer {
   private final Command HIGH_BALL_2_BALL = new TwoBallAuto(m_intakeSubsystem, m_drivetrainSubsystem, m_ShooterSubsystem, m_magazineSubsystem);
 
   private final Command ANYWHERE_1_BALL = new OneBallAuto(m_magazineSubsystem, m_ShooterSubsystem, m_drivetrainSubsystem);
+
+  private final Command dtcTest = new DriveToCoordinate(m_drivetrainSubsystem, 1, 1);
+
+  private final Command driveSquare = new SequentialCommandGroup(new DriveToCoordinate(m_drivetrainSubsystem, 1, 0), new DriveToCoordinate(m_drivetrainSubsystem, 1, 1), new DriveToCoordinate(m_drivetrainSubsystem, 0, 1), new DriveToCoordinate(m_drivetrainSubsystem, 0, 0));
   
 
   // private final SequentialCommandGroup LOW_START_4BALL = new SequentialCommandGroup(
@@ -101,8 +105,10 @@ public class RobotContainer {
 
 
       m_chooser.addOption("2 Ball", HIGH_BALL_2_BALL);
-      // m_chooser.addOption("Low 2 Ball", LOW_BALL_2_BALL);
       m_chooser.setDefaultOption("1 Ball", ANYWHERE_1_BALL);
+      m_chooser.setDefaultOption("go to 1,1", dtcTest);
+      m_chooser.setDefaultOption("square", driveSquare);
+      
       // m_chooser.addOption("Drive to 0,1", new DriveToCoordinate(m_drivetrainSubsystem, 0, 1));
       // m_chooser.addOption("Delay Drive Forward", m_shootball);
       SmartDashboard.putNumber("Delay", 0);

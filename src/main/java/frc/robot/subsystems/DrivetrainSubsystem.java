@@ -275,8 +275,8 @@ public void resetSpeed() {
   }
 
   private double convertMotorVelocity(double ticSpeed) {
-        // return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (0.319) * 2;
-        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (((4 / 2.54) / 100) * Math.PI);
+        return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (2.0 * Math.PI / 1) * (2 / 39.3701);
+        // return (ticSpeed / 100.0) * (1000.0 / 1) * (1 / 2048.0) * (1 / 6.12) * (((4 / 2.54) / 100) * Math.PI);
   }
 
 }
