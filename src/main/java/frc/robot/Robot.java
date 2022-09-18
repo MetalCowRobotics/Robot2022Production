@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,6 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
 /**
@@ -21,13 +25,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private Command autonomousCommand;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private RobotContainer m_robotContainer;
-  private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
 
 
   /**
@@ -36,16 +33,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    // m_chooser.addOption("My Auto", kCustomAuto);
-    // SmartDashboard.putData("Auto choices", m_chooser);
-    
-    m_robotContainer = new RobotContainer();
 
-
-    SmartDashboard.putData(CommandScheduler.getInstance());
-    SmartDashboard.putBoolean("Field Mode", true);
-    SmartDashboard.putNumber("Drivetrain Scalar", 1);
   }
 
   /**
@@ -73,28 +61,38 @@ public class Robot extends TimedRobot {
    */
 
   boolean autonomous = true;
+  
+  AnalogInput input= new AnalogInput(0);
+  AnalogPotentiometer pot = new AnalogPotentiometer(input, 180, 30);
+  TalonSRX motor = new TalonSRX(9);
 
   @Override
   public void autonomousInit() {
-    autonomousCommand = m_robotContainer.getAutoCommand();
-    if(autonomousCommand != null) {
-      CommandScheduler.getInstance().schedule(autonomousCommand);
-    }
-    compressor.enableDigital();
+    input.setAverageBits(2);
+    
+
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    CommandScheduler.getInstance().run();
+    System.out.println(pot.get());
+    motor.set(TalonSRXControlMode.PercentOutput, pot.get()/170);
+
+
   }
+
+
+
+
+
+  
+
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    compressor.enableDigital();
-    m_robotContainer.configureButtonBindings();
-    
+
   }
 
   /** This function is called periodically during operator control. */
