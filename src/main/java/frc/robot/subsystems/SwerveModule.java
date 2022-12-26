@@ -73,6 +73,11 @@ public class SwerveModule {
     return m_steeringMotor.getSelectedSensorVelocity() * STEER_RADIANS_PER_TICK * 0.1;
   }
 
+  public SwerveModuleState getModuleState() {
+    SwerveModuleState state = new SwerveModuleState(getDriveSpeed(), Rotation2d.fromDegrees(getSteerAngle()));
+    return state;
+  }
+
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state = SwerveModuleState.optimize(

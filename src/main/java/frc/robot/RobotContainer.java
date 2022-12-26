@@ -22,7 +22,7 @@ public class RobotContainer {
           // () -> driverControls.getLeftX(),
           () -> driveJoystick.getX(),
           // () -> driverControls.getLeftY(),
-          () -> driveJoystick.getX(),
+          () -> -driveJoystick.getY(),
           // () -> driverControls.getRightX()
           () -> steerJoystick.getX()
       )
