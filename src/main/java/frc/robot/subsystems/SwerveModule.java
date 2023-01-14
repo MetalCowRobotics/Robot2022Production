@@ -10,6 +10,7 @@ import frc.utils.TalonFXConfigs;
 
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 
 public class SwerveModule {
   private static final double WHEEL_RADIUS = 0.0508;
@@ -26,30 +27,27 @@ public class SwerveModule {
 
   private TalonFX m_driveMotor;
   private TalonFX m_steeringMotor;
+  private CANCoder m_steerEncoder;
 
-  private final PIDController m_drivePIDController = new PIDController(1, 0, 0);
+  private double offset;
 
-  private final ProfiledPIDController m_turningPIDController = new ProfiledPIDController(
-    1,
-    0,
-    0,
-    new TrapezoidProfile.Constraints(
-      kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration
-    )
-  );
+  private final PIDController m_drivePIDController = new PIDController(0, 0, 0);
 
-  // Gains are for example purposes only - must be determined for your own robot!
-  private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(1, 3);
-  private final SimpleMotorFeedforward m_turnFeedforward = new SimpleMotorFeedforward(1, 0.5);
+  private final PIDController m_steerPIDController = new PIDController(0.08, 0, 0.0);
 
-  public SwerveModule(int driveMotorCanID, int steeringMotorCanID) {
+  public SwerveModule(int driveMotorCanID, int steeringMotorCanID, int encoderCanID, double offset) {
     m_driveMotor = new TalonFX(driveMotorCanID);
     m_driveMotor.configAllSettings(TalonFXConfigs.driveMotorTalonFXConfig());
+    m_steerEncoder = new CANCoder(encoderCanID);
+    // m_steerEncoder.configMagnetOffset(-offset);
+
+    this.offset = offset;
 
     m_steeringMotor = new TalonFX(steeringMotorCanID);
     m_steeringMotor.configAllSettings(TalonFXConfigs.steerMotorTalonFXConfig());
 
-    m_turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    m_steerPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    m_steerPIDController.setTolerance(5, 100);
   }
 
   public SwerveModuleState getState() {
@@ -64,13 +62,13 @@ public class SwerveModule {
     return m_driveMotor.getSelectedSensorVelocity() * DRIVE_DISTANCE_PER_TICK * 0.1;
   }
 
-  // get steering angle, not absolute
+  // get steering angle, absolute
   public double getSteerAngle() {
-      return m_steeringMotor.getSelectedSensorPosition() * STEER_RADIANS_PER_TICK;
+      return Rotation2d.fromDegrees(m_steerEncoder.getAbsolutePosition()).getDegrees();
   }
   // get steering speed
   public double getSteerSpeed() {
-    return m_steeringMotor.getSelectedSensorVelocity() * STEER_RADIANS_PER_TICK * 0.1;
+    return m_steerEncoder.getVelocity();
   }
 
   public SwerveModuleState getModuleState() {
@@ -80,37 +78,43 @@ public class SwerveModule {
 
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state = SwerveModuleState.optimize(
-      desiredState, 
-      new Rotation2d(getSteerAngle())
-    );
+    SwerveModuleState state = desiredState;
+    m_drivePIDController.setSetpoint(state.speedMetersPerSecond);
+    m_steerPIDController.setSetpoint(state.angle.getDegrees());
+    // SwerveModuleState state = SwerveModuleState.optimize(
+    //   desiredState, 
+    //   new Rotation2d(getSteerAngle())
+    // );
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput = m_drivePIDController.calculate(
       getDriveSpeed(), 
       state.speedMetersPerSecond
     );
-    final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond);
 
     // Calculate the turning motor output from the turning PID controller.
-    final double turnOutput = m_turningPIDController.calculate(
-      getSteerAngle(), 
-      state.angle.getRadians()
-    );
-    final double turnFeedforward = m_turnFeedforward.calculate(m_turningPIDController.getSetpoint().velocity);
+    double turnOutput = m_steerPIDController.calculate(getSteerAngle());
+    turnOutput = Math.min(turnOutput, 0.1);
+    turnOutput = Math.max(turnOutput, -0.1);
     
+    System.out.println(turnOutput);
+
+    // if (m_steerPIDController.atSetpoint()) {
+    //   turnOutput = 0;
+    // }
+
     // Convert PID voltages to motor output percentages
-    double drivePercent = voltageToPercent(driveOutput + driveFeedforward);
-    double steerPercent = voltageToPercent(turnOutput + turnFeedforward);
+    // double drivePercent = voltageToPercent(driveOutput);
+    // double steerPercent = voltageToPercent(turnOutput);
 
     // Set motor output
     m_driveMotor.set(
       TalonFXControlMode.PercentOutput,
-      drivePercent
+      driveOutput
     );
     m_steeringMotor.set(
       TalonFXControlMode.PercentOutput,
-      steerPercent
+      turnOutput
     );
   }
 

@@ -33,6 +33,7 @@ public class TalonFXConfigs {
         );
       
         config.supplyCurrLimit = driveSupplyLimit;
+        config.openloopRamp = 0.25;
         config.initializationStrategy = SensorInitializationStrategy.BootToZero;
         return config;
     }

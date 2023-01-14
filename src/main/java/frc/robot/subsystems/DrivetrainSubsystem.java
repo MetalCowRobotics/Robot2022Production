@@ -25,10 +25,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
   private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
   private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
 
-  private final SwerveModule frontLeftModule = new SwerveModule(Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR, Constants.FRONT_LEFT_MODULE_STEER_MOTOR);
-  private final SwerveModule frontRightModule = new SwerveModule(Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR);
-  private final SwerveModule backLeftModule = new SwerveModule(Constants.BACK_LEFT_MODULE_DRIVE_MOTOR, Constants.BACK_LEFT_MODULE_STEER_MOTOR);
-  private final SwerveModule backRightModule = new SwerveModule(Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR, Constants.BACK_RIGHT_MODULE_STEER_MOTOR);
+  private final SwerveModule frontLeftModule = new SwerveModule(Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR, Constants.FRONT_LEFT_MODULE_STEER_MOTOR, Constants.FRONT_LEFT_MODULE_STEER_ENCODER, Constants.FRONT_LEFT_MODULE_STEER_OFFSET);
+  private final SwerveModule frontRightModule = new SwerveModule(Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR, Constants.FRONT_RIGHT_MODULE_STEER_MOTOR, Constants.FRONT_RIGHT_MODULE_STEER_ENCODER, Constants.FRONT_RIGHT_MODULE_STEER_OFFSET);
+  private final SwerveModule backLeftModule = new SwerveModule(Constants.BACK_LEFT_MODULE_DRIVE_MOTOR, Constants.BACK_LEFT_MODULE_STEER_MOTOR, Constants.BACK_LEFT_MODULE_STEER_ENCODER, Constants.BACK_LEFT_MODULE_STEER_OFFSET);
+  private final SwerveModule backRightModule = new SwerveModule(Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR, Constants.BACK_RIGHT_MODULE_STEER_MOTOR, Constants.BACK_RIGHT_MODULE_STEER_ENCODER, Constants.BACK_RIGHT_MODULE_STEER_OFFSET);
 
   private final PigeonIMU m_pigeon = new PigeonIMU(Constants.DRIVETRAIN_PIGEON_ID);
 
@@ -58,17 +58,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
     backLeftModule.setDesiredState(states[2]);
     backRightModule.setDesiredState(states[3]);
 
-    SmartDashboard.putNumber("front left speed", states[0].speedMetersPerSecond);
-    SmartDashboard.putNumber("front left angle", states[0].angle.getDegrees());
-    
-    SmartDashboard.putNumber("front right speed", states[1].speedMetersPerSecond);
-    SmartDashboard.putNumber("front right angle", states[1].angle.getDegrees());
-    
-    SmartDashboard.putNumber("back left speed", states[2].speedMetersPerSecond);
-    SmartDashboard.putNumber("back left angle", states[2].angle.getDegrees());
+    SmartDashboard.putNumber("front left speed", frontLeftModule.getDriveSpeed());
+    SmartDashboard.putNumber("front left angle", frontLeftModule.getSteerAngle());
+    SmartDashboard.putNumber("front left angle theoretical", states[0].angle.getDegrees());
 
-    SmartDashboard.putNumber("back right speed", states[3].speedMetersPerSecond);
-    SmartDashboard.putNumber("back right angle", states[3].angle.getDegrees());
+    SmartDashboard.putNumber("front right speed", frontRightModule.getDriveSpeed());
+    SmartDashboard.putNumber("front right angle", frontRightModule.getSteerAngle());
+    SmartDashboard.putNumber("front right angle theoretical", states[1].angle.getDegrees());
+
+    SmartDashboard.putNumber("back left speed", backLeftModule.getDriveSpeed());
+    SmartDashboard.putNumber("back left angle", backLeftModule.getSteerAngle());
+    SmartDashboard.putNumber("back left angle theoretical", states[2].angle.getDegrees());
+
+    SmartDashboard.putNumber("back right speed", backRightModule.getDriveSpeed());
+    SmartDashboard.putNumber("back right angle", backRightModule.getSteerAngle());
+    SmartDashboard.putNumber("back right angle theoretical", states[3].angle.getDegrees());
 
     currentPose = m_estimator.update(Rotation2d.fromDegrees(m_pigeon.getYaw()), frontLeftModule.getModuleState(), frontRightModule.getModuleState(), backLeftModule.getModuleState(), backRightModule.getModuleState());
     SmartDashboard.putNumber("robot x", currentPose.getX());
