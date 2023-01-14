@@ -21,6 +21,7 @@ public class TestCommand extends CommandBase {
 
   @Override
   public void execute(){
+      System.out.println("Your code is good-ish");
   }
 
   @Override
