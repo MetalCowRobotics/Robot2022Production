@@ -6,8 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 
 public class TestSubsystem extends SubsystemBase{
-    DigitalInput input = new DigitalInput(3);
-    TalonSRX coolMotor = new TalonSRX(16);
+    DigitalInput input = new DigitalInput(6);
+    TalonSRX coolMotor = new TalonSRX(15);
 
     @Override
     public void periodic() {
