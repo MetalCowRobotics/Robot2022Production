@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.subsystems.TestSubsystem;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -11,6 +10,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+
+import frc.robot.subsystems.TestSubsystem;
+import frc.robot.commands.TestCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,17 +42,19 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
 
   }
-
+  TestSubsystem superCoolSubsystemOfAwesomeness = new TestSubsystem();
+  TestCommand superCoolCommandOfAwesomeness = new TestCommand(superCoolSubsystemOfAwesomeness);
   @Override
   public void teleopInit() {
     // m_robotContainer.startTeleop();
+    superCoolCommandOfAwesomeness.schedule();
   }
 
  // motor.set(TalonSRXControlMode.PercentOutput, 0.5);
-  TestSubsystem superCoolSubsystemOfAwesomeness = new TestSubsystem();
+
   @Override
   public void teleopPeriodic() {
-    superCoolSubsystemOfAwesomeness.periodic();
+
   }
 
   @Override
