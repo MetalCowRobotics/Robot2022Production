@@ -5,8 +5,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.XboxController;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+// import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 
@@ -20,6 +23,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  XboxController m_Xbox = new XboxController(0);
+
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
@@ -29,9 +34,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
   }
 
+
   @Override
   public void autonomousInit() {
-
   }
 
   @Override
@@ -43,11 +48,22 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     m_robotContainer.startTeleop();
   }
+  
+  DoubleSolenoid m_intakeDeployment = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+  boolean isDeployed = false;
 
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().run();
-  }
+    if (m_Xbox.getAButton() == true) {
+      m_intakeDeployment.set(DoubleSolenoid.Value.kForward);
+      isDeployed = true;
+    }
+    else if (m_Xbox.getBButton() == true) {
+      m_intakeDeployment.set(DoubleSolenoid.Value.kReverse);
+      isDeployed = false;
+    }
+    System.out.println(isDeployed);
+    }
 
   @Override
   public void disabledInit() {
