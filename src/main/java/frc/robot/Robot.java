@@ -5,10 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-
+import com.ctre.phoenix.motorcontrol.can.*;
+import com.ctre.phoenix.motorcontrol.*;
+import edu.wpi.first.wpilibj.XboxController;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +16,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+  TalonSRX m_talon12 = new TalonSRX(12);
+  TalonSRX m_talon7 = new TalonSRX(7);
+  TalonSRX m_talon9 = new TalonSRX(9);
+  TalonSRX m_talon10 = new TalonSRX(10);
+  XboxController m_Xbox = new XboxController(0);
 
   private RobotContainer m_robotContainer;
 
@@ -31,6 +35,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    m_talon12.set(ControlMode.PercentOutput, -0.25);
+    m_talon7.set(ControlMode.PercentOutput, -0.25);
+    m_talon9.set(ControlMode.PercentOutput, 0.25);
+    m_talon10.set(ControlMode.PercentOutput, 0.25);
 
   }
 
@@ -46,7 +54,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    CommandScheduler.getInstance().run();
+
+    m_talon12.set(ControlMode.PercentOutput, -(m_Xbox.getLeftY()*0.5) + m_Xbox.getRightX()*0.5);
+    m_talon7.set(ControlMode.PercentOutput, -(m_Xbox.getLeftY()*0.5) + m_Xbox.getRightX()*0.5);
+    m_talon9.set(ControlMode.PercentOutput, (m_Xbox.getLeftY()*0.5) + m_Xbox.getRightX()*0.5);
+    m_talon10.set(ControlMode.PercentOutput, (m_Xbox.getLeftY()*0.5) + m_Xbox.getRightX()*0.5);
+  
+
+    // CommandScheduler.getInstance().run();
   }
 
   @Override

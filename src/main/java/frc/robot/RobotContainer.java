@@ -4,29 +4,29 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+// import edu.wpi.first.wpilibj.Joystick;
 
-import frc.robot.commands.DefaultDriveCommand;
+// import frc.robot.commands.DefaultDriveCommand;
 
-import frc.robot.subsystems.DrivetrainSubsystem;
+// import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class RobotContainer {
-  private Joystick driveJoystick = new Joystick(0);
-  private Joystick steerJoystick = new Joystick(1);
-  private DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
+  // private Joystick driveJoystick = new Joystick(0);
+  // private Joystick steerJoystick = new Joystick(1);
+  // private DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   
   public void startTeleop() {
-    m_drivetrainSubsystem.setDefaultCommand(
-      new DefaultDriveCommand(
-        m_drivetrainSubsystem,
-          // () -> driverControls.getLeftX(),
-          () -> driveJoystick.getX(),
-          // () -> driverControls.getLeftY(),
-          () -> -driveJoystick.getY(),
-          // () -> driverControls.getRightX()
-          () -> steerJoystick.getX()
-      )
-    );
+    // m_drivetrainSubsystem.setDefaultCommand(
+    //   new DefaultDriveCommand(
+    //     m_drivetrainSubsystem,
+    //       // () -> driverControls.getLeftX(),
+    //       () -> driveJoystick.getX(),
+    //       // () -> driverControls.getLeftY(),
+    //       () -> -driveJoystick.getY(),
+    //       // () -> driverControls.getRightX()
+    //       () -> steerJoystick.getX()
+    //   )
+    // );
   }
 
 }
